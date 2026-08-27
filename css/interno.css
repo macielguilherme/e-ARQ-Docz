@@ -1,0 +1,675 @@
+
+/* ============================================================
+   INTERNO - Dashboard de Conformidade e-ARQ Brasil × DocZ
+   Mantendo o design do sistema público
+   Paleta: #05143B → #0A2472 → #0D2D8C → #133AB5
+           → #1A4ADE / #06184A
+   ============================================================ */
+
+
+/* ============================================================
+   BASE
+   ============================================================ */
+
+body {
+    background: #f8f9fa;
+}
+
+
+/* ============================================================
+   SIDEBAR / NAVEGAÇÃO
+   ============================================================ */
+
+.side-nav-sticky {
+    height: calc(100vh - 4rem);
+    top: 4rem;
+    position: sticky;
+}
+
+.nav-item-ativo {
+    background-color: #0A2472 !important;
+    color: #1A4ADE !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 3px rgba(5, 20, 59, 0.12);
+}
+
+.nav-item-ativo .material-symbols-outlined {
+    color: #1A4ADE !important;
+}
+
+.nav-item-inativo {
+    color: #05143B !important;
+}
+
+.nav-item-inativo:hover {
+    background: #eef2ff !important;
+}
+
+.nav-item-inativo .material-symbols-outlined {
+    color: #0D2D8C !important;
+}
+
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+
+.modal-anim {
+    animation: modalFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+/* ============================================================
+   SCROLLBAR DO MODAL
+   ============================================================ */
+
+.modal-scrollbar::-webkit-scrollbar {
+    width: 7px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+    background: #f1f4fa;
+    border-radius: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+    background: #aebce0;
+    border-radius: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #0D2D8C;
+}
+
+
+/* ============================================================
+   STATS GRID
+   ============================================================ */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #dbe3f5;
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 2px rgba(5, 20, 59, 0.05);
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(5, 20, 59, 0.08);
+}
+
+.stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #05143B;
+}
+
+.stat-card .stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.stat-card .stat-sub {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+.stat-card .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    margin-top: 0.75rem;
+    overflow: hidden;
+}
+
+.stat-card .progress-bar .fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 1s ease;
+}
+
+
+/* ============================================================
+   STATUS DOS CARDS
+   ============================================================ */
+
+.stat-card.success .stat-value {
+    color: #0D2D8C;
+}
+
+.stat-card.success .fill {
+    background: #0D2D8C;
+}
+
+.stat-card.warning .stat-value {
+    color: #d97706;
+}
+
+.stat-card.warning .fill {
+    background: #d97706;
+}
+
+.stat-card.danger .stat-value {
+    color: #dc2626;
+}
+
+.stat-card.danger .fill {
+    background: #dc2626;
+}
+
+.stat-card.info .stat-value {
+    color: #1A4ADE;
+}
+
+.stat-card.info .fill {
+    background: #1A4ADE;
+}
+
+.stat-card.primary .stat-value {
+    color: #0D2D8C;
+}
+
+.stat-card.primary .fill {
+    background: #0D2D8C;
+}
+
+
+/* ============================================================
+   FILTROS
+   ============================================================ */
+
+.filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.filters-bar select,
+.filters-bar input {
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    background: white;
+    min-width: 140px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.filters-bar select:focus,
+.filters-bar input:focus {
+    outline: none;
+    border-color: #0D2D8C;
+    box-shadow: 0 0 0 3px rgba(13, 45, 140, 0.12);
+}
+
+.filters-bar .search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.filters-bar .search-box input {
+    width: 100%;
+    padding-left: 2.5rem;
+    min-width: 100px;
+}
+
+.filters-bar .search-box .icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 1.25rem;
+}
+
+
+/* ============================================================
+   TABELA
+   ============================================================ */
+
+.requisitos-table-container {
+    background: white;
+    border: 1px solid #dbe3f5;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(5, 20, 59, 0.05);
+}
+
+.requisitos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.requisitos-table thead {
+    background: #eef2ff;
+}
+
+.requisitos-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #05143B;
+    border-bottom: 2px solid #dbe3f5;
+}
+
+.requisitos-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+
+.requisitos-table tbody tr {
+    transition: background 0.15s ease;
+}
+
+.requisitos-table tbody tr:hover {
+    background: #f1f5ff;
+}
+
+
+/* ============================================================
+   STATUS BADGES
+   ============================================================ */
+
+.requisitos-table .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+
+/* Atendido */
+.requisitos-table .status-badge.atendido {
+    background: #e8edff;
+    color: #0D2D8C;
+}
+
+
+/* Parcial */
+.requisitos-table .status-badge.parcial {
+    background: #fff7e6;
+    color: #92400e;
+}
+
+
+/* Não atendido */
+.requisitos-table .status-badge.nao-atendido {
+    background: #feecec;
+    color: #991b1b;
+}
+
+
+/* Em desenvolvimento */
+.requisitos-table .status-badge.em-desenvolvimento {
+    background: #e8edff;
+    color: #133AB5;
+}
+
+
+/* ============================================================
+   BOTÃO EVIDÊNCIA
+   ============================================================ */
+
+.requisitos-table .btn-evidencia {
+    padding: 0.25rem 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: #e8edff;
+    color: #0A2472;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.requisitos-table .btn-evidencia:hover {
+    background: #0D2D8C;
+    color: white;
+}
+
+.requisitos-table .btn-evidencia .material-symbols-outlined {
+    font-size: 16px;
+}
+
+
+/* ============================================================
+   STATUS BADGE MODAL
+   ============================================================ */
+
+.status-badge-modal.atendido {
+    background: #e8edff;
+    color: #0D2D8C;
+    border-color: #0D2D8C;
+}
+
+.status-badge-modal.parcial {
+    background: #fff7e6;
+    color: #92400e;
+    border-color: #d97706;
+}
+
+.status-badge-modal.nao-atendido {
+    background: #feecec;
+    color: #991b1b;
+    border-color: #dc2626;
+}
+
+.status-badge-modal.em-desenvolvimento {
+    background: #e8edff;
+    color: #133AB5;
+    border-color: #133AB5;
+}
+
+
+/* ============================================================
+   EVIDÊNCIA ITEM
+   ============================================================ */
+
+.evidencia-item {
+    padding: 0.75rem 1rem;
+    background: #f8faff;
+    border-radius: 0.5rem;
+    border-left: 3px solid #133AB5;
+}
+
+.evidencia-item .evidencia-titulo {
+    font-weight: 600;
+    color: #0A2472;
+    font-size: 0.875rem;
+}
+
+.evidencia-item .evidencia-descricao {
+    color: #334155;
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+}
+
+.evidencia-item .evidencia-localizacao {
+    color: #64748b;
+    font-size: 0.7rem;
+    margin-top: 0.15rem;
+    font-family: 'Inter', monospace;
+}
+
+
+/* ============================================================
+   CARDS DE RELATÓRIOS
+   ============================================================ */
+
+.report-card {
+    background: white;
+    border: 1px solid #dbe3f5;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px rgba(5, 20, 59, 0.05);
+    transition: all 0.2s;
+}
+
+.report-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(5, 20, 59, 0.08);
+}
+
+.report-card .icon-wrapper {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+
+
+/* Primary */
+.report-card .icon-wrapper.primary {
+    background: #e4eaff;
+    color: #0D2D8C;
+}
+
+
+/* Success */
+.report-card .icon-wrapper.success {
+    background: #e8edff;
+    color: #0D2D8C;
+}
+
+
+/* Warning */
+.report-card .icon-wrapper.warning {
+    background: #fff7e6;
+    color: #92400e;
+}
+
+
+/* Danger */
+.report-card .icon-wrapper.danger {
+    background: #feecec;
+    color: #991b1b;
+}
+
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+
+.btn-primary {
+    padding: 0.5rem 1.25rem;
+    background: #0D2D8C;
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    background: #0A2472;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13, 45, 140, 0.25);
+}
+
+.btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* ============================================================
+   BOTÃO OUTLINE
+   ============================================================ */
+
+.btn-outline {
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    color: #0D2D8C;
+    border: 2px solid #b8c5e8;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-outline:hover {
+    border-color: #0D2D8C;
+    background: #eef2ff;
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .stat-card {
+        padding: 1rem;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filters-bar .search-box {
+        width: 100%;
+    }
+
+    .requisitos-table-container {
+        overflow-x: auto;
+    }
+
+    .requisitos-table {
+        font-size: 0.75rem;
+    }
+
+    .requisitos-table th,
+    .requisitos-table td {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .requisitos-table .col-responsavel {
+        display: none;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .stat-card {
+        padding: 0.75rem;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.25rem;
+    }
+}
+
+
+/* ============================================================
+   SCROLLBAR GLOBAL
+   ============================================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f4fa;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #aebce0;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #0D2D8C;
+}
+
+
+/* ============================================================
+   LOGO DOCZ - CABEÇALHO
+   ============================================================ */
+
+.logo-docz {
+    height: 36px;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   LOGO DOCZ - SIDEBAR
+   ============================================================ */
+
+.logo-docz-sidebar {
+    height: 48px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+
+/* ============================================================
+   SIDEBAR LOGO CONTAINER
+   ============================================================ */
+
+.sidebar-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
+
