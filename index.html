@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DocZ · Conformidade e-ARQ Brasil</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Public+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+    
+    <!-- Estilos Internos -->
+    <link rel="stylesheet" href="css/interno.css" />
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#191c1d",
+                        "tertiary-container": "#003461",
+                        "tertiary": "#001f3d",
+                        "secondary-container": "#fed488",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#43474f",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-tint": "#3a5f94",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary-fixed-dim": "#a3c9ff",
+                        "outline": "#737780",
+                        "on-secondary-container": "#785a1a",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa",
+                        "secondary-fixed": "#ffdea5",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "on-tertiary-container": "#659ee7",
+                        "surface-bright": "#f8f9fa",
+                        "outline-variant": "#c3c6d1",
+                        "primary-container": "#003366",
+                        "on-primary-container": "#799dd6",
+                        "primary": "#001e40",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-container": "#edeeef",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1d",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261900",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-variant": "#e1e3e4",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary": "#775a19",
+                        "tertiary-fixed": "#d3e3ff",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Public Sans"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Public Sans"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Public Sans"],
+                        "display-lg": ["Public Sans"],
+                        "mono-sm": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+    
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background: #f8f9fa;
+        }
+        .logo-docz {
+            height: 36px;
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .logo-docz-sidebar {
+            height: 48px;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+        .side-nav-sticky {
+            height: calc(100vh - 4rem);
+            top: 4rem;
+            position: sticky;
+        }
+        .modal-anim {
+            animation: modalFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes modalFadeIn {
+            0% { opacity: 0; transform: scale(0.95) translateY(12px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-scrollbar::-webkit-scrollbar {
+            width: 7px;
+        }
+        .modal-scrollbar::-webkit-scrollbar-track {
+            background: #f1f2f4;
+            border-radius: 8px;
+        }
+        .modal-scrollbar::-webkit-scrollbar-thumb {
+            background: #c3c6d1;
+            border-radius: 8px;
+        }
+        .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #737780;
+        }
+        .nav-item-ativo {
+            background-color: #003366 !important;
+            color: #799dd6 !important;
+            font-weight: 700 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .nav-item-ativo .material-symbols-outlined {
+            color: #799dd6 !important;
+        }
+        .nav-item-inativo {
+            color: #43474f !important;
+        }
+        .nav-item-inativo:hover {
+            background: #e7e8e9 !important;
+        }
+        .nav-item-inativo .material-symbols-outlined {
+            color: #43474f !important;
+        }
+        #modalEvidencias.hidden {
+            display: none !important;
+        }
+        #modalEvidencias:not(.hidden) {
+            display: flex !important;
+        }
+        /* Status badges */
+        .status-badge.atendido {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .status-badge.parcial {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-badge.nao-atendido {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .status-badge.em-desenvolvimento {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .status-badge-modal {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid #e1e3e4;
+        }
+        .status-badge-modal.atendido {
+            background: #d1fae5;
+            color: #065f46;
+            border-color: #10b981;
+        }
+        .status-badge-modal.parcial {
+            background: #fef3c7;
+            color: #92400e;
+            border-color: #f59e0b;
+        }
+        .status-badge-modal.nao-atendido {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #ef4444;
+        }
+        .status-badge-modal.em-desenvolvimento {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #3b82f6;
+        }
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid #e1e3e4;
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #001e40;
+        }
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #737780;
+            margin-top: 0.25rem;
+        }
+        .stat-card .stat-sub {
+            font-size: 0.7rem;
+            color: #737780;
+            margin-top: 0.25rem;
+        }
+        .stat-card .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e1e3e4;
+            border-radius: 9999px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+        .stat-card .progress-bar .fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 1s ease;
+        }
+        .stat-card.success .stat-value { color: #10b981; }
+        .stat-card.success .fill { background: #10b981; }
+        .stat-card.warning .stat-value { color: #f59e0b; }
+        .stat-card.warning .fill { background: #f59e0b; }
+        .stat-card.danger .stat-value { color: #ef4444; }
+        .stat-card.danger .fill { background: #ef4444; }
+        .stat-card.info .stat-value { color: #3b82f6; }
+        .stat-card.info .fill { background: #3b82f6; }
+        .stat-card.primary .stat-value { color: #001e40; }
+        .stat-card.primary .fill { background: #001e40; }
+        /* Filters */
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .filters-bar select,
+        .filters-bar input {
+            padding: 0.5rem 0.75rem;
+            border: 1.5px solid #c3c6d1;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            background: white;
+            min-width: 140px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .filters-bar select:focus,
+        .filters-bar input:focus {
+            outline: none;
+            border-color: #001e40;
+            box-shadow: 0 0 0 3px rgba(0, 30, 64, 0.1);
+        }
+        .filters-bar .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+        .filters-bar .search-box input {
+            width: 100%;
+            padding-left: 2.5rem;
+            min-width: 100px;
+        }
+        .filters-bar .search-box .icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #737780;
+            font-size: 1.25rem;
+        }
+        /* Table */
+        .requisitos-table-container {
+            background: white;
+            border: 1px solid #e1e3e4;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        .requisitos-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .requisitos-table thead {
+            background: #f3f4f5;
+        }
+        .requisitos-table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #43474f;
+            border-bottom: 2px solid #e1e3e4;
+        }
+        .requisitos-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e1e3e4;
+            font-size: 0.875rem;
+            vertical-align: middle;
+        }
+        .requisitos-table tbody tr {
+            transition: background 0.15s ease;
+        }
+        .requisitos-table tbody tr:hover {
+            background: #f3f4f5;
+        }
+        .requisitos-table .btn-evidencia {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: #e1e3e4;
+            color: #191c1d;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .requisitos-table .btn-evidencia:hover {
+            background: #001e40;
+            color: white;
+        }
+        .requisitos-table .btn-evidencia .material-symbols-outlined {
+            font-size: 16px;
+        }
+        /* Report cards */
+        .report-card {
+            background: white;
+            border: 1px solid #e1e3e4;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .report-card .icon-wrapper {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+        .report-card .icon-wrapper.primary {
+            background: #d5e3ff;
+            color: #001e40;
+        }
+        .report-card .icon-wrapper.danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .report-card .icon-wrapper.warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .btn-primary {
+            padding: 0.5rem 1.25rem;
+            background: #001e40;
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary:hover {
+            background: #003366;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 30, 64, 0.2);
+        }
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            .stat-card {
+                padding: 1rem;
+            }
+            .stat-card .stat-value {
+                font-size: 1.5rem;
+            }
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filters-bar .search-box {
+                width: 100%;
+            }
+            .requisitos-table-container {
+                overflow-x: auto;
+            }
+        }
+        /* Print image styling */
+        .print-container {
+            background: #f8f9fa;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .print-container img {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #e1e3e4;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .print-container img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .print-container .print-desc {
+            font-size: 0.8rem;
+            color: #43474f;
+            padding: 0.5rem 0;
+        }
+        .print-item .expand-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            margin-top: 0.5rem;
+            background: #f1f2f4;
+            border: 1px solid #e1e3e4;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            color: #43474f;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .print-item .expand-btn:hover {
+            background: #001e40;
+            color: white;
+            border-color: #001e40;
+        }
+        /* Modal de expansão de imagem */
+        #imageModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.85);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            cursor: pointer;
+        }
+        #imageModal.active {
+            display: flex;
+        }
+        #imageModal img {
+            max-width: 95%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            cursor: default;
+        }
+        #imageModal .close-modal-btn {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+            backdrop-filter: blur(4px);
+        }
+        #imageModal .close-modal-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        #imageModal .modal-info {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+        /* Modal sections - clean design */
+        .modal-section {
+            margin-bottom: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: #fafbfc;
+            border-radius: 0.75rem;
+            border: 1px solid #edeeef;
+        }
+        .modal-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #737780;
+            margin-bottom: 0.5rem;
+        }
+        .modal-section-title .material-symbols-outlined {
+            font-size: 1rem;
+            color: #737780;
+        }
+        .modal-section-content {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #191c1d;
+        }
+        .modal-section-content strong {
+            color: #001e40;
+            font-weight: 600;
+        }
+        .modal-section-content .badge-status {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+        .modal-title {
+            font-family: 'Public Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #001e40;
+            margin-bottom: 1.25rem;
+            line-height: 1.3;
+        }
+        .modal-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #e1e3e4;
+            font-size: 0.7rem;
+            color: #737780;
+        }
+        .modal-meta-grid span {
+            color: #191c1d;
+            font-weight: 500;
+        }
+        .print-item {
+            background: white;
+            border: 1px solid #e1e3e4;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+        .print-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+        .print-item .print-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .print-item .print-header .material-symbols-outlined {
+            color: #737780;
+            font-size: 1.25rem;
+        }
+        .print-item .print-header .print-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #191c1d;
+        }
+        .print-item .print-header .print-date {
+            font-size: 0.7rem;
+            color: #737780;
+            margin-left: auto;
+        }
+        .print-item .print-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .print-item img {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #e1e3e4;
+            background: white;
+            max-height: 450px;
+            object-fit: contain;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .print-item img:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .no-prints {
+            text-align: center;
+            padding: 2rem;
+            color: #737780;
+            background: #fafbfc;
+            border-radius: 0.75rem;
+            border: 1px solid #edeeef;
+        }
+        .no-prints .material-symbols-outlined {
+            font-size: 2rem;
+            color: #c3c6d1;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        .no-prints p {
+            font-size: 0.875rem;
+        }
+        .observacao-item {
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #43474f;
+            list-style: none;
+        }
+        .observacao-item::before {
+            content: "•";
+            color: #737780;
+            margin-right: 0.5rem;
+        }
+        .bug-item {
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #991b1b;
+            list-style: none;
+        }
+        .bug-item::before {
+            content: "•";
+            color: #ef4444;
+            margin-right: 0.5rem;
+        }
+        .modal-status-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal-status-wrapper .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #737780;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+
+    <!-- TopNavBar -->
+    <header class="bg-surface/90 backdrop-blur-sm border-b border-outline-variant flex justify-between items-center w-full px-6 md:px-10 xl:px-16 h-16 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">
+                DocZ · Conformidade e-ARQ
+                
+            </span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-sm text-on-surface-variant hidden sm:inline" id="dataAtualizacao"></span>
+        </div>
+    </header>
+
+    <div class="flex flex-1 w-full relative">
+        <!-- SideNavBar -->
+        <aside class="hidden md:flex flex-col side-nav-sticky border-r border-outline-variant bg-surface-container-low w-72 shrink-0 z-40">
+            <div class="p-6 border-b border-outline-variant">
+                <div class="sidebar-logo-container">
+                    <img src="https://docz.sosdocs.com.br/Docz/web/images/logo.png" alt="DocZ" class="logo-docz-sidebar" />
+                </div>
+                <div class="mt-3 text-xs text-on-surface-variant text-center">
+                    <span class="font-semibold">Documento:</span> Dicionário de Dados
+                    <br />
+                    <span class="font-semibold">Data:</span> 12/08/2026
+                </div>
+            </div>
+            <nav class="flex-1 overflow-y-auto py-5 px-3 font-label-md text-label-md">
+                <ul class="space-y-1">
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200" href="#" id="btnDashboard">
+                            <span class="material-symbols-outlined">dashboard</span> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200" href="#" id="btnRequisitos">
+                            <span class="material-symbols-outlined">list_alt</span> Requisitos
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200" href="#" id="btnRelatorios">
+                            <span class="material-symbols-outlined">description</span> Relatórios
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-5 border-t border-outline-variant">
+                <div class="text-xs text-on-surface-variant text-center">
+                    Última atualização: <span id="ultimaAtualizacao">--/--/----</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full px-6 md:px-10 xl:px-16 py-10 xl:py-14 overflow-x-hidden" id="main-content">
+            <!-- Renderizado dinamicamente -->
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-surface-container-highest/90 border-t border-outline-variant w-full py-10 px-6 md:px-10 xl:px-16 mt-auto">
+        <div class="max-w-full mx-auto flex flex-col md:flex-row justify-center items-center gap-6">
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Guilherme Farias Maciel Ribeiro · DocZ Conformidade e-ARQ Brasil</p>
+        </div>
+    </footer>
+
+    <!-- MODAL DE EVIDÊNCIAS -->
+    <div id="modalEvidencias" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] items-center justify-center p-3 sm:p-5 md:p-8 overflow-y-auto" onclick="fecharModal(event)">
+        <div class="bg-white border border-outline-variant rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl modal-anim overflow-hidden" onclick="event.stopPropagation()">
+            
+            <!-- Header -->
+            <div class="px-6 py-4 bg-surface-container-low border-b border-outline-variant flex items-center justify-between gap-4 shrink-0">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <span id="modalRequisitoId" class="font-mono-sm font-bold text-tertiary px-3 py-1 bg-tertiary-fixed rounded-lg text-sm tracking-wide"></span>
+                    <span id="modalStatus" class="status-badge-modal atendido">Atendido</span>
+                </div>
+                <button onclick="fecharModal()" class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <!-- Corpo -->
+            <div class="p-6 sm:p-8 overflow-y-auto flex-1 modal-scrollbar bg-white" id="modalCorpo">
+                <!-- Renderizado via JavaScript -->
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-3.5 bg-surface-container-low border-t border-outline-variant flex items-center justify-between gap-3 shrink-0">
+                <div class="flex items-center gap-2">
+                    <button onclick="navegarRequisito(-1)" id="btnAnterior" class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-primary bg-white border border-outline-variant hover:bg-surface-container-high rounded-lg transition-all flex items-center gap-1 shadow-sm disabled:opacity-40 disabled:pointer-events-none">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        <span>Anterior</span>
+                    </button>
+                    <button onclick="navegarRequisito(1)" id="btnProximo" class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-primary bg-white border border-outline-variant hover:bg-surface-container-high rounded-lg transition-all flex items-center gap-1 shadow-sm disabled:opacity-40 disabled:pointer-events-none">
+                        <span>Próximo</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </button>
+                </div>
+                <div class="text-xs text-on-surface-variant" id="modalNavegacao">1 de 18</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA EXPANDIR IMAGEM -->
+    <div id="imageModal" onclick="fecharImageModal(event)">
+        <button class="close-modal-btn" onclick="fecharImageModal()">✕</button>
+        <img id="expandedImage" src="" alt="Imagem expandida" onclick="event.stopPropagation()" />
+        <div class="modal-info" id="imageModalInfo">Clique fora da imagem para fechar</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/cruzamentoRequisitos.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/relatorio.js"></script>
+
+</body>
+</html>
