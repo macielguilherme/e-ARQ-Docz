@@ -1,0 +1,471 @@
+/* ============================================================
+   INTERNO - Dashboard de Conformidade e-ARQ Brasil × DocZ
+   Mantendo o design do sistema público
+   ============================================================ */
+
+body {
+    background: #f8f9fa;
+}
+
+.side-nav-sticky {
+    height: calc(100vh - 4rem);
+    top: 4rem;
+    position: sticky;
+}
+
+.modal-anim {
+    animation: modalFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+    0% { opacity: 0; transform: scale(0.95) translateY(12px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+    width: 7px;
+}
+.modal-scrollbar::-webkit-scrollbar-track {
+    background: #f1f2f4;
+    border-radius: 8px;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb {
+    background: #c3c6d1;
+    border-radius: 8px;
+}
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #737780;
+}
+
+.nav-item-ativo {
+    background-color: #003366 !important;
+    color: #799dd6 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+.nav-item-ativo .material-symbols-outlined {
+    color: #799dd6 !important;
+}
+.nav-item-inativo {
+    color: #43474f !important;
+}
+.nav-item-inativo:hover {
+    background: #e7e8e9 !important;
+}
+.nav-item-inativo .material-symbols-outlined {
+    color: #43474f !important;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e1e3e4;
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.stat-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #001e40;
+}
+.stat-card .stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #737780;
+    margin-top: 0.25rem;
+}
+.stat-card .stat-sub {
+    font-size: 0.7rem;
+    color: #737780;
+    margin-top: 0.25rem;
+}
+.stat-card .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e1e3e4;
+    border-radius: 9999px;
+    margin-top: 0.75rem;
+    overflow: hidden;
+}
+.stat-card .progress-bar .fill {
+    height: 100%;
+    border-radius: 9999px;
+    transition: width 1s ease;
+}
+.stat-card.success .stat-value { color: #10b981; }
+.stat-card.success .fill { background: #10b981; }
+.stat-card.warning .stat-value { color: #f59e0b; }
+.stat-card.warning .fill { background: #f59e0b; }
+.stat-card.danger .stat-value { color: #ef4444; }
+.stat-card.danger .fill { background: #ef4444; }
+.stat-card.info .stat-value { color: #3b82f6; }
+.stat-card.info .fill { background: #3b82f6; }
+.stat-card.primary .stat-value { color: #001e40; }
+.stat-card.primary .fill { background: #001e40; }
+
+/* Filters */
+.filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+.filters-bar select,
+.filters-bar input {
+    padding: 0.5rem 0.75rem;
+    border: 1.5px solid #c3c6d1;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    background: white;
+    min-width: 140px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.filters-bar select:focus,
+.filters-bar input:focus {
+    outline: none;
+    border-color: #001e40;
+    box-shadow: 0 0 0 3px rgba(0, 30, 64, 0.1);
+}
+.filters-bar .search-box {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+.filters-bar .search-box input {
+    width: 100%;
+    padding-left: 2.5rem;
+    min-width: 100px;
+}
+.filters-bar .search-box .icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #737780;
+    font-size: 1.25rem;
+}
+
+/* Table */
+.requisitos-table-container {
+    background: white;
+    border: 1px solid #e1e3e4;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.requisitos-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.requisitos-table thead {
+    background: #f3f4f5;
+}
+.requisitos-table th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #43474f;
+    border-bottom: 2px solid #e1e3e4;
+}
+.requisitos-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e1e3e4;
+    font-size: 0.875rem;
+    vertical-align: middle;
+}
+.requisitos-table tbody tr {
+    transition: background 0.15s ease;
+}
+.requisitos-table tbody tr:hover {
+    background: #f3f4f5;
+}
+
+/* Status Badges */
+.requisitos-table .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+.requisitos-table .status-badge.atendido {
+    background: #d1fae5;
+    color: #065f46;
+}
+.requisitos-table .status-badge.parcial {
+    background: #fef3c7;
+    color: #92400e;
+}
+.requisitos-table .status-badge.nao-atendido {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.requisitos-table .status-badge.em-desenvolvimento {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Botão Evidência */
+.requisitos-table .btn-evidencia {
+    padding: 0.25rem 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: #e1e3e4;
+    color: #191c1d;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.requisitos-table .btn-evidencia:hover {
+    background: #001e40;
+    color: white;
+}
+.requisitos-table .btn-evidencia .material-symbols-outlined {
+    font-size: 16px;
+}
+
+/* Status Badge Modal */
+.status-badge-modal.atendido {
+    background: #d1fae5;
+    color: #065f46;
+    border-color: #10b981;
+}
+.status-badge-modal.parcial {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #f59e0b;
+}
+.status-badge-modal.nao-atendido {
+    background: #fee2e2;
+    color: #991b1b;
+    border-color: #ef4444;
+}
+.status-badge-modal.em-desenvolvimento {
+    background: #dbeafe;
+    color: #1e40af;
+    border-color: #3b82f6;
+}
+
+/* Evidência Item */
+.evidencia-item {
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    border-left: 3px solid #001e40;
+}
+.evidencia-item .evidencia-titulo {
+    font-weight: 600;
+    color: #001e40;
+    font-size: 0.875rem;
+}
+.evidencia-item .evidencia-descricao {
+    color: #43474f;
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+}
+.evidencia-item .evidencia-localizacao {
+    color: #737780;
+    font-size: 0.7rem;
+    margin-top: 0.15rem;
+    font-family: 'Inter', monospace;
+}
+
+/* Cards de Relatórios */
+.report-card {
+    background: white;
+    border: 1px solid #e1e3e4;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s;
+}
+.report-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.report-card .icon-wrapper {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+}
+.report-card .icon-wrapper.primary {
+    background: #d5e3ff;
+    color: #001e40;
+}
+.report-card .icon-wrapper.success {
+    background: #d1fae5;
+    color: #065f46;
+}
+.report-card .icon-wrapper.warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+.report-card .icon-wrapper.danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Botões */
+.btn-primary {
+    padding: 0.5rem 1.25rem;
+    background: #001e40;
+    color: white;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-primary:hover {
+    background: #003366;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 30, 64, 0.2);
+}
+.btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-outline {
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    color: #001e40;
+    border: 2px solid #c3c6d1;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.btn-outline:hover {
+    border-color: #001e40;
+    background: #f3f4f5;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    .stat-card {
+        padding: 1rem;
+    }
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filters-bar .search-box {
+        width: 100%;
+    }
+    .requisitos-table-container {
+        overflow-x: auto;
+    }
+    .requisitos-table {
+        font-size: 0.75rem;
+    }
+    .requisitos-table th,
+    .requisitos-table td {
+        padding: 0.5rem 0.75rem;
+    }
+    .requisitos-table .col-responsavel {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+    .stat-card {
+        padding: 0.75rem;
+    }
+    .stat-card .stat-value {
+        font-size: 1.25rem;
+    }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f2f4;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb {
+    background: #c3c6d1;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #737780;
+}
+
+/* Logo DocZ - Cabeçalho */
+.logo-docz {
+    height: 36px;
+    width: auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Logo DocZ - Sidebar */
+.logo-docz-sidebar {
+    height: 48px;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Sidebar logo container */
+.sidebar-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0;
+}
