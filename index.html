@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DocZ · Conformidade e-ARQ Brasil</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Bibliotecas para gerar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+        integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Public+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#191c1d",
+                        "tertiary-container": "#003461",
+                        "tertiary": "#001f3d",
+                        "secondary-container": "#fed488",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#43474f",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-tint": "#3a5f94",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary-fixed-dim": "#a3c9ff",
+                        "outline": "#737780",
+                        "on-secondary-container": "#785a1a",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa",
+                        "secondary-fixed": "#ffdea5",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "on-tertiary-container": "#659ee7",
+                        "surface-bright": "#f8f9fa",
+                        "outline-variant": "#c3c6d1",
+                        "primary-container": "#003366",
+                        "on-primary-container": "#799dd6",
+                        "primary": "#001e40",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-container": "#edeeef",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1d",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261900",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-variant": "#e1e3e4",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary": "#775a19",
+                        "tertiary-fixed": "#d3e3ff",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Public Sans"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Public Sans"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Public Sans"],
+                        "display-lg": ["Public Sans"],
+                        "mono-sm": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* ============================================================
+   TELA DE ABERTURA
+   Paleta:
+   #05143B → #0A2472 → #0D2D8C → #133AB5
+   → #1A4ADE / #06184A
+   ============================================================ */
+
+        #opening-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            pointer-events: none;
+            overflow: hidden;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Status badges - ADICIONE O ROXO */
+        .status-badge.verificar {
+            background: #f3e8ff;
+            color: #6d28d9;
+            border: 1px solid #8b5cf6;
+        }
+
+        .status-badge-modal.verificar {
+            background: #f3e8ff;
+            color: #6d28d9;
+            border-color: #8b5cf6;
+        }
+
+        /* Também na parte de impressão PDF */
+        .pdf-status-badge.verificar {
+            background: #f3e8ff;
+            color: #6d28d9;
+            border: 1px solid #8b5cf6;
+        }
+
+        .opening-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            z-index: 1;
+            overflow: visible;
+        }
+
+        .rectangle {
+            flex: 0 0 auto;
+            height: 100vh;
+            opacity: 1;
+            position: relative;
+            will-change: transform;
+        }
+
+        .rectangle-split {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            opacity: 1;
+            will-change: transform;
+        }
+
+        .half {
+            flex: 1;
+            opacity: 1;
+            will-change: transform;
+        }
+
+
+        /* ============================================================
+   RETÂNGULOS DA ABERTURA
+   ============================================================ */
+
+        .rect-1 {
+            flex: 0 0 18%;
+            background: #05143B;
+            z-index: 3;
+            box-shadow:
+                inset -6px 0 12px rgba(0, 0, 0, 0.35),
+                6px 0 12px rgba(0, 0, 0, 0.15);
+            animation: sairCima 0.75s cubic-bezier(.76, 0, .24, 1) forwards;
+            animation-delay: 1.20s;
+        }
+
+        .rect-2 {
+            flex: 0 0 16%;
+            background: #0A2472;
+            z-index: 3;
+            box-shadow:
+                inset -6px 0 12px rgba(0, 0, 0, 0.3),
+                6px 0 12px rgba(0, 0, 0, 0.1);
+            animation: sairBaixo 0.75s cubic-bezier(.76, 0, .24, 1) forwards;
+            animation-delay: 1.28s;
+        }
+
+        .rect-3 {
+            flex: 0 0 30%;
+            background: #0D2D8C;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            box-shadow:
+                inset -6px 0 16px rgba(0, 0, 0, 0.4),
+                6px 0 16px rgba(0, 0, 0, 0.2);
+            animation: sairCima 0.75s cubic-bezier(.76, 0, .24, 1) forwards;
+            animation-delay: 1.36s;
+        }
+
+        .rect-4 {
+            flex: 0 0 16%;
+            background: #133AB5;
+            z-index: 3;
+            box-shadow:
+                inset -6px 0 12px rgba(0, 0, 0, 0.25),
+                6px 0 12px rgba(0, 0, 0, 0.08);
+            animation: sairBaixo 0.75s cubic-bezier(.76, 0, .24, 1) forwards;
+            animation-delay: 1.44s;
+        }
+
+        .rectangle-split {
+            flex: 0 0 20%;
+            z-index: 3;
+        }
+
+        .half-top {
+            background: #1A4ADE;
+            box-shadow:
+                inset 0 -6px 12px rgba(0, 0, 0, 0.25),
+                inset 0 4px 8px rgba(255, 255, 255, 0.1);
+            animation: sairDireita 0.75s cubic-bezier(.76, 0, .24, 1) forwards;
+            animation-delay: 1.52s;
+        }
+
+        .half-bottom {
+            background: #06184A;
+            box-shadow:
+                inset 0 6px 12px rgba(0, 0, 0, 0.3),
+                inset 0 -4px 8px rgba(255, 255, 255, 0.05);
+            animation: sairDireita 0.75s cubic-bezier(.76, 0, .24, 1) forwards;
+            animation-delay: 1.60s;
+        }
+
+        /* ============================================================
+DESABILITAR ANIMAÇÃO DE ENTRADA EM MOBILE
+============================================================ */
+
+        @media (max-width: 1250px) {
+
+            #opening-screen .rectangle,
+            #opening-screen .half {
+                animation: none !important;
+                opacity: 0 !important;
+                transform: none !important;
+            }
+
+            #opening-screen .logo-card {
+                animation: none !important;
+                opacity: 0 !important;
+                transform: scale(0.85) !important;
+            }
+        }
+
+
+        /* ============================================================
+   LOGO DA ABERTURA
+   ============================================================ */
+
+        .logo-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.85);
+            animation: fadeInLogo 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        .logo-card img {
+            width: 320px;
+            height: auto;
+            filter:
+                brightness(0) invert(1) drop-shadow(0 8px 40px rgba(0, 0, 0, 0.5));
+        }
+
+
+        /* ============================================================
+   ANIMAÇÕES
+   ============================================================ */
+
+        @keyframes fadeInLogo {
+            0% {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes sairCima {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-110vh);
+                opacity: 1;
+            }
+        }
+
+        @keyframes sairBaixo {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(110vh);
+                opacity: 1;
+            }
+        }
+
+        @keyframes sairDireita {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(110vw);
+                opacity: 1;
+            }
+        }
+
+
+        /* ============================================================
+   ESTILOS DO SISTEMA
+   ============================================================ */
+
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+        }
+
+        body {
+            background: #f8f9fa;
+        }
+
+        .logo-docz {
+            height: 36px;
+            width: auto;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .logo-docz-sidebar {
+            height: 48px;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .sidebar-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+
+        .side-nav-sticky {
+            height: calc(100vh - 4rem);
+            top: 4rem;
+            position: sticky;
+        }
+
+
+        /* ============================================================
+   MODAL
+   ============================================================ */
+
+        .modal-anim {
+            animation: modalFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes modalFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95) translateY(12px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-scrollbar::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .modal-scrollbar::-webkit-scrollbar-track {
+            background: #f1f4fa;
+            border-radius: 8px;
+        }
+
+        .modal-scrollbar::-webkit-scrollbar-thumb {
+            background: #aebce0;
+            border-radius: 8px;
+        }
+
+        .modal-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #0D2D8C;
+        }
+
+
+        /* ============================================================
+   NAVEGAÇÃO
+   ============================================================ */
+
+        .nav-item-ativo {
+            background-color: #0A2472 !important;
+            color: #FFFFFF !important;
+            font-weight: 700 !important;
+            box-shadow: 0 1px 3px rgba(5, 20, 59, 0.15);
+        }
+
+        .nav-item-ativo .material-symbols-outlined {
+            color: #FFFFFF !important;
+        }
+
+        .nav-item-inativo {
+            color: #05143B !important;
+        }
+
+        .nav-item-inativo:hover {
+            background: #eef2ff !important;
+            color: #0D2D8C !important;
+        }
+
+        .nav-item-inativo .material-symbols-outlined {
+            color: #0D2D8C !important;
+        }
+
+
+        /* ============================================================
+   MODAL DE EVIDÊNCIAS
+   ============================================================ */
+
+        #modalEvidencias.hidden {
+            display: none !important;
+        }
+
+        #modalEvidencias:not(.hidden) {
+            display: flex !important;
+        }
+
+
+        /* ============================================================
+   STATUS BADGES
+   ============================================================ */
+
+        .status-badge.atendido {
+            background: #e8edff;
+            color: #0D2D8C;
+        }
+
+        .status-badge.parcial {
+            background: #fff7e6;
+            color: #92400e;
+        }
+
+        .status-badge.nao-atendido {
+            background: #feecec;
+            color: #991b1b;
+        }
+
+        .status-badge.nao-avaliado {
+            background: #f1f4fa;
+            color: #64748b;
+        }
+
+        .status-badge-modal {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            border: 1px solid #dbe3f5;
+        }
+
+        .status-badge-modal.atendido {
+            background: #e8edff;
+            color: #0D2D8C;
+            border-color: #0D2D8C;
+        }
+
+        .status-badge-modal.parcial {
+            background: #fff7e6;
+            color: #92400e;
+            border-color: #d97706;
+        }
+
+        .status-badge-modal.nao-atendido {
+            background: #feecec;
+            color: #991b1b;
+            border-color: #dc2626;
+        }
+
+        .status-badge-modal.nao-avaliado {
+            background: #f1f4fa;
+            color: #64748b;
+            border-color: #94a3b8;
+        }
+
+
+        /* ============================================================
+   STATS
+   ============================================================ */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #dbe3f5;
+            border-radius: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            box-shadow: 0 1px 2px rgba(5, 20, 59, 0.05);
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 20, 59, 0.08);
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #05143B;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .stat-card .stat-sub {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .stat-card .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 9999px;
+            margin-top: 0.75rem;
+            overflow: hidden;
+        }
+
+        .stat-card .progress-bar .fill {
+            height: 100%;
+            border-radius: 9999px;
+            transition: width 1s ease;
+        }
+
+        .stat-card.success .stat-value {
+            color: #0D2D8C;
+        }
+
+        .stat-card.success .fill {
+            background: #0D2D8C;
+        }
+
+        .stat-card.warning .stat-value {
+            color: #d97706;
+        }
+
+        .stat-card.warning .fill {
+            background: #d97706;
+        }
+
+        .stat-card.danger .stat-value {
+            color: #dc2626;
+        }
+
+        .stat-card.danger .fill {
+            background: #dc2626;
+        }
+
+        .stat-card.info .stat-value {
+            color: #1A4ADE;
+        }
+
+        .stat-card.info .fill {
+            background: #1A4ADE;
+        }
+
+        .stat-card.primary .stat-value {
+            color: #0D2D8C;
+        }
+
+        .stat-card.primary .fill {
+            background: #0D2D8C;
+        }
+
+
+        /* ============================================================
+   FILTROS
+   ============================================================ */
+
+        .filters-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-bar select,
+        .filters-bar input {
+            padding: 0.5rem 0.75rem;
+            border: 1.5px solid #b8c5e8;
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            background: white;
+            min-width: 140px;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .filters-bar select:focus,
+        .filters-bar input:focus {
+            outline: none;
+            border-color: #0D2D8C;
+            box-shadow: 0 0 0 3px rgba(13, 45, 140, 0.12);
+        }
+
+        .filters-bar .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .filters-bar .search-box input {
+            width: 100%;
+            padding-left: 2.5rem;
+            min-width: 100px;
+        }
+
+        .filters-bar .search-box .icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.25rem;
+        }
+
+
+        /* ============================================================
+   TABELA
+   ============================================================ */
+
+        .requisitos-table-container {
+            background: white;
+            border: 1px solid #dbe3f5;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(5, 20, 59, 0.05);
+        }
+
+        .requisitos-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .requisitos-table thead {
+            background: #eef2ff;
+        }
+
+        .requisitos-table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #05143B;
+            border-bottom: 2px solid #dbe3f5;
+        }
+
+        .requisitos-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.875rem;
+            vertical-align: middle;
+        }
+
+        .requisitos-table tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .requisitos-table tbody tr:hover {
+            background: #f1f5ff;
+        }
+
+
+        /* ============================================================
+   BOTÃO EVIDÊNCIA
+   ============================================================ */
+
+        .requisitos-table .btn-evidencia {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            background: #e8edff;
+            color: #0A2472;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .requisitos-table .btn-evidencia:hover {
+            background: #0D2D8C;
+            color: white;
+        }
+
+        .requisitos-table .btn-evidencia .material-symbols-outlined {
+            font-size: 16px;
+        }
+
+
+        /* ============================================================
+   CARDS DE RELATÓRIOS
+   ============================================================ */
+
+        .report-card {
+            background: white;
+            border: 1px solid #dbe3f5;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 2px rgba(5, 20, 59, 0.05);
+            transition: all 0.2s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 20, 59, 0.08);
+        }
+
+        .report-card .icon-wrapper {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .report-card .icon-wrapper.primary {
+            background: #e4eaff;
+            color: #0D2D8C;
+        }
+
+        .report-card .icon-wrapper.success {
+            background: #e8edff;
+            color: #0D2D8C;
+        }
+
+        .report-card .icon-wrapper.warning {
+            background: #fff7e6;
+            color: #92400e;
+        }
+
+        .report-card .icon-wrapper.danger {
+            background: #feecec;
+            color: #991b1b;
+        }
+
+
+        /* ============================================================
+   BOTÃO PRINCIPAL
+   ============================================================ */
+
+        .btn-primary {
+            padding: 0.5rem 1.25rem;
+            background: #0D2D8C;
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: #0A2472;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 45, 140, 0.25);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+
+        /* ============================================================
+   IMPRESSÃO / PRINTS
+   ============================================================ */
+
+        .print-container {
+            background: #f8faff;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .print-container img {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #dbe3f5;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .print-container img:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(5, 20, 59, 0.1);
+        }
+
+        .print-container .print-desc {
+            font-size: 0.8rem;
+            color: #334155;
+            padding: 0.5rem 0;
+        }
+
+        .print-item .expand-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.75rem;
+            margin-top: 0.5rem;
+            background: #eef2ff;
+            border: 1px solid #dbe3f5;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            color: #0A2472;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .print-item .expand-btn:hover {
+            background: #0D2D8C;
+            color: white;
+            border-color: #0D2D8C;
+        }
+
+
+        /* ============================================================
+   IMAGE MODAL
+   ============================================================ */
+
+        #imageModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(5, 20, 59, 0.88);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            cursor: pointer;
+        }
+
+        #imageModal.active {
+            display: flex;
+        }
+
+        #imageModal img {
+            max-width: 95%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            cursor: default;
+        }
+
+        #imageModal .close-modal-btn {
+            position: fixed;
+            top: 1.5rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            font-size: 2.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+            backdrop-filter: blur(4px);
+        }
+
+        #imageModal .close-modal-btn:hover {
+            background: rgba(26, 74, 222, 0.55);
+        }
+
+        #imageModal .modal-info {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(5, 20, 59, 0.85);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+
+        /* ============================================================
+   SEÇÕES DO MODAL
+   ============================================================ */
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+            padding: 1.25rem 1.5rem;
+            background: #f8faff;
+            border-radius: 0.75rem;
+            border: 1px solid #dbe3f5;
+        }
+
+        .modal-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-section-title .material-symbols-outlined {
+            font-size: 1rem;
+            color: #0D2D8C;
+        }
+
+        .modal-section-content {
+            font-size: 0.875rem;
+            line-height: 1.6;
+            color: #1e293b;
+        }
+
+        .modal-section-content strong {
+            color: #05143B;
+            font-weight: 600;
+        }
+
+        .modal-section-content .badge-status {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.75rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+
+        /* ============================================================
+   TÍTULO DO MODAL
+   ============================================================ */
+
+        .modal-title {
+            font-family: 'Public Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #05143B;
+            margin-bottom: 1.25rem;
+            line-height: 1.3;
+        }
+
+        .modal-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid #dbe3f5;
+            font-size: 0.7rem;
+            color: #64748b;
+        }
+
+        .modal-meta-grid span {
+            color: #1e293b;
+            font-weight: 500;
+        }
+
+
+        /* ============================================================
+   PRINT ITEM
+   ============================================================ */
+
+        .print-item {
+            background: white;
+            border: 1px solid #dbe3f5;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .print-item:hover {
+            box-shadow: 0 2px 8px rgba(5, 20, 59, 0.06);
+        }
+
+        .print-item .print-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .print-item .print-header .material-symbols-outlined {
+            color: #0D2D8C;
+            font-size: 1.25rem;
+        }
+
+        .print-item .print-header .print-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #05143B;
+        }
+
+        .print-item .print-header .print-date {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-left: auto;
+        }
+
+        .print-item .print-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .print-item img {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #dbe3f5;
+            background: white;
+            max-height: 450px;
+            object-fit: contain;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .print-item img:hover {
+            box-shadow: 0 4px 12px rgba(5, 20, 59, 0.08);
+        }
+
+
+        /* ============================================================
+   SEM PRINTS
+   ============================================================ */
+
+        .no-prints {
+            text-align: center;
+            padding: 2rem;
+            color: #64748b;
+            background: #f8faff;
+            border-radius: 0.75rem;
+            border: 1px solid #dbe3f5;
+        }
+
+        .no-prints .material-symbols-outlined {
+            font-size: 2rem;
+            color: #aebce0;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-prints p {
+            font-size: 0.875rem;
+        }
+
+
+        /* ============================================================
+   OBSERVAÇÕES / BUGS
+   ============================================================ */
+
+        .observacao-item {
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #334155;
+            list-style: none;
+        }
+
+        .observacao-item::before {
+            content: "•";
+            color: #0D2D8C;
+            margin-right: 0.5rem;
+        }
+
+        .bug-item {
+            padding: 0.25rem 0;
+            font-size: 0.875rem;
+            color: #991b1b;
+            list-style: none;
+        }
+
+        .bug-item::before {
+            content: "•";
+            color: #dc2626;
+            margin-right: 0.5rem;
+        }
+
+
+        /* ============================================================
+   STATUS DO MODAL
+   ============================================================ */
+
+        .modal-status-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-status-wrapper .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+        }
+
+
+        /* ============================================================
+   RESPONSIVIDADE
+   ============================================================ */
+
+        @media (max-width: 768px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-card .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .filters-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filters-bar .search-box {
+                width: 100%;
+            }
+
+            .requisitos-table-container {
+                overflow-x: auto;
+            }
+
+            .requisitos-table {
+                font-size: 0.75rem;
+            }
+
+            .requisitos-table th,
+            .requisitos-table td {
+                padding: 0.5rem 0.75rem;
+            }
+        }
+
+
+        @media (max-width: 480px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+            }
+
+            .stat-card .stat-value {
+                font-size: 1.25rem;
+            }
+        }
+
+
+        /* ============================================================
+   SCROLLBAR GLOBAL
+   ============================================================ */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f4fa;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #aebce0;
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0D2D8C;
+        }
+
+        /* ============================================================
+   CSS DE IMPRESSÃO - ESSENCIAL PARA PDFs BONITOS
+   ============================================================ */
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+
+            .page-break-after {
+                page-break-after: always;
+            }
+
+            .break-inside-avoid {
+                page-break-inside: avoid;
+            }
+
+            body {
+                background: white;
+                padding: 0.5in;
+                margin: 0;
+            }
+
+            /* Esconde elementos interativos na impressão */
+            .btn-primary,
+            .btn-evidencia,
+            .filters-bar,
+            .nav-item-ativo,
+            .nav-item-inativo,
+            .hamburger-btn,
+            #hamburgerBtn,
+            #closeMenuBtn,
+            #menuOverlay,
+            .sidebar-mobile,
+            .sidebar-desktop,
+            .modal-footer .nav-buttons,
+            .modal-close {
+                display: none !important;
+            }
+
+            /* Ajusta containers para impressão */
+            .requisitos-table-container {
+                border: 1px solid #ccc;
+                box-shadow: none;
+                border-radius: 4px;
+                overflow: visible;
+            }
+
+            .stat-card {
+                border: 1px solid #ccc;
+                box-shadow: none;
+                transform: none !important;
+            }
+
+            .report-card {
+                border: 1px solid #ccc;
+                box-shadow: none;
+                transform: none !important;
+            }
+
+            .status-badge {
+                border: 1px solid #ddd;
+            }
+
+            .main-content {
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+
+            .doc-header {
+                position: static !important;
+                background: white !important;
+                border-bottom: 2px solid #0D2D8C;
+            }
+
+            .bg-surface\/90 {
+                background: white !important;
+                backdrop-filter: none !important;
+            }
+
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .group-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            /* Cores consistentes na impressão */
+            .stat-card.success .stat-value {
+                color: #0D2D8C !important;
+            }
+
+            .stat-card.warning .stat-value {
+                color: #d97706 !important;
+            }
+
+            .stat-card.danger .stat-value {
+                color: #dc2626 !important;
+            }
+
+            .stat-card.info .stat-value {
+                color: #1A4ADE !important;
+            }
+
+            .stat-card.primary .stat-value {
+                color: #0D2D8C !important;
+            }
+
+            .status-badge.atendido {
+                background: #e8edff !important;
+                color: #0D2D8C !important;
+                border: 1px solid #0D2D8C;
+            }
+
+            .status-badge.parcial {
+                background: #fff7e6 !important;
+                color: #92400e !important;
+                border: 1px solid #d97706;
+            }
+
+            .status-badge.nao-atendido {
+                background: #feecec !important;
+                color: #991b1b !important;
+                border: 1px solid #dc2626;
+            }
+
+            .status-badge.nao-avaliado {
+                background: #f1f4fa !important;
+                color: #64748b !important;
+                border: 1px solid #94a3b8;
+            }
+
+            .progress-bar .fill {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .stat-card .progress-bar .fill {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .group-card .mini-bar .fill {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+
+            .bg-primary-container\/10 {
+                background: #eef2ff !important;
+                border: 1px solid #d0d8ea !important;
+            }
+
+            .bg-white {
+                background: white !important;
+            }
+
+            .bg-surface-container-low {
+                background: #f8f9fa !important;
+            }
+
+            .bg-surface-container-highest\/90 {
+                background: #f1f4fa !important;
+                backdrop-filter: none !important;
+            }
+
+            /* Força cores em elementos específicos */
+            .text-primary {
+                color: #0D2D8C !important;
+            }
+
+            .text-on-surface-variant {
+                color: #64748b !important;
+            }
+
+            .border-outline-variant {
+                border-color: #dbe3f5 !important;
+            }
+
+            /* Footer na impressão */
+            footer {
+                position: static !important;
+                margin-top: 30px !important;
+                background: #f8f9fa !important;
+                border-top: 2px solid #dbe3f5 !important;
+                padding: 20px !important;
+            }
+
+            /* Header na impressão */
+            .doc-header .brand .title {
+                color: #0D2D8C !important;
+            }
+
+            /* Ajuste para tabelas grandes */
+            .requisitos-table {
+                font-size: 8pt;
+            }
+
+            .requisitos-table th,
+            .requisitos-table td {
+                padding: 4px 6px;
+            }
+        }
+
+        /* ============================================================
+   CSS COMPLETO PARA PDF - OCUPA 100% DA FOLHA A4
+   ============================================================ */
+
+        /* Reset completo para PDF */
+        .pdf-export-container * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .pdf-export-container {
+            background: white;
+            padding: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pdf-export-container .stats-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .pdf-export-container .group-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .pdf-export-container .status-badge {
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .pdf-export-container .progress-bar .fill {
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .pdf-export-container .mini-bar .fill {
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* PDF completo - ocupa 100% */
+        #relatorio-content {
+            width: 100%;
+            height: 100%;
+            padding: 12px 18px;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #1a1a2e;
+        }
+
+        /* Header do PDF */
+        .pdf-header {
+            text-align: center;
+            padding: 6px 0 10px;
+            border-bottom: 3px solid #0D2D8C;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+
+        .pdf-header .logo {
+            max-width: 110px;
+            height: auto;
+            margin-bottom: 3px;
+        }
+
+        .pdf-header h1 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0D2D8C;
+            letter-spacing: -0.3px;
+            margin: 1px 0;
+        }
+
+        .pdf-header .subtitle {
+            font-size: 10px;
+            color: #555;
+            margin: 1px 0;
+        }
+
+        .pdf-header .meta-info {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 8.5px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .pdf-header .meta-info span {
+            background: #f0f4ff;
+            padding: 2px 10px;
+            border-radius: 3px;
+            border: 1px solid #d0d8ea;
+        }
+
+        .pdf-header .badge-conformidade {
+            background: #0D2D8C;
+            color: #fff;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 3px;
+            border: none !important;
+        }
+
+        /* Corpo do PDF */
+        .pdf-body {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        /* Seções */
+        .pdf-section {
+            margin: 4px 0;
+            flex-shrink: 0;
+        }
+
+        .pdf-section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #0D2D8C;
+            border-bottom: 2px solid #d0d8ea;
+            padding-bottom: 2px;
+            margin-bottom: 5px;
+        }
+
+        /* Stats grid PDF */
+        .pdf-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 4px;
+            margin: 3px 0 6px;
+        }
+
+        .pdf-stat-card {
+            background: #f8faff;
+            border: 1px solid #e0e8f5;
+            border-radius: 4px;
+            padding: 5px 3px;
+            text-align: center;
+        }
+
+        .pdf-stat-card .number {
+            font-size: 17px;
+            font-weight: 700;
+            color: #0D2D8C;
+        }
+
+        .pdf-stat-card .label {
+            font-size: 6.5px;
+            color: #8888aa;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-top: 1px;
+        }
+
+        .pdf-stat-card.success .number {
+            color: #0D2D8C;
+        }
+
+        .pdf-stat-card.warning .number {
+            color: #b45309;
+        }
+
+        .pdf-stat-card.danger .number {
+            color: #b91c1c;
+        }
+
+        .pdf-stat-card.info .number {
+            color: #1a3a6a;
+        }
+
+        /* Progress bar PDF */
+        .pdf-progress-container {
+            background: #f8faff;
+            border: 1px solid #e0e8f5;
+            border-radius: 4px;
+            padding: 6px 12px;
+            margin: 3px 0 6px;
+            flex-shrink: 0;
+        }
+
+        .pdf-progress-container .label {
+            font-weight: 600;
+            color: #0D2D8C;
+            font-size: 10px;
+        }
+
+        .pdf-progress-container .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0D2D8C;
+        }
+
+        .pdf-progress-bar {
+            width: 100%;
+            height: 7px;
+            background: #e0e8f5;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 2px 0;
+        }
+
+        .pdf-progress-bar .fill {
+            height: 100%;
+            border-radius: 4px;
+            background: #0D2D8C;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* Group grid PDF */
+        .pdf-group-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            margin: 3px 0 6px;
+        }
+
+        .pdf-group-card {
+            background: #f8faff;
+            border: 1px solid #e0e8f5;
+            border-radius: 4px;
+            padding: 5px 8px;
+        }
+
+        .pdf-group-card .name {
+            font-weight: 600;
+            color: #0D2D8C;
+            font-size: 8.5px;
+        }
+
+        .pdf-group-card .pct {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0D2D8C;
+            margin: 1px 0;
+        }
+
+        .pdf-group-card .detail {
+            font-size: 7.5px;
+            color: #8888aa;
+        }
+
+        .pdf-group-card .mini-bar {
+            width: 100%;
+            height: 3px;
+            background: #e0e8f5;
+            border-radius: 2px;
+            margin-top: 2px;
+            overflow: hidden;
+        }
+
+        .pdf-group-card .mini-bar .fill {
+            height: 100%;
+            border-radius: 2px;
+            background: #0D2D8C;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* Tabela PDF */
+        .pdf-table-wrapper {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            margin-top: 2px;
+        }
+
+        .pdf-table-scroll {
+            flex: 1;
+            overflow: auto;
+            border: 1px solid #e0e8f5;
+            border-radius: 4px;
+        }
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8px;
+        }
+
+        .pdf-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .pdf-table th {
+            background: #eef2ff;
+            color: #0D2D8C;
+            padding: 3px 6px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #d0d8ea;
+            font-size: 7px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .pdf-table td {
+            padding: 2px 6px;
+            border-bottom: 1px solid #e8edf5;
+            font-size: 8px;
+            vertical-align: middle;
+        }
+
+        .pdf-table tr:nth-child(even) {
+            background: #fafcff;
+        }
+
+        .pdf-col-id {
+            width: 45px;
+            font-weight: 600;
+        }
+
+        .pdf-col-status {
+            width: 90px;
+        }
+
+        .pdf-col-grupo {
+            width: 120px;
+            font-size: 7.5px;
+            color: #8888aa;
+        }
+
+        /* Status badges PDF */
+        .pdf-status-badge {
+            display: inline-block;
+            padding: 1px 7px;
+            border-radius: 3px;
+            font-size: 7px;
+            font-weight: 600;
+            white-space: nowrap;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .pdf-status-badge.atendido {
+            background: #dbeafe;
+            color: #0D2D8C;
+            border: 1px solid #0D2D8C;
+        }
+
+        .pdf-status-badge.parcial {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #d97706;
+        }
+
+        .pdf-status-badge.nao-atendido {
+            background: #fecaca;
+            color: #991b1b;
+            border: 1px solid #dc2626;
+        }
+
+        .pdf-status-badge.nao-avaliado {
+            background: #f1f4fa;
+            color: #64748b;
+            border: 1px solid #94a3b8;
+        }
+
+        /* Rodapé PDF */
+        .pdf-footer {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 2px solid #e0e8f5;
+            text-align: center;
+            font-size: 7.5px;
+            color: #8888aa;
+            flex-shrink: 0;
+        }
+
+        .pdf-footer .brand {
+            font-weight: 600;
+            color: #0D2D8C;
+        }
+
+        /* Garantir cores na impressão */
+        .pdf-progress-bar .fill,
+        .pdf-group-card .mini-bar .fill,
+        .pdf-status-badge,
+        .pdf-stat-card {
+            print-color-adjust: exact !important;
+            -webkit-print-color-adjust: exact !important;
+        }
+
+        /* Media query para impressão PDF */
+        @media print {
+
+            html,
+            body {
+                width: 100%;
+                height: 100vh;
+                margin: 0;
+                padding: 0;
+                font-size: 9px;
+            }
+
+            #relatorio-content {
+                padding: 8px 12px;
+                height: 100vh;
+            }
+
+            .pdf-header {
+                padding: 4px 0 6px;
+                margin-bottom: 6px;
+            }
+
+            .pdf-header h1 {
+                font-size: 15px;
+            }
+
+            .pdf-header .subtitle {
+                font-size: 9px;
+            }
+
+            .pdf-header .meta-info {
+                font-size: 7.5px;
+                gap: 6px;
+            }
+
+            .pdf-header .meta-info span {
+                padding: 1px 8px;
+            }
+
+            .pdf-stats-grid {
+                grid-template-columns: repeat(6, 1fr);
+                gap: 3px;
+                margin: 2px 0 4px;
+            }
+
+            .pdf-stat-card {
+                padding: 3px 2px;
+            }
+
+            .pdf-stat-card .number {
+                font-size: 14px;
+            }
+
+            .pdf-stat-card .label {
+                font-size: 5.5px;
+            }
+
+            .pdf-progress-container {
+                padding: 4px 10px;
+                margin: 2px 0 4px;
+            }
+
+            .pdf-progress-container .label {
+                font-size: 9px;
+            }
+
+            .pdf-progress-container .value {
+                font-size: 17px;
+            }
+
+            .pdf-progress-bar {
+                height: 6px;
+            }
+
+            .pdf-group-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 3px;
+                margin: 2px 0 4px;
+            }
+
+            .pdf-group-card {
+                padding: 3px 6px;
+            }
+
+            .pdf-group-card .name {
+                font-size: 7.5px;
+            }
+
+            .pdf-group-card .pct {
+                font-size: 12px;
+            }
+
+            .pdf-group-card .detail {
+                font-size: 6.5px;
+            }
+
+            .pdf-group-card .mini-bar {
+                height: 3px;
+            }
+
+            .pdf-section {
+                margin: 2px 0;
+            }
+
+            .pdf-section-title {
+                font-size: 10px;
+                padding-bottom: 1px;
+                margin-bottom: 3px;
+            }
+
+            .pdf-table-scroll {
+                border: 1px solid #d0d8ea;
+            }
+
+            .pdf-table {
+                font-size: 7px;
+            }
+
+            .pdf-table th {
+                font-size: 6px;
+                padding: 2px 4px;
+            }
+
+            .pdf-table td {
+                font-size: 7px;
+                padding: 1.5px 4px;
+            }
+
+            .pdf-col-id {
+                width: 35px;
+            }
+
+            .pdf-col-status {
+                width: 70px;
+            }
+
+            .pdf-col-grupo {
+                width: 90px;
+                font-size: 6.5px;
+            }
+
+            .pdf-status-badge {
+                font-size: 6px;
+                padding: 1px 5px;
+            }
+
+            .pdf-footer {
+                margin-top: 4px;
+                padding-top: 4px;
+                font-size: 6.5px;
+            }
+
+            /* Evita quebras de página ruins */
+            .pdf-section {
+                page-break-inside: avoid;
+            }
+
+            .pdf-stats-grid {
+                page-break-inside: avoid;
+            }
+
+            .pdf-group-grid {
+                page-break-inside: avoid;
+            }
+
+            .pdf-progress-container {
+                page-break-inside: avoid;
+            }
+
+            /* Força cores na impressão */
+            .pdf-progress-bar .fill {
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .pdf-group-card .mini-bar .fill {
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .pdf-status-badge {
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .pdf-stat-card {
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .pdf-stat-card .number {
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+
+            .pdf-stat-card.success .number {
+                color: #0D2D8C !important;
+            }
+
+            .pdf-stat-card.warning .number {
+                color: #b45309 !important;
+            }
+
+            .pdf-stat-card.danger .number {
+                color: #b91c1c !important;
+            }
+
+            .pdf-stat-card.info .number {
+                color: #1a3a6a !important;
+            }
+        }
+
+        /* Media query para telas muito pequenas */
+        @media (max-width: 500px) {
+            #relatorio-content {
+                padding: 6px 8px;
+            }
+
+            .pdf-stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2px;
+            }
+
+            .pdf-group-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2px;
+            }
+
+            .pdf-stat-card .number {
+                font-size: 12px;
+            }
+
+            .pdf-stat-card .label {
+                font-size: 5px;
+            }
+
+            .pdf-header h1 {
+                font-size: 13px;
+            }
+
+            .pdf-header .subtitle {
+                font-size: 8px;
+            }
+
+            .pdf-header .meta-info {
+                font-size: 6.5px;
+                gap: 4px;
+            }
+
+            .pdf-table {
+                font-size: 6.5px;
+            }
+
+            .pdf-table th {
+                font-size: 5.5px;
+                padding: 1.5px 3px;
+            }
+
+            .pdf-table td {
+                font-size: 6.5px;
+                padding: 1px 3px;
+            }
+
+            .pdf-status-badge {
+                font-size: 5.5px;
+                padding: 1px 4px;
+            }
+
+            .pdf-col-id {
+                width: 28px;
+            }
+
+            .pdf-col-status {
+                width: 55px;
+            }
+
+            .pdf-col-grupo {
+                width: 60px;
+                font-size: 5.5px;
+            }
+
+            .pdf-progress-container .value {
+                font-size: 14px;
+            }
+
+            .pdf-group-card .pct {
+                font-size: 10px;
+            }
+
+            .pdf-group-card .name {
+                font-size: 6.5px;
+            }
+
+            .pdf-group-card .detail {
+                font-size: 5.5px;
+            }
+
+            .pdf-footer {
+                font-size: 5.5px;
+            }
+        }
+
+        /* Media query para telas médias */
+        @media (min-width: 501px) and (max-width: 800px) {
+            .pdf-stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .pdf-group-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pdf-stat-card .number {
+                font-size: 15px;
+            }
+
+            .pdf-header h1 {
+                font-size: 15px;
+            }
+
+            .pdf-table {
+                font-size: 7.5px;
+            }
+
+            .pdf-table th {
+                font-size: 6.5px;
+            }
+
+            .pdf-table td {
+                font-size: 7.5px;
+            }
+
+            .pdf-col-id {
+                width: 38px;
+            }
+
+            .pdf-col-status {
+                width: 80px;
+            }
+
+            .pdf-col-grupo {
+                width: 100px;
+            }
+        }
+
+        /* Scrollbar personalizada para PDF */
+        .pdf-table-scroll::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        .pdf-table-scroll::-webkit-scrollbar-track {
+            background: #f1f4fa;
+            border-radius: 4px;
+        }
+
+        .pdf-table-scroll::-webkit-scrollbar-thumb {
+            background: #aebce0;
+            border-radius: 4px;
+        }
+
+        .pdf-table-scroll::-webkit-scrollbar-thumb:hover {
+            background: #0D2D8C;
+        }
+
+        .pdf-table-scroll {
+            scrollbar-width: thin;
+            scrollbar-color: #aebce0 #f1f4fa;
+        }
+    </style>
+
+</head>
+
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+
+    <!-- EFEITO DE ABERTURA OVERLAY -->
+    <div id="opening-screen">
+        <div class="opening-container">
+            <div class="rectangle rect-1"></div>
+            <div class="rectangle rect-2"></div>
+
+            <div class="rectangle rect-3">
+                <div class="logo-card">
+                    <img src="https://www.sosdocs.com.br/brand/sosdocs-logo.png" alt="SOS Docs Logo">
+                </div>
+            </div>
+
+            <div class="rectangle rect-4"></div>
+
+            <div class="rectangle-split">
+                <div class="half half-top"></div>
+                <div class="half half-bottom"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TopNavBar com Menu Hamburger -->
+    <header
+        class="bg-surface/90 backdrop-blur-sm border-b border-outline-variant flex justify-between items-center w-full px-4 sm:px-6 md:px-10 xl:px-16 h-14 sm:h-16 sticky top-0 z-50">
+        <div class="flex items-center gap-2 sm:gap-3">
+            <!-- Botão Hamburger (visível apenas em mobile) -->
+            <button id="hamburgerBtn"
+                class="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-surface-container-high transition-colors"
+                aria-label="Abrir menu">
+                <span class="material-symbols-outlined text-2xl">menu</span>
+            </button>
+            <span class="font-headline-md text-sm sm:text-headline-md font-bold text-primary tracking-tight">
+                Conformidade e-ARQ
+            </span>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-4">
+            <span class="text-xs sm:text-sm text-on-surface-variant hidden xs:inline" id="dataAtualizacao"></span>
+        </div>
+    </header>
+
+    <!-- Overlay do menu mobile -->
+    <div id="menuOverlay" class="fixed inset-0 bg-black/40 z-40 hidden md:hidden" onclick="fecharMenu()"></div>
+
+    <!-- Sidebar Mobile (Hamburger) -->
+    <aside id="sidebarMobile"
+        class="fixed top-0 left-0 w-72 h-full bg-surface z-50 transform -translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden shadow-2xl overflow-y-auto">
+        <div class="p-4 border-b border-outline-variant flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="https://docz.sosdocs.com.br/Docz/web/images/logo.png" alt="DocZ" class="h-8 w-auto" />
+
+            </div>
+            <button id="closeMenuBtn"
+                class="w-10 h-10 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors"
+                aria-label="Fechar menu">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <div class="p-3 border-b border-outline-variant">
+            <div class="text-xs text-on-surface-variant text-center">
+                <span class="font-semibold">Relatório Técnico:</span> <span
+                    id="dataRelatorioMobile">Carregando...</span>
+                <br />
+                <span class="font-semibold">Conformidade:</span> <span id="sidebarConformidadeMobile">87,01%</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-mobile-nav py-3 px-3 font-label-md text-label-md">
+            <ul class="space-y-1">
+                <li>
+                    <a class="flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200"
+                        href="#" data-page="dashboard">
+                        <span class="material-symbols-outlined">dashboard</span> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                        href="#" data-page="requisitos">
+                        <span class="material-symbols-outlined">list_alt</span> Requisitos
+                    </a>
+                </li>
+                <li>
+                    <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                        href="#" data-page="relatorios">
+                        <span class="material-symbols-outlined">description</span> Relatórios
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="p-4 border-t border-outline-variant mt-auto">
+            <div class="text-xs text-on-surface-variant text-center">
+                Última atualização: <span id="ultimaAtualizacaoMobile">21/08/2026</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex flex-1 w-full relative">
+        <!-- SideNavBar Desktop -->
+        <aside
+            class="hidden md:flex flex-col side-nav-sticky border-r border-outline-variant bg-surface-container-low w-64 xl:w-72 shrink-0 z-40">
+            <div class="p-4 xl:p-6 border-b border-outline-variant">
+                <div class="sidebar-logo-container">
+                    <img src="https://docz.sosdocs.com.br/Docz/web/images/logo.png" alt="DocZ"
+                        class="logo-docz-sidebar" />
+                </div>
+                <div class="mt-2 xl:mt-3 text-xs text-on-surface-variant text-center">
+                    <span class="font-semibold">Relatório Técnico:</span> <span
+                        id="dataRelatorioDesktop">Carregando...</span>
+                    <br />
+                    <span class="font-semibold">Conformidade:</span> <span id="sidebarConformidade">87,01%</span>
+                </div>
+            </div>
+            <nav class="sidebar-desktop-nav flex-1 overflow-y-auto py-4 xl:py-5 px-3 font-label-md text-label-md">
+                <ul class="space-y-1">
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-2.5 xl:py-3 transition-all duration-200"
+                            href="#" data-page="dashboard">
+                            <span class="material-symbols-outlined">dashboard</span> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-2.5 xl:py-3 transition-all duration-200"
+                            href="#" data-page="requisitos">
+                            <span class="material-symbols-outlined">list_alt</span> Requisitos
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-2.5 xl:py-3 transition-all duration-200"
+                            href="#" data-page="relatorios">
+                            <span class="material-symbols-outlined">description</span> Relatórios
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-4 xl:p-5 border-t border-outline-variant">
+                <div class="text-xs text-on-surface-variant text-center">
+                    Última atualização: <span id="ultimaAtualizacao">21/08/2026</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full px-6 md:px-10 xl:px-16 py-10 xl:py-14 overflow-x-hidden" id="main-content">
+            <!-- Renderizado dinamicamente -->
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        class="bg-surface-container-highest/90 border-t border-outline-variant w-full py-10 px-6 md:px-10 xl:px-16 mt-auto">
+        <div class="max-w-full mx-auto flex flex-col md:flex-row justify-center items-center gap-6">
+            <p class="font-body-sm text-body-sm text-on-surface-variant">
+                Relatório Técnico · DocZ Conformidade e-ARQ Brasil · <span id="dataFooter">Carregando...</span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- MODAL DE EVIDÊNCIAS -->
+    <div id="modalEvidencias"
+        class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px] items-center justify-center p-3 sm:p-5 md:p-8 overflow-y-auto"
+        onclick="fecharModal(event)">
+        <div class="bg-white border border-outline-variant rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl modal-anim overflow-hidden"
+            onclick="event.stopPropagation()">
+
+            <!-- Header -->
+            <div
+                class="px-6 py-4 bg-surface-container-low border-b border-outline-variant flex items-center justify-between gap-4 shrink-0">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <span id="modalRequisitoId"
+                        class="font-mono-sm font-bold text-tertiary px-3 py-1 bg-tertiary-fixed rounded-lg text-sm tracking-wide"></span>
+                    <span id="modalStatus" class="status-badge-modal atendido">Atendido</span>
+                </div>
+                <button onclick="fecharModal()"
+                    class="p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors flex items-center justify-center">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <!-- Corpo -->
+            <div class="p-6 sm:p-8 overflow-y-auto flex-1 modal-scrollbar bg-white" id="modalCorpo">
+                <!-- Renderizado via JavaScript -->
+            </div>
+
+            <!-- Footer -->
+            <div
+                class="px-6 py-3.5 bg-surface-container-low border-t border-outline-variant flex items-center justify-between gap-3 shrink-0">
+                <div class="flex items-center gap-2">
+                    <button onclick="navegarRequisito(-1)" id="btnAnterior"
+                        class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-primary bg-white border border-outline-variant hover:bg-surface-container-high rounded-lg transition-all flex items-center gap-1 shadow-sm disabled:opacity-40 disabled:pointer-events-none">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        <span>Anterior</span>
+                    </button>
+                    <button onclick="navegarRequisito(1)" id="btnProximo"
+                        class="px-3 py-1.5 text-xs sm:text-sm font-semibold text-primary bg-white border border-outline-variant hover:bg-surface-container-high rounded-lg transition-all flex items-center gap-1 shadow-sm disabled:opacity-40 disabled:pointer-events-none">
+                        <span>Próximo</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </button>
+                </div>
+                <div class="text-xs text-on-surface-variant" id="modalNavegacao">1 de 177</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA EXPANDIR IMAGEM -->
+    <div id="imageModal" onclick="fecharImageModal(event)">
+        <button class="close-modal-btn" onclick="fecharImageModal()">✕</button>
+        <img id="expandedImage" src="" alt="Imagem expandida" onclick="event.stopPropagation()" />
+        <div class="modal-info" id="imageModalInfo">Clique fora da imagem para fechar</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/cruzamentoRequisitos.js"></script>
+    <script src="js/cruzamentoRequisitos2.js"></script>
+    <script src="js/cruzamentoRequisitos3.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/relatorio.js"></script>
+
+    <!-- REMOÇÃO DA TELA DE ABERTURA -->
+    <script>
+        setTimeout(() => {
+            const screen = document.getElementById('opening-screen');
+            if (screen) {
+                screen.style.display = 'none';
+            }
+        }, 2450);
+
+        // ============================================================
+        // MENU HAMBURGER - Mobile
+        // ============================================================
+
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const sidebarMobile = document.getElementById('sidebarMobile');
+        const menuOverlay = document.getElementById('menuOverlay');
+
+        function abrirMenu() {
+            sidebarMobile.classList.remove('-translate-x-full');
+            menuOverlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function fecharMenu() {
+            sidebarMobile.classList.add('-translate-x-full');
+            menuOverlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        if (hamburgerBtn) {
+            hamburgerBtn.addEventListener('click', abrirMenu);
+        }
+
+        if (closeMenuBtn) {
+            closeMenuBtn.addEventListener('click', fecharMenu);
+        }
+
+        // Fechar menu ao clicar nos links da sidebar mobile
+        document.querySelectorAll('#sidebarMobile nav a').forEach(link => {
+            link.addEventListener('click', fecharMenu);
+        });
+
+        // Fechar menu com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') fecharMenu();
+        });
+
+        // Sincronizar navegação entre sidebar mobile e desktop
+        document.querySelectorAll('.sidebar-mobile-nav a, .sidebar-desktop-nav a').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                const page = this.dataset.page;
+                if (page) navegarPara(page);
+            });
+        });
+
+        // ============================================================
+        // FUNÇÃO DE NAVEGAÇÃO (ajuste conforme sua lógica)
+        // ============================================================
+
+        function navegarPara(page) {
+            // Remove active de todos os links
+            document.querySelectorAll('.sidebar-mobile-nav a, .sidebar-desktop-nav a').forEach(el => {
+                el.classList.remove('nav-item-ativo');
+                el.classList.add('nav-item-inativo');
+            });
+
+            // Adiciona active no link correspondente
+            document.querySelectorAll(`.sidebar-mobile-nav a[data-page="${page}"], .sidebar-desktop-nav a[data-page="${page}"]`).forEach(el => {
+                el.classList.remove('nav-item-inativo');
+                el.classList.add('nav-item-ativo');
+            });
+
+            // Chama sua função de renderização
+            if (page === 'dashboard') {
+                renderDashboard();
+            } else if (page === 'requisitos') {
+                renderCapitulos();
+            } else if (page === 'relatorios') {
+                renderRelatorios();
+            }
+        }
+
+        // ============================================================
+        // ATUALIZAR DATAS DINÂMICAS
+        // ============================================================
+
+        function atualizarDatas() {
+            const now = new Date();
+            const dataStr = now.toLocaleDateString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            const dataHoraStr = now.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            // Data no header
+            const dataAtualizacao = document.getElementById('dataAtualizacao');
+            if (dataAtualizacao) dataAtualizacao.textContent = dataHoraStr;
+
+            // Data na sidebar mobile
+            const dataRelatorioMobile = document.getElementById('dataRelatorioMobile');
+            if (dataRelatorioMobile) dataRelatorioMobile.textContent = dataStr;
+
+            // Data na sidebar desktop
+            const dataRelatorioDesktop = document.getElementById('dataRelatorioDesktop');
+            if (dataRelatorioDesktop) dataRelatorioDesktop.textContent = dataStr;
+
+            // Data no footer
+            const dataFooter = document.getElementById('dataFooter');
+            if (dataFooter) dataFooter.textContent = dataStr;
+
+            // Última atualização (sidebar)
+            const ultimaAtualizacao = document.getElementById('ultimaAtualizacao');
+            if (ultimaAtualizacao) ultimaAtualizacao.textContent = dataHoraStr;
+
+            const ultimaAtualizacaoMobile = document.getElementById('ultimaAtualizacaoMobile');
+            if (ultimaAtualizacaoMobile) ultimaAtualizacaoMobile.textContent = dataHoraStr;
+        }
+
+        // Chamar no carregamento
+        document.addEventListener('DOMContentLoaded', function () {
+            atualizarDatas();
+            // ... resto do código
+        });
+
+        // Atualizar a cada 60 segundos
+        setInterval(atualizarDatas, 60000);
+    </script>
+</body>
+
+</html>
