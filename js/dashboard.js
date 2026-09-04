@@ -13,8 +13,17 @@ document.addEventListener('DOMContentLoaded', function () {
     setupNavigation();
 
     const now = new Date();
-    document.getElementById('dataAtualizacao').textContent = now.toLocaleString('pt-BR');
-    document.getElementById('ultimaAtualizacao').textContent = '21/08/2026';
+
+    const dataHoraAtual = now.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    document.getElementById('dataAtualizacao').textContent = dataHoraAtual;
+    document.getElementById('ultimaAtualizacao').textContent = dataHoraAtual;
 });
 
 function setupNavigation() {
@@ -122,7 +131,9 @@ function renderDashboard() {
                 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-4xl leading-relaxed">
                     Cruzamento entre os requisitos do e-ARQ Brasil e as funcionalidades implementadas no DocZ.
                     <br />
-                    <span class="text-sm font-semibold text-primary">Relatório Técnico - 21 de agosto de 2026</span>
+                    <span class="text-sm font-semibold text-primary">
+                        Relatório Técnico · Atualizado em ${formatarDataHora()}
+                    </span>
                 </p>
             </div>
             
@@ -213,6 +224,24 @@ function renderDashboard() {
             </div>
         </div>
     `;
+}
+
+function formatarDataHora() {
+    return new Date().toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function formatarData() {
+    return new Date().toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+    });
 }
 
 function renderPendencias() {
