@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html class="light" lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DOCZ · Dashboard de conformidade</title>
+
+    <!-- ================================================================ -->
+    <!-- CSS EXTERNO (estilos customizados) -->
+    <!-- ================================================================ -->
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- ================================================================ -->
+    <!-- TAILWIND CSS via CDN -->
+    <!-- ================================================================ -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- ================================================================ -->
+    <!-- FONTES DO GOOGLE -->
+    <!-- ================================================================ -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Public+Sans:wght@600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- ================================================================ -->
+    <!-- BIBLIOTECAS JAVASCRIPT EXTERNAS -->
+    <!-- ================================================================ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+    <!-- ================================================================ -->
+    <!-- TAILWIND CONFIGURAÇÃO -->
+    <!-- ================================================================ -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface": "#191c1d",
+                        "tertiary-container": "#003461",
+                        "tertiary": "#001f3d",
+                        "secondary-container": "#fed488",
+                        "on-tertiary-fixed": "#001c39",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#43474f",
+                        "primary-fixed": "#d5e3ff",
+                        "surface-tint": "#3a5f94",
+                        "inverse-on-surface": "#f0f1f2",
+                        "surface-container-highest": "#e1e3e4",
+                        "tertiary-fixed-dim": "#a3c9ff",
+                        "outline": "#737780",
+                        "on-secondary-container": "#785a1a",
+                        "on-primary-fixed-variant": "#1f477b",
+                        "surface-container-low": "#f3f4f5",
+                        "surface": "#f8f9fa",
+                        "secondary-fixed": "#ffdea5",
+                        "secondary-fixed-dim": "#e9c176",
+                        "on-tertiary-fixed-variant": "#004883",
+                        "on-tertiary-container": "#659ee7",
+                        "surface-bright": "#f8f9fa",
+                        "outline-variant": "#c3c6d1",
+                        "primary-container": "#003366",
+                        "on-primary-container": "#799dd6",
+                        "primary": "#001e40",
+                        "inverse-primary": "#a7c8ff",
+                        "surface-container": "#edeeef",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "surface-container-high": "#e7e8e9",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c1d",
+                        "on-tertiary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#261900",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d9dadb",
+                        "primary-fixed-dim": "#a7c8ff",
+                        "surface-variant": "#e1e3e4",
+                        "background": "#f8f9fa",
+                        "on-secondary-fixed-variant": "#5d4201",
+                        "secondary": "#775a19",
+                        "tertiary-fixed": "#d3e3ff",
+                        "on-primary-fixed": "#001b3c",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    fontFamily: {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Public Sans"],
+                        "label-md": ["Inter"],
+                        "headline-lg": ["Public Sans"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-lg-mobile": ["Public Sans"],
+                        "display-lg": ["Public Sans"],
+                        "mono-sm": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-lg": ["2.75rem", { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "800" }],
+                        "headline-lg": ["2.25rem", { lineHeight: "1.2", letterSpacing: "-0.01em" }],
+                        "headline-lg-mobile": ["1.5rem", { lineHeight: "1.28", letterSpacing: "-0.01em" }],
+                        "headline-md": ["1.25rem", { lineHeight: "1.35" }],
+                        "body-lg": ["1.0625rem", { lineHeight: "1.6" }],
+                        "body-md": ["0.9375rem", { lineHeight: "1.55" }],
+                        "body-sm": ["0.8125rem", { lineHeight: "1.5" }],
+                        "label-md": ["0.875rem", { lineHeight: "1.4" }],
+                        "mono-sm": ["0.8125rem", { lineHeight: "1.5" }]
+                    }
+                },
+            },
+        }
+    </script>
+
+</head>
+
+<body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col opening-active">
+
+    <div id="opening-screen" aria-hidden="true">
+        <div class="opening-container">
+            <div class="opening-rectangle opening-rect-1"></div>
+            <div class="opening-rectangle opening-rect-2"></div>
+            <div class="opening-rectangle opening-rect-3">
+                <div class="opening-logo"><img src="https://www.sosdocs.com.br/brand/sosdocs-logo.png" alt="SOS Docs"></div>
+            </div>
+            <div class="opening-rectangle opening-rect-4"></div>
+            <div class="opening-rectangle-split">
+                <div class="opening-half opening-half-top"></div>
+                <div class="opening-half opening-half-bottom"></div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="mobile-navbar md:hidden">
+        <button id="mobileMenuBtn" class="material-symbols-outlined text-on-surface-variant p-2 rounded-full hover:bg-surface-container-high active:scale-95 transition-all"
+            title="Abrir menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="sideNav">
+            menu
+        </button>
+        <span>Dashboard de conformidade</span>
+    </nav>
+
+    <!-- Overlay do menu mobile -->
+    <div id="mobileNavOverlay" class="hidden md:hidden fixed inset-0 bg-black/50 z-[55] backdrop-blur-[1px]"></div>
+
+    <div class="flex flex-1 w-full relative items-stretch">
+        <!-- SideNavBar -->
+        <aside id="sideNav"
+            class="flex flex-col side-nav-sticky border-r border-outline-variant bg-surface-container-low w-[82vw] max-w-72 md:w-72 shrink-0 z-[60] md:z-40">
+            <div class="p-5 sm:p-6 border-b border-outline-variant">
+                <div class="relative flex flex-col items-center gap-2 mb-1">
+                    <img src="https://docz.sosdocs.com.br/Docz/web/images/logo.png" alt="DOCZ"
+                        class="w-36 h-auto max-h-16 object-contain" />
+                    <p class="font-body-sm text-body-sm text-on-surface-variant leading-tight text-center">Dashboard de conformidade</p>
+                    <button id="mobileMenuCloseBtn"
+                        class="md:hidden material-symbols-outlined absolute top-0 right-0 text-on-surface-variant p-1.5 rounded-full hover:bg-surface-container-high shrink-0"
+                        title="Fechar menu" aria-label="Fechar menu">
+                        close
+                    </button>
+                </div>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto py-5 px-3 font-label-md text-label-md">
+                <ul class="space-y-1">
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                            href="#" id="btnVisaoGeral">
+                            <span class="material-symbols-outlined">info</span> Visão Geral
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                            href="#" id="btnFuncionais">
+                            <span class="material-symbols-outlined">account_tree</span> Requisitos Funcionais
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                            href="#" id="btnNaoFuncionais">
+                            <span class="material-symbols-outlined">settings</span> Requisitos Não Funcionais
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                            href="#" id="btnMetricas">
+                            <span class="material-symbols-outlined">analytics</span> Métricas
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200"
+                            href="#" id="btnFAQ">
+                            <span class="material-symbols-outlined">help</span> Perguntas frequentes
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="p-5 border-t border-outline-variant mt-auto">
+                <a href="https://www.gov.br/arquivonacional/pt-br/servicos/publicacoes/e-arq-brasil_v2.pdf"
+                    target="_blank" rel="noopener noreferrer"
+                    class="w-full flex items-center justify-center gap-2 border border-outline text-primary font-label-md text-label-md py-2.5 rounded-xl hover:bg-surface-container-high transition-colors shadow-sm">
+                    <span class="material-symbols-outlined">download</span>
+                    Download PDF
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-10 xl:px-16 py-6 sm:py-10 xl:py-14 overflow-x-hidden"
+            id="main-content">
+            <!-- Renderizado dinamicamente -->
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        class="bg-surface-container-highest/90 border-t border-outline-variant w-full py-10 px-6 md:px-10 xl:px-16 mt-auto">
+        <div class="max-w-full mx-auto flex flex-col md:flex-row justify-center items-center gap-6">
+            <p class="font-body-sm text-body-sm text-on-surface-variant">Guilherme Farias Maciel Ribeiro</p>
+        </div>
+    </footer>
+
+    <!-- ================================================================ -->
+    <!-- MODAL DE DETALHES DOS REQUISITOS                                -->
+    <!-- ================================================================ -->
+    <div id="modalDetalhes"
+        class="hidden fixed inset-0 z-50 bg-black/65 backdrop-blur-[3px] items-center justify-center p-3 sm:p-5 md:p-8 overflow-y-auto"
+        onclick="fecharModalDetalhes(event)">
+
+        <div class="modal-requisito-ajustavel bg-white border border-outline-variant rounded-2xl flex flex-col shadow-2xl modal-anim overflow-hidden"
+            onclick="event.stopPropagation()">
+
+            <div
+                class="px-6 py-4.5 bg-surface-container-low border-b border-outline-variant flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <span id="modalRef"
+                        class="font-mono-sm font-bold text-tertiary px-3.5 py-1 bg-tertiary-fixed rounded-xl text-sm tracking-wide"></span>
+                    <span id="modalObrig"
+                        class="inline-flex items-center gap-1.5 border rounded-full px-3.5 py-1 text-xs font-semibold shadow-2xs"></span>
+                    <span id="modalStatus"
+                        class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border"></span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <button onclick="fecharModalDetalhes()"
+                        class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors">
+                        <span class="material-symbols-outlined text-2xl">close</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex-1 min-h-0 overflow-y-auto px-6 sm:px-8 pt-6 pb-4 bg-white border-b border-outline-variant/60 modal-scrollbar">
+                <h3 id="modalTitulo"
+                    class="font-headline-md text-primary text-xl sm:text-2xl font-bold leading-tight tracking-tight">
+                </h3>
+                <div
+                    class="mt-4 p-4 rounded-xl bg-surface-container-low/70 border-l-4 border-primary text-on-surface-variant">
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-primary uppercase tracking-wider mb-1">
+                        <span class="material-symbols-outlined text-[16px]">menu_book</span>
+                        <span>Enunciado Oficial (e-ARQ Brasil)</span>
+                    </div>
+                    <p id="modalTexto" class="text-sm font-body-sm leading-relaxed text-on-surface whitespace-pre-line"></p>
+                </div>
+            </div>
+
+            <div
+                class="px-6 py-4 bg-surface-container-low border-t border-outline-variant flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <button onclick="navegarModal(-1)" id="btnModalAnterior"
+                        class="px-3.5 py-2 text-xs sm:text-sm font-semibold text-primary bg-white border border-outline-variant hover:bg-surface-container-high rounded-xl transition-all flex items-center gap-1 shadow-2xs disabled:opacity-40 disabled:pointer-events-none">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                        <span>Anterior</span>
+                    </button>
+                    <button onclick="navegarModal(1)" id="btnModalProximo"
+                        class="px-3.5 py-2 text-xs sm:text-sm font-semibold text-primary bg-white border border-outline-variant hover:bg-surface-container-high rounded-xl transition-all flex items-center gap-1 shadow-2xs disabled:opacity-40 disabled:pointer-events-none">
+                        <span>Próximo</span>
+                        <span class="material-symbols-outlined text-base">arrow_forward</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- MODAL DA VISÃO GERAL                                            -->
+    <!-- ================================================================ -->
+    <div id="modalVisaoGeral"
+        class="hidden fixed inset-0 z-50 bg-black/65 backdrop-blur-[3px] items-center justify-center p-3 sm:p-5 md:p-8 overflow-y-auto"
+        onclick="fecharModalVisaoGeral(event)">
+
+        <div class="bg-white border border-outline-variant rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl visao-modal-anim overflow-hidden"
+            onclick="event.stopPropagation()">
+
+            <div
+                class="px-6 py-4 bg-surface-container-low border-b border-outline-variant flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-2xl">info</span>
+                    </div>
+                    <div>
+                        <h3 id="modalVisaoTitulo" class="font-headline-md text-primary text-xl font-bold">Detalhamento
+                        </h3>
+                        <p id="modalVisaoSubtitulo" class="text-sm text-on-surface-variant">Seção da Visão Geral</p>
+                    </div>
+                </div>
+                <button onclick="fecharModalVisaoGeral()"
+                    class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <div class="p-6 sm:p-8 overflow-y-auto flex-1 modal-scrollbar bg-[#fbfcff]" id="modalVisaoCorpo">
+                <div class="visao-detalhe-card p-5 rounded-2xl bg-white border border-slate-200/90 shadow-sm mb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon explicacao"><span
+                                class="material-symbols-outlined text-xl">lightbulb</span></div>
+                        <div>
+                            <h4 class="font-bold text-primary text-base mb-1">Explicação Didática</h4>
+                            <p id="modalVisaoExplicacao" class="text-on-surface text-[15px] leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="visao-detalhe-card p-5 rounded-2xl bg-white border border-blue-100/90 shadow-sm mb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon implementacao"><span
+                                class="material-symbols-outlined text-xl">settings_suggest</span></div>
+                        <div>
+                            <h4 class="font-bold text-primary text-base mb-1">Como Implementar</h4>
+                            <p id="modalVisaoImplementacao" class="text-on-surface text-[15px] leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="visao-detalhe-card p-5 rounded-2xl bg-white border border-emerald-100/90 shadow-sm mb-4">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon exemplo"><span class="material-symbols-outlined text-xl">fact_check</span>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-emerald-800 text-base mb-1">Exemplo Prático</h4>
+                            <p id="modalVisaoExemplo" class="text-on-surface text-[15px] leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="visao-detalhe-card p-5 rounded-2xl bg-white border border-amber-100/90 shadow-sm">
+                    <div class="flex items-start gap-4">
+                        <div class="card-icon dicas"><span
+                                class="material-symbols-outlined text-xl">tips_and_updates</span></div>
+                        <div>
+                            <h4 class="font-bold text-amber-800 text-base mb-1">Dicas e Boas Práticas</h4>
+                            <p id="modalVisaoDicas" class="text-on-surface text-[15px] leading-relaxed"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- MODAL DE EXPORTAÇÃO                                              -->
+    <!-- ================================================================ -->
+    <div id="modalExportacao"
+        class="hidden fixed inset-0 z-50 bg-black/65 backdrop-blur-[3px] items-center justify-center p-3 sm:p-5 md:p-8 overflow-y-auto"
+        onclick="fecharModalExportacao(event)">
+
+        <div class="bg-white border border-outline-variant rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl export-modal-anim overflow-hidden"
+            onclick="event.stopPropagation()">
+
+            <div
+                class="px-6 py-4 bg-surface-container-low border-b border-outline-variant flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-2xl">file_download</span>
+                    </div>
+                    <div>
+                        <h3 class="font-headline-md text-primary text-xl font-bold">Exportar Requisitos</h3>
+                        <p class="text-sm text-on-surface-variant">Selecione os requisitos e colunas para exportação</p>
+                    </div>
+                </div>
+                <button onclick="fecharModalExportacao()"
+                    class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-high rounded-full transition-colors">
+                    <span class="material-symbols-outlined text-2xl">close</span>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 modal-scrollbar bg-[#fbfcff]" id="modalExportacaoCorpo">
+
+                <div class="mb-6">
+                    <h4 class="font-bold text-primary text-sm uppercase tracking-wider mb-3">1. Selecionar Tipo de
+                        Requisito</h4>
+                    <div class="flex flex-wrap gap-3">
+                        <label
+                            class="flex items-center gap-2 px-4 py-2.5 bg-white border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container-low transition-colors">
+                            <input type="radio" name="tipoRequisito" value="funcionais" checked
+                                onchange="carregarListaRequisitos()" class="w-4 h-4 accent-primary">
+                            <span class="font-medium text-sm">Funcionais</span>
+                            <span
+                                class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">119</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-2 px-4 py-2.5 bg-white border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container-low transition-colors">
+                            <input type="radio" name="tipoRequisito" value="nao-funcionais"
+                                onchange="carregarListaRequisitos()" class="w-4 h-4 accent-primary">
+                            <span class="font-medium text-sm">Não Funcionais</span>
+                            <span
+                                class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">59</span>
+                        </label>
+                        <label
+                            class="flex items-center gap-2 px-4 py-2.5 bg-white border border-outline-variant rounded-xl cursor-pointer hover:bg-surface-container-low transition-colors">
+                            <input type="radio" name="tipoRequisito" value="todos" onchange="carregarListaRequisitos()"
+                                class="w-4 h-4 accent-primary">
+                            <span class="font-medium text-sm">Ambos</span>
+                            <span
+                                class="text-xs text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">178</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-wider">2. Selecionar Requisitos
+                        </h4>
+                        <div class="flex gap-3 flex-wrap">
+                            <button onclick="selecionarTodosRequisitos(true)"
+                                class="text-xs font-semibold text-primary hover:underline">Selecionar Todos</button>
+                            <span class="text-on-surface-variant hidden xs:inline">|</span>
+                            <button onclick="selecionarTodosRequisitos(false)"
+                                class="text-xs font-semibold text-on-surface-variant hover:text-primary hover:underline">Desmarcar
+                                Todos</button>
+                            <span class="text-on-surface-variant hidden xs:inline">|</span>
+                            <button onclick="filtrarRequisitosPorObrigatoriedade('O')"
+                                class="text-xs font-semibold text-red-600 hover:underline">Obrigatórios</button>
+                            <span class="text-on-surface-variant hidden xs:inline">|</span>
+                            <button onclick="filtrarRequisitosPorObrigatoriedade('AD')"
+                                class="text-xs font-semibold text-amber-600 hover:underline">Alt. Desejáveis</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="relative">
+                            <span
+                                class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+                            <input type="text" id="buscaRequisitosExport"
+                                placeholder="Filtrar requisitos por título ou referência..."
+                                oninput="filtrarListaRequisitos()"
+                                class="w-full pl-9 pr-4 py-2 border border-outline-variant rounded-xl text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-outline-variant rounded-xl overflow-hidden max-h-64 overflow-y-auto"
+                        id="listaRequisitosContainer"></div>
+
+                    <div class="mt-3 flex flex-wrap items-center justify-between gap-2 text-sm text-on-surface-variant">
+                        <div class="flex items-center gap-4">
+                            <span>Selecionados: <span id="contadorRequisitosSelecionados"
+                                    class="font-bold text-primary">0</span></span>
+                            <span>Total: <span id="contadorRequisitosTotal"
+                                    class="font-bold text-primary">0</span></span>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="flex items-center gap-1"><span
+                                    class="w-2 h-2 rounded-full bg-red-500 inline-block"></span> Obrigatório</span>
+                            <span class="flex items-center gap-1"><span
+                                    class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span> Alt. Desejável</span>
+                            <span class="flex items-center gap-1"><span
+                                    class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span> Facultativo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-primary text-sm uppercase tracking-wider">3. Selecionar Colunas</h4>
+                        <div class="flex gap-2">
+                            <button onclick="selecionarTodasColunas(true)"
+                                class="text-xs font-semibold text-primary hover:underline">Selecionar Todas</button>
+                            <span class="text-on-surface-variant">|</span>
+                            <button onclick="selecionarTodasColunas(false)"
+                                class="text-xs font-semibold text-on-surface-variant hover:text-primary hover:underline">Desmarcar
+                                Todas</button>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white border border-outline-variant rounded-xl overflow-hidden divide-y divide-outline-variant/60">
+                        <div class="coluna-checkbox p-3 flex items-center gap-3 bg-surface-container-low/50">
+                            <input type="checkbox" checked disabled class="opacity-60 cursor-not-allowed">
+                            <div class="flex items-center gap-2 flex-wrap flex-1">
+                                <span class="font-semibold text-sm">Ref.</span>
+                                <span class="coluna-tag obrigatoria">Obrigatória</span>
+                            </div>
+                        </div>
+                        <div class="coluna-checkbox p-3 flex items-center gap-3 bg-surface-container-low/50">
+                            <input type="checkbox" checked disabled class="opacity-60 cursor-not-allowed">
+                            <div class="flex items-center gap-2 flex-wrap flex-1">
+                                <span class="font-semibold text-sm">Título</span>
+                                <span class="coluna-tag obrigatoria">Obrigatória</span>
+                            </div>
+                        </div>
+                        <div class="coluna-checkbox p-3 flex items-center gap-3 bg-surface-container-low/50">
+                            <input type="checkbox" checked disabled class="opacity-60 cursor-not-allowed">
+                            <div class="flex items-center gap-2 flex-wrap flex-1">
+                                <span class="font-semibold text-sm">Texto</span>
+                                <span class="coluna-tag obrigatoria">Obrigatória</span>
+                            </div>
+                        </div>
+                        <div class="coluna-checkbox p-3 flex items-center gap-3 bg-surface-container-low/50">
+                            <input type="checkbox" checked disabled class="opacity-60 cursor-not-allowed">
+                            <div class="flex items-center gap-2 flex-wrap flex-1">
+                                <span class="font-semibold text-sm">Obrig.</span>
+                                <span class="coluna-tag obrigatoria">Obrigatória</span>
+                            </div>
+                        </div>
+
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-tipo" class="coluna-check">
+                            <label for="col-tipo" class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Tipo</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-capitulo" class="coluna-check">
+                            <label for="col-capitulo"
+                                class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Capítulo</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-explicacao" class="coluna-check">
+                            <label for="col-explicacao"
+                                class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Explicação</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-implementacao" class="coluna-check">
+                            <label for="col-implementacao"
+                                class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Implementação</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-exemplo" class="coluna-check">
+                            <label for="col-exemplo"
+                                class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Exemplo</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-dicas" class="coluna-check">
+                            <label for="col-dicas" class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Dicas</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-atende" class="coluna-check">
+                            <label for="col-atende"
+                                class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Atende?</span></label>
+                        </div>
+                        <div
+                            class="coluna-checkbox p-3 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors">
+                            <input type="checkbox" id="col-forma-demonstracao" class="coluna-check">
+                            <label for="col-forma-demonstracao"
+                                class="flex items-center gap-2 flex-wrap flex-1 cursor-pointer"><span
+                                    class="font-semibold text-sm">Forma de Demonstração</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 p-4 bg-surface-container-low rounded-xl border border-outline-variant/60">
+                    <div class="flex flex-wrap items-center justify-between gap-2 text-sm">
+                        <span class="text-on-surface-variant"><span id="resumoQuantidade"
+                                class="font-bold text-primary">0</span> requisitos selecionados</span>
+                        <span class="text-on-surface-variant"><span id="resumoColunas"
+                                class="font-bold text-primary">4</span> colunas (4 obrigatórias)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="px-6 py-4 bg-surface-container-low border-t border-outline-variant flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <button onclick="fecharModalExportacao()" class="btn-acao secundario">Cancelar</button>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="exportarCSV()" id="btnExportarCSV" class="btn-acao primario">
+                        <span class="material-symbols-outlined">description</span> Exportar CSV
+                    </button>
+                    <button onclick="exportarPDF()" id="btnExportarPDF" class="btn-acao sucesso">
+                        <span class="material-symbols-outlined">picture_as_pdf</span> Exportar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- SCRIPTS                                                         -->
+    <!-- ================================================================ -->
+    <script src="visaogeral.js"></script>
+    <script src="requisitos.js"></script>
+    <script src="requisitosNF.js"></script>
+    <script src="requisitosOficiais.js"></script>
+    <script src="requisitosDetalhes.js"></script>
+    <script src="requisitosNFDetalhes.js"></script>
+    <script src="conformidade.js"></script>
+
+    <script>
+        let modoAtual = 'visao-geral';
+        let dadosAtuais = dadosRequisitos;
+        let listaReferenciasAtuais = [];
+
+        // =====================================================================
+        // FUNÇÃO DE CONFORMIDADE
+        // =====================================================================
+        function getStatusConformidade(referencia) {
+            if (typeof conformidadeRequisitos === 'undefined') return null;
+            const status = conformidadeRequisitos[referencia];
+            return status !== undefined ? status : null;
+        }
+
+        function getTextoRequisito(requisito) {
+            if (!requisito) return '';
+            const formatarLista = texto => texto.replace(/\s*•\s*/g, '\n• ').replace(/^\n/, '');
+            if (typeof textosOficiais !== 'undefined' && textosOficiais[requisito.referencia]) {
+                return formatarLista(textosOficiais[requisito.referencia]);
+            }
+            return formatarLista(requisito.texto || '');
+        }
+
+        // =====================================================================
+        // FORMA DE DEMONSTRAÇÃO
+        // =====================================================================
+        function salvarFormaDemonstracao() {
+            const refEl = document.getElementById('modalRef');
+            if (!refEl) return;
+            const ref = refEl.textContent.replace('Requisito ', '');
+            const texto = document.getElementById('modalFormaDemonstracao').value;
+            if (typeof formaDemonstracao !== 'undefined') {
+                formaDemonstracao[ref] = texto;
+                try {
+                    const dados = JSON.parse(localStorage.getItem('formaDemonstracao') || '{}');
+                    dados[ref] = texto;
+                    localStorage.setItem('formaDemonstracao', JSON.stringify(dados));
+                } catch (e) { }
+            }
+            const btn = document.activeElement;
+            if (btn) {
+                const original = btn.textContent;
+                btn.textContent = 'Salvo!';
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.textContent = original;
+                    btn.classList.remove('bg-green-600');
+                }, 1500);
+            }
+        }
+
+        function carregarFormaDemonstracao(referencia) {
+            const textarea = document.getElementById('modalFormaDemonstracao');
+            if (!textarea) return;
+            let valor = '';
+            if (typeof formaDemonstracao !== 'undefined' && formaDemonstracao[referencia]) {
+                valor = formaDemonstracao[referencia];
+            }
+            if (!valor) {
+                try {
+                    const dados = JSON.parse(localStorage.getItem('formaDemonstracao') || '{}');
+                    if (dados[referencia]) valor = dados[referencia];
+                } catch (e) { }
+            }
+            textarea.value = valor || '';
+        }
+
+        // =====================================================================
+        // FUNÇÕES AUXILIARES
+        // =====================================================================
+        function getObrigatorioClass(obrigatoriedade) {
+            const mapa = {
+                'Obrigatório': 'text-on-surface-variant bg-surface border-outline-variant',
+                'Altamente Desejável': 'text-amber-800 bg-amber-50 border-amber-300',
+                'Facultativo': 'text-blue-800 bg-blue-50 border-blue-300'
+            };
+            return mapa[obrigatoriedade] || mapa['Obrigatório'];
+        }
+
+        function atualizarListaReferencias() {
+            listaReferenciasAtuais = [];
+            if (!dadosAtuais || !dadosAtuais.secoes) return;
+            dadosAtuais.secoes.forEach(secao => {
+                secao.subsecoes.forEach(sub => {
+                    sub.requisitos.forEach(req => {
+                        listaReferenciasAtuais.push(req.referencia);
+                    });
+                });
+            });
+        }
+
+        // =====================================================================
+        // RENDERIZAÇÃO DOS REQUISITOS - CARDS POR CAPÍTULO
+        // =====================================================================
+        function renderRequisitosCards(dados) {
+            if (!dados || !dados.secoes) {
+                return '<div class="text-center text-on-surface-variant py-8">Nenhum requisito encontrado.</div>';
+            }
+
+            const todosOsRequisitos = dados.secoes.flatMap(secao =>
+                secao.subsecoes.flatMap(sub => sub.requisitos)
+            );
+            const totaisPorStatus = todosOsRequisitos.reduce((totais, requisito) => {
+                const status = getStatusConformidade(requisito.referencia);
+                const chave = status === true ? 'atende' : status === false ? 'nao_atende' : 'parcial';
+                totais[chave]++;
+                return totais;
+            }, { atende: 0, nao_atende: 0, parcial: 0 });
+
+            // Painel de leitura e filtro de conformidade
+            const filtroHTML = `
+                <section class="painel-conformidade mb-7 rounded-2xl overflow-hidden border border-outline-variant/70 bg-white shadow-sm">
+                    <div class="p-5 sm:p-6 bg-gradient-to-r from-slate-50 to-blue-50/60 border-b border-outline-variant/60">
+                        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                            <div>
+                                <p class="text-xs font-bold uppercase tracking-[0.14em] text-tertiary">Painel de conformidade</p>
+                                <h2 class="mt-1 text-xl font-bold text-primary">Acompanhe cada requisito com clareza</h2>
+                                <p class="mt-1 text-sm text-on-surface-variant">Os enunciados seguem preservados. Clique em um cartão para ler o conteúdo completo.</p>
+                            </div>
+                            <label class="text-sm font-semibold text-primary">Exibir
+                                <select id="filtroConformidade" class="ml-2 px-3 py-2 border border-outline-variant rounded-xl text-sm bg-white focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20">
+                                    <option value="todos">Todos os status</option>
+                                    <option value="atende">Somente atende</option>
+                                    <option value="nao_atende">Somente não atende</option>
+                                    <option value="parcial">Somente parcial</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-outline-variant/60">
+                        <div class="status-resumo atende"><span class="material-symbols-outlined">check_circle</span><div><strong>${totaisPorStatus.atende}</strong><span>Atende</span></div></div>
+                        <div class="status-resumo parcial"><span class="material-symbols-outlined">pending</span><div><strong>${totaisPorStatus.parcial}</strong><span>Parcial</span></div></div>
+                        <div class="status-resumo nao-atende"><span class="material-symbols-outlined">cancel</span><div><strong>${totaisPorStatus.nao_atende}</strong><span>Não atende</span></div></div>
+                    </div>
+                    <div class="px-5 py-3 bg-surface-container-low/50 text-xs text-on-surface-variant"><span id="contadorConformidade">${todosOsRequisitos.length} requisitos exibidos</span></div>
+                </section>
+            `;
+
+            // Cards por capítulo
+            let cardsHTML = '';
+            dados.secoes.forEach((secao, secaoIndex) => {
+                const secaoId = `secao-${secao.id}`;
+                const totalReq = secao.totalRequisitos || 0;
+
+                cardsHTML += `
+            <div class="capitulo-card bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm mb-6" id="${secaoId}">
+                <div class="capitulo-header px-6 py-4 bg-surface-container-low/50 border-b border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors flex items-center justify-between gap-4"
+                     onclick="toggleCapitulo('${secaoId}')">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-2xl">${secao.icone || 'folder'}</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-headline-md text-primary font-semibold">${secao.titulo}</h3>
+                            <span class="text-xs text-on-surface-variant">${totalReq} requisitos</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs font-medium text-on-surface-variant bg-surface-container px-3 py-1 rounded-full hidden sm:inline-block">
+                            ${totalReq} req.
+                        </span>
+                        <span class="material-symbols-outlined text-on-surface-variant btn-toggle" id="btn-${secaoId}">expand_more</span>
+                    </div>
+                </div>
+
+                <div class="capitulo-conteudo" id="conteudo-${secaoId}" style="max-height: 0; overflow: hidden; transition: max-height 0.4s ease;">
+                    <div class="p-4 space-y-4">
+                        ${secao.subsecoes.map((sub, subIndex) => {
+                    const subId = `sub-${secao.id}-${sub.id}`;
+                    return `
+                                <div class="subsecao-card border border-outline-variant/60 rounded-xl overflow-hidden">
+                                    <div class="subsecao-header px-5 py-3 bg-surface-container-low/30 cursor-pointer hover:bg-surface-container-low transition-colors flex items-center justify-between gap-3"
+                                         onclick="toggleSubsecao('${subId}')">
+                                        <h4 class="font-semibold text-primary text-sm flex items-center gap-2">
+                                            <span class="text-tertiary font-mono-sm">${sub.id}</span>
+                                            ${sub.titulo}
+                                        </h4>
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-xs text-on-surface-variant">${sub.requisitos.length} req.</span>
+                                            <span class="material-symbols-outlined text-on-surface-variant text-sm btn-toggle-sub" id="btn-sub-${subId}">expand_more</span>
+                                        </div>
+                                    </div>
+                                    <div class="subsecao-conteudo" id="conteudo-sub-${subId}" style="max-height: 0; overflow: hidden; transition: max-height 0.35s ease;">
+                                        <div class="requisitos-grade p-3 sm:p-4">
+                                            ${sub.requisitos.map(req => {
+                        const status = getStatusConformidade(req.referencia);
+                        const textoRequisito = getTextoRequisito(req);
+                        const statusLabel = status === true ? 'Atende' : status === false ? 'Não Atende' : 'Parcial';
+                        const statusClass = status === true ? 'text-green-700 bg-green-50 border-green-200' :
+                            status === false ? 'text-red-700 bg-red-50 border-red-200' :
+                                'text-amber-700 bg-amber-50 border-amber-200';
+                        const dataStatus = status === true ? 'atende' : status === false ? 'nao_atende' : 'parcial';
+                        return `
+                                                    <div class="requisito-item requisito-card-visual cursor-pointer"
+                                                         data-referencia="${req.referencia}"
+                                                         data-titulo="${req.titulo.toLowerCase()}"
+                                                         data-texto="${textoRequisito.toLowerCase()}"
+                                                         data-conformidade="${dataStatus}"
+                                                         role="article">
+                                                        <div class="flex items-center justify-between gap-3">
+                                                            <span class="font-mono-sm font-bold text-tertiary text-xs bg-tertiary-fixed px-2.5 py-1 rounded-lg">${req.referencia}</span>
+                                                            <span class="status-selo ${dataStatus}"><span class="material-symbols-outlined">${status === true ? 'check_circle' : status === false ? 'cancel' : 'pending'}</span>${statusLabel}</span>
+                                                        </div>
+                                                        <h5 class="font-semibold text-sm leading-snug text-on-surface">${req.titulo}</h5>
+                                                        <span class="self-start inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] font-semibold border ${getObrigatorioClass(req.obrigatoriedade)}">
+                                                            <span class="material-symbols-outlined text-[12px]">verified</span>
+                                                            ${req.obrigatoriedade}
+                                                        </span>
+                                                        <div>
+                                                            <span class="text-[11px] font-bold uppercase tracking-wide text-on-surface-variant">Enunciado e-ARQ Brasil</span>
+                                                            <p class="text-xs text-on-surface-variant mt-1 leading-relaxed whitespace-pre-line line-clamp-4">${textoRequisito}</p>
+                                                        </div>
+                                                        <div class="flex justify-end pt-3 mt-auto border-t border-outline-variant/60">
+                                                            <button type="button" class="text-xs font-semibold text-primary inline-flex items-center gap-1 hover:underline" onclick="event.stopPropagation(); abrirModalDetalhes('${req.referencia}')">
+                                                                Ler requisito <span class="material-symbols-outlined text-base">arrow_forward</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                `;
+                    }).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                }).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+            });
+
+            return filtroHTML + cardsHTML;
+        }
+        // =====================================================================
+        // TOGGLE CAPÍTULO
+        // =====================================================================
+        function toggleCapitulo(id) {
+            const conteudo = document.getElementById('conteudo-' + id);
+            const btn = document.getElementById('btn-' + id);
+            if (!conteudo) return;
+
+            if (conteudo.style.maxHeight === '0px' || conteudo.style.maxHeight === '') {
+                conteudo.style.maxHeight = conteudo.scrollHeight + 'px';
+                if (btn) btn.textContent = 'expand_less';
+
+                const capitulo = conteudo.closest('.capitulo-conteudo');
+                if (capitulo && capitulo.style.maxHeight !== '0px') {
+                    capitulo.style.maxHeight = capitulo.scrollHeight + 'px';
+                }
+            } else {
+                conteudo.style.maxHeight = '0px';
+                if (btn) btn.textContent = 'expand_more';
+            }
+        }
+
+        // =====================================================================
+        // TOGGLE SUBSECÃO
+        // =====================================================================
+        // Substitua a função toggleSubsecao por esta versão melhorada:
+
+        // =====================================================================
+        // TOGGLE SUBSECÃO - VERSÃO CORRIGIDA
+        // =====================================================================
+        function toggleSubsecao(id) {
+            const conteudo = document.getElementById('conteudo-sub-' + id);
+            const btn = document.getElementById('btn-sub-' + id);
+            if (!conteudo) return;
+
+            const isClosing = conteudo.style.maxHeight !== '0px' && conteudo.style.maxHeight !== '';
+
+            if (isClosing) {
+                // === FECHAR: recolhe todos os requisitos e a subseção ===
+                const itens = conteudo.querySelectorAll('.requisito-item');
+                itens.forEach(item => {
+                    if (item.classList.contains('expandido')) {
+                        const ref = item.dataset.referencia;
+                        const container = document.getElementById('detalhes-' + ref);
+                        if (container) {
+                            item.classList.remove('expandido');
+                            item.setAttribute('aria-expanded', 'false');
+                            container.setAttribute('aria-hidden', 'true');
+                            container.replaceChildren();
+                        }
+                    }
+                });
+                conteudo.style.maxHeight = '0px';
+                if (btn) btn.textContent = 'expand_more';
+            } else {
+                // === ABRIR: expande TODOS os requisitos da subseção ===
+                conteudo.style.maxHeight = conteudo.scrollHeight + 'px';
+                if (btn) btn.textContent = 'expand_less';
+
+                requestAnimationFrame(() => {
+                    conteudo.style.maxHeight = 'none';
+                    const capitulo = conteudo.closest('.capitulo-conteudo');
+                    if (capitulo && capitulo.style.maxHeight !== '0px') {
+                        capitulo.style.maxHeight = 'none';
+                    }
+                });
+            }
+
+            const capitulo = conteudo.closest('.capitulo-conteudo');
+            if (isClosing && capitulo && capitulo.style.maxHeight !== '0px') {
+                requestAnimationFrame(() => {
+                    capitulo.style.maxHeight = capitulo.scrollHeight + 'px';
+                });
+            }
+        }
+        // Exibe o conteúdo integral diretamente na lista, ao clicar no requisito.
+        function encontrarRequisito(referencia) {
+            if (!dadosAtuais || !dadosAtuais.secoes) return null;
+            for (const secao of dadosAtuais.secoes) {
+                for (const sub of secao.subsecoes) {
+                    const requisito = sub.requisitos.find(item => item.referencia === referencia);
+                    if (requisito) return requisito;
+                }
+            }
+            return null;
+        }
+
+        function adicionarDetalheRequisito(container, titulo, texto) {
+            const bloco = document.createElement('div');
+            bloco.className = 'detalhe-requisito-bloco';
+            const subtitulo = document.createElement('h5');
+            subtitulo.textContent = titulo;
+            const conteudo = document.createElement('p');
+            conteudo.textContent = texto;
+            bloco.append(subtitulo, conteudo);
+            container.appendChild(bloco);
+        }
+
+        function alternarRequisito(event, referencia) {
+            if (event) event.stopPropagation();
+            const item = document.querySelector(`.requisito-item[data-referencia="${referencia}"]`);
+            const container = document.getElementById(`detalhes-${referencia}`);
+            if (!item || !container) return;
+
+            if (item.classList.contains('expandido')) {
+                item.classList.remove('expandido');
+                item.setAttribute('aria-expanded', 'false');
+                container.setAttribute('aria-hidden', 'true');
+                container.replaceChildren();
+            } else {
+                const requisito = encontrarRequisito(referencia);
+                const fonteDetalhes = modoAtual === 'funcionais' ? detalhesRequisitos : detalhesRequisitosNF;
+                const detalhes = fonteDetalhes && fonteDetalhes[referencia];
+                if (!requisito) return;
+
+                container.replaceChildren();
+                adicionarDetalheRequisito(container, 'Enunciado completo', requisito.texto);
+                adicionarDetalheRequisito(container, 'Explicação', (detalhes && detalhes.explicacao) || requisito.texto);
+                adicionarDetalheRequisito(container, 'Como implementar', (detalhes && detalhes.implementacao) || 'Consulte as diretrizes e normas de referência do e-ARQ Brasil.');
+                adicionarDetalheRequisito(container, 'Exemplo prático', (detalhes && detalhes.exemplo) || 'Aplique este requisito aos processos de gestão documental do SIGAD.');
+                adicionarDetalheRequisito(container, 'Dicas e boas práticas', (detalhes && detalhes.dicas) || 'Mantenha evidências de conformidade e revise periodicamente os procedimentos.');
+                item.classList.add('expandido');
+                item.setAttribute('aria-expanded', 'true');
+                container.setAttribute('aria-hidden', 'false');
+            }
+
+            const subsecao = item.closest('.subsecao-conteudo');
+            const capitulo = item.closest('.capitulo-conteudo');
+            if (subsecao && subsecao.style.maxHeight !== '0px') subsecao.style.maxHeight = subsecao.scrollHeight + 'px';
+            if (capitulo && capitulo.style.maxHeight !== '0px') capitulo.style.maxHeight = capitulo.scrollHeight + 'px';
+        }
+
+        // =====================================================================
+        // FILTRO DE CONFORMIDADE
+        // =====================================================================
+        function aplicarFiltroConformidade() {
+            const filtro = document.getElementById('filtroConformidade');
+            if (!filtro) return;
+            const valor = filtro.value;
+            const itens = document.querySelectorAll('.requisito-item');
+            let contador = 0;
+
+            itens.forEach(item => {
+                const status = item.dataset.conformidade || 'todos';
+                if (valor === 'todos' || status === valor) {
+                    item.style.display = 'flex';
+                    item.classList.add('visivel');
+                    item.classList.remove('oculto');
+                    contador++;
+                } else {
+                    item.style.display = 'none';
+                    item.classList.remove('visivel');
+                    item.classList.add('oculto');
+                }
+            });
+
+            const contadorEl = document.getElementById('contadorConformidade');
+            if (contadorEl) {
+                contadorEl.textContent = `${contador} requisitos exibidos`;
+            }
+
+            // Mostrar/ocultar subseções vazias
+            document.querySelectorAll('.subsecao-conteudo').forEach(sub => {
+                const visiveis = sub.querySelectorAll('.requisito-item.visivel');
+                if (visiveis.length === 0) {
+                    sub.style.maxHeight = '0px';
+                } else {
+                    sub.style.maxHeight = sub.scrollHeight + 'px';
+                }
+            });
+
+            // Mostrar/ocultar capítulos vazios
+            document.querySelectorAll('.capitulo-conteudo').forEach(cap => {
+                const visiveis = cap.querySelectorAll('.requisito-item.visivel');
+                if (visiveis.length === 0) {
+                    cap.style.maxHeight = '0px';
+                } else {
+                    cap.style.maxHeight = cap.scrollHeight + 'px';
+                }
+            });
+        }
+
+        // =====================================================================
+        // MODAL DE DETALHES
+        // =====================================================================
+        function abrirModalDetalhes(referencia) {
+            atualizarListaReferencias();
+            let indiceReferenciaAtual = listaReferenciasAtuais.indexOf(referencia);
+
+            let reqObj = null;
+            if (dadosAtuais && dadosAtuais.secoes) {
+                for (const secao of dadosAtuais.secoes) {
+                    for (const sub of secao.subsecoes) {
+                        const r = sub.requisitos.find(item => item.referencia === referencia);
+                        if (r) {
+                            reqObj = r;
+                            break;
+                        }
+                    }
+                    if (reqObj) break;
+                }
+            }
+
+            const baseDetalhes = (modoAtual === 'funcionais') ? detalhesRequisitos : detalhesRequisitosNF;
+            const detalhes = (typeof baseDetalhes !== 'undefined' && baseDetalhes[referencia]) ? baseDetalhes[referencia] : null;
+
+            document.getElementById('modalRef').textContent = `Requisito ${referencia}`;
+            document.getElementById('modalTitulo').textContent = reqObj ? reqObj.titulo : `Requisito ${referencia}`;
+            document.getElementById('modalTexto').textContent = reqObj ? getTextoRequisito(reqObj) : '';
+            const badgeObrig = document.getElementById('modalObrig');
+            if (reqObj && reqObj.obrigatoriedade) {
+                badgeObrig.className = `inline-flex items-center gap-1.5 border rounded-full px-3.5 py-1 text-xs font-semibold shadow-2xs ${getObrigatorioClass(reqObj.obrigatoriedade)}`;
+                badgeObrig.innerHTML = `<span class="material-symbols-outlined text-[15px]">verified</span> ${reqObj.obrigatoriedade}`;
+                badgeObrig.style.display = 'inline-flex';
+            } else {
+                badgeObrig.style.display = 'none';
+            }
+
+            const badgeStatus = document.getElementById('modalStatus');
+            const status = getStatusConformidade(referencia);
+            if (status !== null && status !== undefined) {
+                const isAtende = status === true;
+                const isParcial = status === null;
+                const icon = isAtende ? 'check_circle' : isParcial ? 'pending' : 'cancel';
+                const label = isAtende ? 'Atende' : isParcial ? 'Parcial' : 'Não Atende';
+                const cls = isAtende ? 'text-green-700 bg-green-50 border-green-200' :
+                    isParcial ? 'text-amber-700 bg-amber-50 border-amber-200' :
+                        'text-red-700 bg-red-50 border-red-200';
+                badgeStatus.className = `inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold border ${cls}`;
+                badgeStatus.innerHTML = `<span class="material-symbols-outlined text-[15px]">${icon}</span>${label}`;
+                badgeStatus.style.display = 'inline-flex';
+            } else {
+                badgeStatus.style.display = 'none';
+            }
+
+            const btnAnt = document.getElementById('btnModalAnterior');
+            const btnProx = document.getElementById('btnModalProximo');
+            if (btnAnt && btnProx) {
+                btnAnt.disabled = (indiceReferenciaAtual <= 0);
+                btnProx.disabled = (indiceReferenciaAtual >= listaReferenciasAtuais.length - 1 || indiceReferenciaAtual === -1);
+                btnAnt.onclick = function () {
+                    const novoIndice = indiceReferenciaAtual - 1;
+                    if (novoIndice >= 0) abrirModalDetalhes(listaReferenciasAtuais[novoIndice]);
+                };
+                btnProx.onclick = function () {
+                    const novoIndice = indiceReferenciaAtual + 1;
+                    if (novoIndice < listaReferenciasAtuais.length) abrirModalDetalhes(listaReferenciasAtuais[novoIndice]);
+                };
+            }
+
+            const corpo = document.getElementById('modalCorpo');
+            if (corpo) corpo.scrollTop = 0;
+
+            const modal = document.getElementById('modalDetalhes');
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function fecharModalDetalhes(e) {
+            if (e && e.target && e.target !== e.currentTarget && !e.target.closest('button')) {
+                return;
+            }
+            const modal = document.getElementById('modalDetalhes');
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        function navegarModal(direcao) {
+            const refEl = document.getElementById('modalRef');
+            if (!refEl) return;
+            const ref = refEl.textContent.replace('Requisito ', '');
+            const idx = listaReferenciasAtuais.indexOf(ref);
+            const novoIdx = idx + direcao;
+            if (novoIdx >= 0 && novoIdx < listaReferenciasAtuais.length) {
+                abrirModalDetalhes(listaReferenciasAtuais[novoIdx]);
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            const modal = document.getElementById('modalDetalhes');
+            const isOpen = modal && !modal.classList.contains('hidden');
+            if (!isOpen) return;
+            if (e.key === 'Escape') fecharModalDetalhes();
+            if (e.key === 'ArrowLeft') navegarModal(-1);
+            if (e.key === 'ArrowRight') navegarModal(1);
+        });
+
+        // =====================================================================
+        // MODAL DA VISÃO GERAL
+        // =====================================================================
+        function abrirModalVisaoGeral(secaoId) {
+            let detalhes = null;
+            if (typeof detalhesVisaoGeral !== 'undefined') {
+                if (detalhesVisaoGeral[secaoId]) {
+                    detalhes = detalhesVisaoGeral[secaoId];
+                }
+            }
+            if (!detalhes && typeof dadosVisaoGeral !== 'undefined') {
+                function buscaDetalhes(obj, id) {
+                    if (!obj || typeof obj !== 'object') return null;
+                    if (obj.detalhes && obj.detalhes.explicacao) return obj.detalhes;
+                    for (let key in obj) {
+                        if (typeof obj[key] === 'object' && obj[key] !== null) {
+                            const result = buscaDetalhes(obj[key], id);
+                            if (result) return result;
+                        }
+                    }
+                    return null;
+                }
+                detalhes = buscaDetalhes(dadosVisaoGeral, secaoId);
+            }
+
+            const titulos = {
+                'identificacao': 'Identificação e Contexto Institucional',
+                'introducao': 'Introdução',
+                'objetivosAmbito': 'Objetivos e Âmbito',
+                'limitesEspecificacao': 'Limites da Especificação',
+                'normasReferencia': 'Normas e Orientações de Referência',
+                'organizacaoEspecificacao': 'Organização da Especificação',
+                'obrigatoriedadeRequisitos': 'Obrigatoriedade dos Requisitos',
+                'consideracoesIniciais': '1. Considerações Iniciais',
+                'baseConceitual': '2. Base Conceitual',
+                'aspectosEssenciais': '3. Aspectos Essenciais da Gestão Arquivística',
+                'politicaArquivistica': '4. Definição da Política Arquivística',
+                'responsabilidades': '5. Designação de Responsabilidades',
+                'planejamento': '6. Planejamento do Programa de Gestão',
+                'implantacao': '7. Implantação e Exigências',
+                'metodologiaImplantacao': 'Metodologia de Implantação (8 Passos)',
+                'suspensaoExtincao': '7.3. Suspensão ou Extinção do SIGAD',
+                'oQueE': 'O que é o e-ARQ Brasil?',
+                'procedimentosTecnicos': '8. Procedimentos e Operações Técnicas',
+                'instrumentosGestaoDetalhados': '9. Instrumentos de Gestão Arquivística',
+                'esquemaMetadados': 'Esquema de Metadados'
+            };
+
+            document.getElementById('modalVisaoTitulo').textContent = titulos[secaoId] || 'Detalhamento';
+            document.getElementById('modalVisaoSubtitulo').textContent = `Seção: ${secaoId}`;
+
+            if (detalhes) {
+                document.getElementById('modalVisaoExplicacao').textContent = detalhes.explicacao || 'Não disponível.';
+                document.getElementById('modalVisaoImplementacao').textContent = detalhes.implementacao || 'Não disponível.';
+                document.getElementById('modalVisaoExemplo').textContent = detalhes.exemplo || 'Não disponível.';
+                document.getElementById('modalVisaoDicas').textContent = detalhes.dicas || 'Não disponível.';
+            } else {
+                document.getElementById('modalVisaoExplicacao').textContent = 'Detalhamento em elaboração para esta seção. Consulte o PDF do e-ARQ Brasil para mais informações.';
+                document.getElementById('modalVisaoImplementacao').textContent = 'As diretrizes de implementação serão disponibilizadas em breve.';
+                document.getElementById('modalVisaoExemplo').textContent = 'Exemplo prático em desenvolvimento.';
+                document.getElementById('modalVisaoDicas').textContent = 'Boas práticas a serem definidas conforme a seção.';
+            }
+
+            const modal = document.getElementById('modalVisaoGeral');
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            const corpo = document.getElementById('modalVisaoCorpo');
+            if (corpo) corpo.scrollTop = 0;
+        }
+
+        function fecharModalVisaoGeral(e) {
+            if (e && e.target && e.target !== e.currentTarget && !e.target.closest('button')) {
+                return;
+            }
+            const modal = document.getElementById('modalVisaoGeral');
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        document.addEventListener('keydown', function (e) {
+            const modal = document.getElementById('modalVisaoGeral');
+            const isOpen = modal && !modal.classList.contains('hidden');
+            if (!isOpen) return;
+            if (e.key === 'Escape') fecharModalVisaoGeral();
+        });
+
+        // =====================================================================
+        // NAVEGAÇÃO
+        // =====================================================================
+        function renderContent() {
+            if (modoAtual === 'visao-geral') {
+                renderVisaoGeral();
+                return;
+            }
+
+            const main = document.getElementById('main-content');
+            const titulo = modoAtual === 'funcionais' ? 'Requisitos Funcionais' : 'Requisitos Não Funcionais';
+            const descricao = modoAtual === 'funcionais' ?
+                'Especificações técnicas obrigatórias para Sistemas Informatizados de Gestão Arquivística de Documentos (SIGAD), garantindo a autenticidade, integridade e acessibilidade a longo prazo.' :
+                'Requisitos não funcionais que não estão diretamente relacionados à funcionalidade do sistema, mas que são relevantes para a sua implementação, considerando os contextos jurídico, administrativo e tecnológico de cada instituição.';
+
+            const header = `
+                <div class="mb-8 resultados-anchor" id="resultadosAnchor">
+                    <div class="flex items-center gap-2 text-on-surface-variant font-body-sm text-body-sm mb-4">
+                        <a class="hover:text-primary transition-colors" href="#" onclick="alternarModo('visao-geral')">e-ARQ Brasil</a>
+                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+                        <span class="text-secondary font-medium">${titulo}</span>
+                    </div>
+                    <h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-4 tracking-tight">${titulo}</h1>
+                    <p class="font-body-lg text-body-lg text-on-surface-variant max-w-4xl leading-relaxed">${descricao}</p>
+                    <div class="mt-4 flex flex-wrap gap-3">
+                        <span class="inline-flex items-center gap-1 px-3 py-1.5 bg-green-50 border border-green-200 rounded-full text-xs font-semibold text-green-700"><span class="material-symbols-outlined text-[15px]">check_circle</span>Atende</span>
+                        <span class="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 border border-red-200 rounded-full text-xs font-semibold text-red-700"><span class="material-symbols-outlined text-[15px]">cancel</span>Não Atende</span>
+                        <span class="inline-flex items-center gap-1 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-xs font-semibold text-amber-700"><span class="material-symbols-outlined text-[15px]">pending</span>Parcial</span>
+                        <span class="text-xs text-on-surface-variant ml-2">Clique em um requisito para ver detalhes</span>
+                    </div>
+                </div>
+            `;
+
+            const cardsHTML = renderRequisitosCards(dadosAtuais);
+            main.innerHTML = header + cardsHTML;
+
+            // Adicionar evento de filtro
+            const filtro = document.getElementById('filtroConformidade');
+            if (filtro) {
+                filtro.addEventListener('change', aplicarFiltroConformidade);
+            }
+
+            setupPesquisa();
+            setupSearchToggle();
+            atualizarListaReferencias();
+        }
+
+        // =====================================================================
+        // PESQUISA
+        // =====================================================================
+        function setupSearchToggle() {
+            const toggleBtn = document.getElementById('searchToggleBtn');
+            const wrapper = document.getElementById('navSearchWrapper');
+            const input = document.getElementById('navPesquisaInput');
+            if (!toggleBtn || !wrapper) return;
+
+            toggleBtn.addEventListener('click', function () {
+                const isAberto = wrapper.classList.contains('aberto');
+                if (isAberto) {
+                    wrapper.classList.remove('aberto');
+                    this.classList.remove('ativo');
+                    document.getElementById('navContador').classList.remove('visible');
+                    if (input.value.trim() !== '') {
+                        input.value = '';
+                        executarPesquisa();
+                    }
+                } else {
+                    wrapper.classList.add('aberto');
+                    this.classList.add('ativo');
+                    setTimeout(() => { if (input) input.focus(); }, 350);
+                }
+            });
+        }
+
+        function executarPesquisa(scrollParaResultados = false) {
+            if (modoAtual === 'visao-geral' || modoAtual === 'metadados' || modoAtual === 'glossario' || modoAtual === 'referencias' || modoAtual === 'metricas') {
+                return;
+            }
+
+            const input = document.getElementById('navPesquisaInput');
+            const contador = document.getElementById('navContador');
+            const clearBtn = document.getElementById('navClearBtn');
+            const termo = input.value.trim().toLowerCase();
+
+            const todosRequisitos = document.querySelectorAll('.requisito-item');
+            const subsecoes = document.querySelectorAll('.subsecao-conteudo');
+            const capitulos = document.querySelectorAll('.capitulo-conteudo');
+
+            if (termo !== '') {
+                clearBtn.classList.add('visible');
+            } else {
+                clearBtn.classList.remove('visible');
+            }
+
+            if (termo === '') {
+                subsecoes.forEach(function (sub) {
+                    sub.style.maxHeight = '0px';
+                    const btn = document.getElementById('btn-sub-' + sub.id);
+                    if (btn) btn.textContent = 'expand_more';
+                    const items = sub.querySelectorAll('.requisito-item');
+                    items.forEach(function (item) {
+                        item.style.display = 'flex';
+                        item.classList.remove('oculto', 'visivel');
+                    });
+                });
+                capitulos.forEach(function (cap) {
+                    cap.style.maxHeight = '0px';
+                    const btn = document.getElementById('btn-' + cap.id.replace('conteudo-', ''));
+                    if (btn) btn.textContent = 'expand_more';
+                });
+                contador.textContent = '';
+                contador.classList.remove('visible');
+                aplicarFiltroConformidade();
+                return;
+            }
+
+            let totalVisiveis = 0;
+            let primeiroRequisito = null;
+
+            todosRequisitos.forEach(function (req) {
+                const referencia = (req.dataset.referencia || '').toLowerCase();
+                const titulo = req.dataset.titulo || '';
+                const texto = req.dataset.texto || '';
+
+                const match = referencia.includes(termo) || titulo.includes(termo) || texto.includes(termo);
+
+                if (match) {
+                    req.style.display = 'flex';
+                    req.classList.remove('oculto');
+                    req.classList.add('visivel');
+                    totalVisiveis++;
+                    if (!primeiroRequisito) {
+                        primeiroRequisito = req;
+                    }
+                } else {
+                    req.style.display = 'none';
+                    req.classList.remove('visivel');
+                    req.classList.add('oculto');
+                }
+            });
+
+            // Aplicar filtro de conformidade
+            const filtroConformidade = document.getElementById('filtroConformidade');
+            if (filtroConformidade && filtroConformidade.value !== 'todos') {
+                const valorFiltro = filtroConformidade.value;
+                todosRequisitos.forEach(function (req) {
+                    const status = req.dataset.conformidade || 'todos';
+                    if (req.style.display === 'none') return;
+                    if (valorFiltro !== 'todos' && status !== valorFiltro) {
+                        req.style.display = 'none';
+                        req.classList.remove('visivel');
+                        req.classList.add('oculto');
+                        totalVisiveis--;
+                    }
+                });
+            }
+
+            subsecoes.forEach(function (sub) {
+                const visiveis = sub.querySelectorAll('.requisito-item.visivel');
+                if (visiveis.length > 0) {
+                    sub.style.maxHeight = sub.scrollHeight + 'px';
+                    const btn = document.getElementById('btn-sub-' + sub.id);
+                    if (btn) btn.textContent = 'expand_less';
+                } else {
+                    sub.style.maxHeight = '0px';
+                    const btn = document.getElementById('btn-sub-' + sub.id);
+                    if (btn) btn.textContent = 'expand_more';
+                }
+            });
+
+            capitulos.forEach(function (cap) {
+                const visiveis = cap.querySelectorAll('.requisito-item.visivel');
+                if (visiveis.length > 0) {
+                    cap.style.maxHeight = cap.scrollHeight + 'px';
+                    const btn = document.getElementById('btn-' + cap.id.replace('conteudo-', ''));
+                    if (btn) btn.textContent = 'expand_less';
+                } else {
+                    cap.style.maxHeight = '0px';
+                    const btn = document.getElementById('btn-' + cap.id.replace('conteudo-', ''));
+                    if (btn) btn.textContent = 'expand_more';
+                }
+            });
+
+            if (totalVisiveis === 0) {
+                contador.textContent = 'Nenhum resultado';
+            } else {
+                contador.textContent = `${totalVisiveis} resultado${totalVisiveis > 1 ? 's' : ''}`;
+            }
+            contador.classList.add('visible');
+
+            if (scrollParaResultados && primeiroRequisito) {
+                setTimeout(() => {
+                    primeiroRequisito.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 150);
+            }
+        }
+
+        function setupPesquisa() {
+            const input = document.getElementById('navPesquisaInput');
+            const clearBtn = document.getElementById('navClearBtn');
+            if (!input) return;
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    executarPesquisa(true);
+                }
+            });
+
+            clearBtn.addEventListener('click', function () {
+                input.value = '';
+                executarPesquisa(false);
+                input.focus();
+            });
+
+            input.addEventListener('input', function () {
+                if (this.value.trim() !== '') {
+                    clearBtn.classList.add('visible');
+                } else {
+                    clearBtn.classList.remove('visible');
+                    executarPesquisa(false);
+                }
+            });
+
+            document.addEventListener('click', function (e) {
+                const container = document.querySelector('.navbar-search-container');
+                if (container && !container.contains(e.target)) {
+                    const wrapper = document.getElementById('navSearchWrapper');
+                    const toggleBtn = document.getElementById('searchToggleBtn');
+                    if (wrapper && wrapper.classList.contains('aberto')) {
+                        wrapper.classList.remove('aberto');
+                        if (toggleBtn) toggleBtn.classList.remove('ativo');
+                        document.getElementById('navContador').classList.remove('visible');
+                        if (input.value.trim() !== '') {
+                            input.value = '';
+                            executarPesquisa(false);
+                        }
+                    }
+                }
+            });
+        }
+
+        // =====================================================================
+        // MODAL DE EXPORTAÇÃO
+        // =====================================================================
+        function abrirModalExportacao() {
+            const modal = document.getElementById('modalExportacao');
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            atualizarResumo();
+            carregarListaRequisitos();
+        }
+
+        function fecharModalExportacao(e) {
+            if (e && e.target && e.target !== e.currentTarget && !e.target.closest('button')) {
+                return;
+            }
+            const modal = document.getElementById('modalExportacao');
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            requisitosSelecionadosModal.clear();
+        }
+
+        document.addEventListener('keydown', function (e) {
+            const modal = document.getElementById('modalExportacao');
+            const isOpen = modal && !modal.classList.contains('hidden');
+            if (!isOpen) return;
+            if (e.key === 'Escape') fecharModalExportacao();
+        });
+
+        // =====================================================================
+        // EXPORTAÇÃO - LISTA DE REQUISITOS
+        // =====================================================================
+        let listaRequisitosModal = [];
+        let requisitosSelecionadosModal = new Set();
+
+        function carregarListaRequisitos() {
+            const radio = document.querySelector('input[name="tipoRequisito"]:checked');
+            const tipo = radio ? radio.value : 'funcionais';
+            let todosRequisitos = [];
+
+            const adicionarRequisitos = (dados, tipoStr) => {
+                if (!dados || !dados.secoes) return;
+                dados.secoes.forEach(secao => {
+                    secao.subsecoes.forEach(sub => {
+                        sub.requisitos.forEach(req => {
+                            const status = getStatusConformidade(req.referencia);
+                            const statusLabel = status === true ? 'Atende' : status === false ? 'Não Atende' : status === null ? 'Parcial' : '';
+                            todosRequisitos.push({
+                                referencia: req.referencia,
+                                titulo: req.titulo,
+                                texto: getTextoRequisito(req),
+                                obrigatoriedade: req.obrigatoriedade,
+                                tipo: tipoStr === 'funcionais' ? 'Funcional' : 'Não Funcional',
+                                capitulo: secao.titulo,
+                                atende: statusLabel,
+                                selecionado: false
+                            });
+                        });
+                    });
+                });
+            };
+
+            if (tipo === 'funcionais' || tipo === 'todos') {
+                if (typeof dadosRequisitos !== 'undefined') adicionarRequisitos(dadosRequisitos, 'funcionais');
+            }
+            if (tipo === 'nao-funcionais' || tipo === 'todos') {
+                if (typeof dadosRequisitosNF !== 'undefined') adicionarRequisitos(dadosRequisitosNF, 'nao-funcionais');
+            }
+
+            todosRequisitos.sort((a, b) => {
+                const numA = parseFloat(a.referencia);
+                const numB = parseFloat(b.referencia);
+                if (isNaN(numA) && isNaN(numB)) return a.referencia.localeCompare(b.referencia);
+                if (isNaN(numA)) return 1;
+                if (isNaN(numB)) return -1;
+                return numA - numB;
+            });
+
+            listaRequisitosModal = todosRequisitos;
+            requisitosSelecionadosModal.clear();
+            renderizarListaRequisitos();
+            atualizarContadores();
+        }
+
+        function renderizarListaRequisitos(filtro = '') {
+            const container = document.getElementById('listaRequisitosContainer');
+            if (!container) return;
+            const filtroLower = filtro.toLowerCase();
+
+            const html = listaRequisitosModal.map(req => {
+                const match = req.referencia.includes(filtroLower) ||
+                    req.titulo.toLowerCase().includes(filtroLower);
+                if (filtro && !match) return '';
+
+                const isSelected = requisitosSelecionadosModal.has(req.referencia);
+                let obrigBadge = '';
+                let obrigClass = '';
+                if (req.obrigatoriedade === 'Obrigatório') {
+                    obrigBadge = `<span class="w-2 h-2 rounded-full bg-red-500 inline-block" title="Obrigatório"></span>`;
+                    obrigClass = 'text-red-600';
+                } else if (req.obrigatoriedade === 'Altamente Desejável') {
+                    obrigBadge = `<span class="w-2 h-2 rounded-full bg-amber-500 inline-block" title="Altamente Desejável"></span>`;
+                    obrigClass = 'text-amber-600';
+                } else {
+                    obrigBadge = `<span class="w-2 h-2 rounded-full bg-blue-400 inline-block" title="Facultativo"></span>`;
+                    obrigClass = 'text-blue-600';
+                }
+
+                let statusLabel = '';
+                let statusColor = '';
+                if (req.atende === 'Atende') {
+                    statusLabel = '<span class="material-symbols-outlined text-[14px]">check_circle</span> Atende';
+                    statusColor = 'text-green-600';
+                } else if (req.atende === 'Não Atende') {
+                    statusLabel = '<span class="material-symbols-outlined text-[14px]">cancel</span> Não Atende';
+                    statusColor = 'text-red-600';
+                } else if (req.atende === 'Parcial') {
+                    statusLabel = '<span class="material-symbols-outlined text-[14px]">pending</span> Parcial';
+                    statusColor = 'text-amber-600';
+                }
+
+                return `
+                    <div class="coluna-checkbox p-2.5 flex items-center gap-3 hover:bg-surface-container-low/50 transition-colors requisito-item-lista cursor-pointer"
+                         data-referencia="${req.referencia}"
+                         onclick="toggleRequisito('${req.referencia}')">
+                        <input type="checkbox"
+                               class="requisito-check w-4 h-4 accent-primary cursor-pointer"
+                               data-ref="${req.referencia}"
+                               ${isSelected ? 'checked' : ''}
+                               onclick="event.stopPropagation(); toggleRequisito('${req.referencia}')">
+                        <div class="flex items-center gap-3 flex-1 min-w-0">
+                            <span class="font-mono-sm font-bold text-primary text-sm whitespace-nowrap">${req.referencia}</span>
+                            <span class="font-semibold text-sm truncate">${req.titulo}</span>
+                        </div>
+                        <div class="flex items-center gap-3 flex-shrink-0">
+                            ${obrigBadge}
+                            <span class="text-xs ${obrigClass} font-medium hidden sm:inline">${req.obrigatoriedade}</span>
+                            ${statusLabel ? `<span class="text-xs ${statusColor} font-medium hidden md:inline">${statusLabel}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).filter(item => item !== '').join('');
+
+            container.innerHTML = html || '<div class="p-4 text-center text-on-surface-variant">Nenhum requisito encontrado.</div>';
+            atualizarContadores();
+        }
+
+        function filtrarListaRequisitos() {
+            const busca = document.getElementById('buscaRequisitosExport');
+            const filtro = busca ? busca.value : '';
+            renderizarListaRequisitos(filtro);
+        }
+
+        function filtrarRequisitosPorObrigatoriedade(tipo) {
+            requisitosSelecionadosModal.clear();
+            listaRequisitosModal.forEach(req => {
+                let obrig = req.obrigatoriedade;
+                if (tipo === 'O' && obrig === 'Obrigatório') {
+                    requisitosSelecionadosModal.add(req.referencia);
+                } else if (tipo === 'AD' && obrig === 'Altamente Desejável') {
+                    requisitosSelecionadosModal.add(req.referencia);
+                }
+            });
+            renderizarListaRequisitos(document.getElementById('buscaRequisitosExport')?.value || '');
+            atualizarContadores();
+        }
+
+        function selecionarTodosRequisitos(selecionar) {
+            const filtro = document.getElementById('buscaRequisitosExport')?.value || '';
+            const filtroLower = filtro.toLowerCase();
+            listaRequisitosModal.forEach(req => {
+                const match = req.referencia.includes(filtroLower) ||
+                    req.titulo.toLowerCase().includes(filtroLower);
+                if (filtro && !match) return;
+                if (selecionar) {
+                    requisitosSelecionadosModal.add(req.referencia);
+                } else {
+                    requisitosSelecionadosModal.delete(req.referencia);
+                }
+            });
+            renderizarListaRequisitos(filtro);
+            atualizarContadores();
+        }
+
+        function toggleRequisito(referencia) {
+            const checkboxes = document.querySelectorAll('.requisito-check');
+            checkboxes.forEach(cb => {
+                if (cb.dataset.ref === referencia) {
+                    if (cb.checked) {
+                        requisitosSelecionadosModal.add(referencia);
+                    } else {
+                        requisitosSelecionadosModal.delete(referencia);
+                    }
+                }
+            });
+            atualizarContadores();
+        }
+
+        function atualizarContadores() {
+            const total = document.getElementById('contadorRequisitosTotal');
+            const selecionados = document.getElementById('contadorRequisitosSelecionados');
+            const resumo = document.getElementById('resumoQuantidade');
+            if (total) total.textContent = listaRequisitosModal.length;
+            if (selecionados) selecionados.textContent = requisitosSelecionadosModal.size;
+            if (resumo) resumo.textContent = requisitosSelecionadosModal.size || 0;
+            atualizarResumo();
+        }
+
+        function selecionarTodasColunas(selecionar) {
+            const checkboxes = document.querySelectorAll('.coluna-check:not(:disabled)');
+            checkboxes.forEach(cb => cb.checked = selecionar);
+            atualizarResumo();
+        }
+
+        function atualizarResumo() {
+            const radio = document.querySelector('input[name="tipoRequisito"]:checked');
+            const tipo = radio ? radio.value : 'funcionais';
+            let total = 0;
+            if (tipo === 'funcionais') total = dadosRequisitos.secoes.reduce((acc, s) => acc + s.totalRequisitos, 0);
+            else if (tipo === 'nao-funcionais') total = dadosRequisitosNF.secoes.reduce((acc, s) => acc + s.totalRequisitos, 0);
+            else total = dadosRequisitos.secoes.reduce((acc, s) => acc + s.totalRequisitos, 0) + dadosRequisitosNF.secoes.reduce((acc, s) => acc + s.totalRequisitos, 0);
+
+            const colunasSelecionadas = document.querySelectorAll('.coluna-check:checked').length;
+            const colunasObrigatorias = 4;
+            const totalColunas = colunasObrigatorias + colunasSelecionadas;
+
+            document.getElementById('resumoQuantidade').textContent = total;
+            document.getElementById('resumoColunas').textContent = totalColunas;
+        }
+
+        document.querySelectorAll('.coluna-check, input[name="tipoRequisito"]').forEach(el => {
+            el.addEventListener('change', atualizarResumo);
+        });
+
+        // =====================================================================
+        // EXPORTAÇÃO - CSV E PDF
+        // =====================================================================
+        function getRequisitosParaExportar() {
+            if (requisitosSelecionadosModal.size > 0) {
+                const selecionados = listaRequisitosModal.filter(req =>
+                    requisitosSelecionadosModal.has(req.referencia)
+                );
+                return selecionados.map(req => {
+                    const baseDetalhes = req.tipo === 'Funcional' ? detalhesRequisitos : detalhesRequisitosNF;
+                    const det = baseDetalhes && baseDetalhes[req.referencia] ? baseDetalhes[req.referencia] : null;
+                    let forma = '';
+                    if (typeof formaDemonstracao !== 'undefined' && formaDemonstracao[req.referencia]) {
+                        forma = formaDemonstracao[req.referencia];
+                    } else {
+                        try {
+                            const dados = JSON.parse(localStorage.getItem('formaDemonstracao') || '{}');
+                            if (dados[req.referencia]) forma = dados[req.referencia];
+                        } catch (e) { }
+                    }
+                    return {
+                        referencia: req.referencia || '',
+                        titulo: req.titulo || '',
+                        texto: getTextoRequisito(req),
+                        obrigatoriedade: req.obrigatoriedade || '',
+                        tipo: req.tipo || '',
+                        capitulo: req.capitulo || '',
+                        explicacao: det && det.explicacao ? det.explicacao : '',
+                        implementacao: det && det.implementacao ? det.implementacao : '',
+                        exemplo: det && det.exemplo ? det.exemplo : '',
+                        dicas: det && det.dicas ? det.dicas : '',
+                        atende: req.atende || '',
+                        formaDemonstracao: forma
+                    };
+                });
+            }
+            return [];
+        }
+
+        function getColunasSelecionadas() {
+            const colunas = [
+                { id: 'ref', label: 'Ref.', obrigatoria: true },
+                { id: 'titulo', label: 'Título', obrigatoria: true },
+                { id: 'texto', label: 'Texto', obrigatoria: true },
+                { id: 'obrigatoriedade', label: 'Obrig.', obrigatoria: true }
+            ];
+            const opcionais = [
+                { id: 'tipo', label: 'Tipo', checkId: 'col-tipo' },
+                { id: 'capitulo', label: 'Capítulo', checkId: 'col-capitulo' },
+                { id: 'explicacao', label: 'Explicação', checkId: 'col-explicacao' },
+                { id: 'implementacao', label: 'Implementação', checkId: 'col-implementacao' },
+                { id: 'atende', label: 'Atende?', checkId: 'col-atende' },
+                { id: 'formaDemonstracao', label: 'Forma de Demonstração', checkId: 'col-forma-demonstracao' },
+                { id: 'exemplo', label: 'Exemplo', checkId: 'col-exemplo' },
+                { id: 'dicas', label: 'Dicas', checkId: 'col-dicas' }
+            ];
+            opcionais.forEach(op => {
+                const checkbox = document.getElementById(op.checkId);
+                if (checkbox && checkbox.checked) {
+                    colunas.push({ id: op.id, label: op.label, obrigatoria: false });
+                }
+            });
+            return colunas;
+        }
+
+        function exportarCSV() {
+            const dados = getRequisitosParaExportar();
+            if (dados.length === 0) {
+                alert('Nenhum requisito selecionado para exportação.');
+                return;
+            }
+            const colunas = getColunasSelecionadas();
+            let csv = '\uFEFF';
+            csv += colunas.map(c => c.label).join(';') + '\n';
+            dados.forEach(row => {
+                csv += colunas.map(c => {
+                    let valor = row[c.id] || '';
+                    if (typeof valor === 'string' && (valor.includes(';') || valor.includes('"') || valor.includes('\n'))) {
+                        return '"' + valor.replace(/"/g, '""') + '"';
+                    }
+                    return valor;
+                }).join(';') + '\n';
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            const tipo = document.querySelector('input[name="tipoRequisito"]:checked').value;
+            link.setAttribute('download', `conformidade_${tipo}_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function exportarPDF() {
+            const dados = getRequisitosParaExportar();
+            if (dados.length === 0) {
+                alert('Nenhum requisito selecionado para exportação.');
+                return;
+            }
+            const colunas = getColunasSelecionadas();
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+
+            const radio = document.querySelector('input[name="tipoRequisito"]:checked');
+            const tipo = radio ? radio.value : 'funcionais';
+            const tituloMap = {
+                'funcionais': 'Requisitos Funcionais - Conformidade e-ARQ Brasil',
+                'nao-funcionais': 'Requisitos Não Funcionais - Conformidade e-ARQ Brasil',
+                'todos': 'Todos os Requisitos - Conformidade e-ARQ Brasil'
+            };
+
+            doc.setFontSize(16);
+            doc.text(tituloMap[tipo] || 'Conformidade e-ARQ Brasil', 14, 20);
+            doc.setFontSize(10);
+            doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')} - Total: ${dados.length} requisitos`, 14, 28);
+            doc.setDrawColor(200, 200, 200);
+            doc.line(14, 32, 290, 32);
+
+            const headers = colunas.map(c => c.label);
+            const data = dados.map(row => colunas.map(c => row[c.id] || ''));
+
+            const pageWidth = 277;
+            const pesos = colunas.map(c => {
+                if (c.id === 'ref' || c.id === 'obrigatoriedade' || c.id === 'atende') return 0.06;
+                if (c.id === 'titulo' || c.id === 'capitulo') return 0.12;
+                if (c.id === 'texto' || c.id === 'explicacao' || c.id === 'implementacao' || c.id === 'formaDemonstracao') return 0.18;
+                if (c.id === 'exemplo' || c.id === 'dicas') return 0.14;
+                if (c.id === 'tipo') return 0.08;
+                return 0.08;
+            });
+            const somaPesos = pesos.reduce((a, b) => a + b, 0);
+            let colWidths = pesos.map(p => (p / somaPesos) * pageWidth);
+            const minWidth = 12;
+            for (let i = 0; i < colWidths.length; i++) {
+                if (colWidths[i] < minWidth) colWidths[i] = minWidth;
+            }
+            let totalWidth = colWidths.reduce((a, b) => a + b, 0);
+            if (totalWidth > pageWidth) {
+                const factor = pageWidth / totalWidth;
+                for (let i = 0; i < colWidths.length; i++) colWidths[i] *= factor;
+            }
+
+            doc.autoTable({
+                startY: 36,
+                head: [headers],
+                body: data,
+                theme: 'grid',
+                tableWidth: pageWidth,
+                styles: {
+                    fontSize: 6,
+                    cellPadding: { top: 1.5, right: 1.5, bottom: 1.5, left: 1.5 },
+                    valign: 'top',
+                    halign: 'left',
+                    lineColor: [150, 150, 150],
+                    lineWidth: 0.1,
+                    overflow: 'linebreak'
+                },
+                headStyles: {
+                    fillColor: [0, 30, 64],
+                    textColor: [255, 255, 255],
+                    fontSize: 7,
+                    fontStyle: 'bold',
+                    halign: 'center',
+                    valign: 'middle',
+                    cellPadding: { top: 2.5, right: 1.5, bottom: 2.5, left: 1.5 }
+                },
+                columnStyles: colunas.map((c, i) => ({
+                    cellWidth: colWidths[i],
+                    halign: (c.id === 'ref' || c.id === 'obrigatoriedade' || c.id === 'atende') ? 'center' : 'left'
+                })),
+                alternateRowStyles: { fillColor: [245, 247, 250] },
+                pageBreak: 'auto',
+                margin: { left: 10, right: 10, top: 35, bottom: 15 },
+                showHead: 'everyPage',
+                didDrawPage: function (data) {
+                    doc.setFontSize(7);
+                    doc.setTextColor(150, 150, 150);
+                    const pageHeight = doc.internal.pageSize.height;
+                    const pageWidthTotal = doc.internal.pageSize.width;
+                    doc.text(`Página ${data.pageNumber}`, 14, pageHeight - 6);
+                    doc.text('e-ARQ Brasil - Conformidade', pageWidthTotal - 14, pageHeight - 6, { align: 'right' });
+                }
+            });
+
+            doc.save(`conformidade_${tipo}_${new Date().toISOString().slice(0, 10)}.pdf`);
+        }
+
+        // =====================================================================
+        // RENDERIZAÇÃO DAS OUTRAS SEÇÕES (mantidas do original)
+        // =====================================================================
+        function renderVisaoGeral() {
+            const main = document.getElementById('main-content');
+            if (typeof dadosVisaoGeral === 'undefined') {
+                main.innerHTML = `<div class="p-8 bg-white border border-outline-variant rounded-2xl"><p class="text-error font-semibold">Arquivo visaogeral.js não encontrado.</p></div>`;
+                return;
+            }
+            const rotulos = {
+                subtitulo: 'Subtítulo', dataPublicacao: 'Data de publicação', orgaoResponsavel: 'Responsável',
+                paraQueServe: 'Para que serve', primeiroAcesso: 'Primeiro acesso', dadosObrigatorios: 'Dados obrigatórios',
+                boasPraticas: 'Boas práticas', tratamentoDados: 'Tratamento de dados', limitacoesTecnicas: 'Limitações técnicas',
+                restricoesUso: 'Restrições de uso', sistemasOperacionais: 'Sistemas operacionais', barraSuperior: 'Barra superior',
+                menuLateral: 'Menu lateral', recursos: 'Recursos', categorias: 'Categorias', permissoes: 'Permissões',
+                funcionalidades: 'Funcionalidades', metodosConsulta: 'Métodos de consulta', centralDownloads: 'Central de downloads',
+                versoes: 'Versões', descricao: 'Descrição', definicao: 'Definição', passos: 'Passo a passo',
+                navegadores: 'Navegadores', graficos: 'Gráficos', tipos: 'Tipos', status: 'Status', acoes: 'Ações',
+                licenca: 'Licença', sso: 'Integração SSO', senha: 'Senha', projetos: 'Projetos'
+            };
+            const tituloDaChave = chave => rotulos[chave] || chave.replace(/([A-Z])/g, ' $1').replace(/^./, letra => letra.toUpperCase());
+
+            const criarConteudo = valor => {
+                if (typeof valor === 'string' || typeof valor === 'number') {
+                    const paragrafo = document.createElement('p');
+                    paragrafo.className = 'text-sm leading-relaxed text-on-surface';
+                    paragrafo.textContent = valor;
+                    return paragrafo;
+                }
+                if (Array.isArray(valor)) {
+                    const lista = document.createElement('ul');
+                    lista.className = 'list-disc pl-5 space-y-1.5 text-sm leading-relaxed text-on-surface';
+                    valor.forEach(item => {
+                        const linha = document.createElement('li');
+                        if (item && typeof item === 'object') {
+                            if (item.nome) {
+                                const nome = document.createElement('strong');
+                                nome.className = 'text-primary';
+                                nome.textContent = item.nome;
+                                linha.appendChild(nome);
+                            }
+                            Object.entries(item).forEach(([chave, conteudo]) => {
+                                if (chave === 'nome') return;
+                                const grupo = document.createElement('div');
+                                grupo.className = 'mt-2';
+                                const rotulo = document.createElement('span');
+                                rotulo.className = 'font-semibold text-primary';
+                                rotulo.textContent = `${tituloDaChave(chave)}: `;
+                                grupo.append(rotulo, criarConteudo(conteudo));
+                                linha.appendChild(grupo);
+                            });
+                        } else {
+                            linha.textContent = item;
+                        }
+                        lista.appendChild(linha);
+                    });
+                    return lista;
+                }
+                const grupo = document.createElement('div');
+                grupo.className = 'space-y-3';
+                Object.entries(valor || {}).forEach(([chave, conteudo]) => {
+                    if (chave === 'titulo') return;
+                    const campo = document.createElement('div');
+                    const rotulo = document.createElement('h3');
+                    rotulo.className = 'font-semibold text-primary text-sm';
+                    rotulo.textContent = tituloDaChave(chave);
+                    campo.append(rotulo, criarConteudo(conteudo));
+                    grupo.appendChild(campo);
+                });
+                return grupo;
+            };
+
+            const configuracaoSecoes = {
+                identificacao: ['badge', 'from-blue-950 to-primary'], oQueE: ['auto_awesome', 'from-indigo-700 to-blue-700'],
+                acesso: ['login', 'from-sky-700 to-cyan-600'], seguranca: ['shield_lock', 'from-emerald-700 to-teal-600'],
+                lgpd: ['policy', 'from-violet-700 to-purple-600'], limitacoes: ['devices', 'from-slate-700 to-slate-600'],
+                painel: ['dashboard', 'from-blue-800 to-indigo-700'], smartdocs: ['hub', 'from-fuchsia-700 to-purple-700'],
+                permissoes: ['admin_panel_settings', 'from-amber-700 to-orange-600'], solicitacoes: ['assignment', 'from-rose-700 to-pink-600'],
+                gestaoDocumental: ['folder_managed', 'from-cyan-700 to-blue-600'], transporte: ['local_shipping', 'from-orange-700 to-amber-600'],
+                relatorios: ['analytics', 'from-teal-700 to-emerald-600'], appMobile: ['smartphone', 'from-indigo-700 to-violet-600'],
+                etiqpress: ['print', 'from-slate-800 to-slate-600'], novidades: ['new_releases', 'from-pink-700 to-rose-600'],
+                faq: ['help', 'from-blue-700 to-sky-600'], creditos: ['favorite', 'from-red-700 to-rose-600']
+            };
+            const introducoes = {
+                oQueE: 'O DOCZ reúne a operação de documentos físicos e digitais em um só ambiente. Em vez de procurar informações em controles separados, a equipe acompanha onde cada item está, qual serviço foi solicitado e qual é seu histórico.',
+                acesso: 'O acesso é controlado pela equipe responsável pelo projeto. Ao receber suas credenciais, informe o cliente, o e-mail cadastrado e a senha para entrar no ambiente da sua instituição com segurança.',
+                seguranca: 'A segurança do DOCZ depende também de boas práticas diárias: cada pessoa deve usar somente a própria conta e utilizar o sistema exclusivamente para as atividades autorizadas pela organização.',
+                lgpd: 'O uso da plataforma envolve responsabilidades com os dados e documentos armazenados. Por isso, o DOCZ opera de acordo com o Termo de Uso, a Política de Privacidade e as diretrizes de proteção de dados.',
+                limitacoes: 'Como plataforma SaaS, o DOCZ funciona no navegador e precisa de conexão com a internet. Essa escolha permite acessar o sistema sem instalar programas locais, mantendo as atualizações centralizadas.',
+                painel: 'O Painel Inicial é o ponto de partida para acompanhar a operação. Ele reúne indicadores, atalhos e informações do projeto selecionado para que a equipe consiga entender rapidamente o cenário atual.',
+                smartdocs: 'O SmartDocs complementa o DOCZ ao transformar processos em jornadas digitais. A integração por SSO evita novos logins e permite que documentos, formulários e fluxos trabalhem de forma conectada.',
+                permissoes: 'As permissões definem o que cada pessoa pode ver e fazer. Organizar usuários por grupos reduz acessos indevidos e faz com que cada área disponha apenas das funções necessárias ao seu trabalho.',
+                solicitacoes: 'As solicitações organizam a demanda por serviços e geram Ordens de Serviço rastreáveis. Assim, quem solicita acompanha o andamento e quem executa registra cada etapa da operação.',
+                gestaoDocumental: 'Este módulo concentra as atividades que dão contexto ao acervo: arquivamento, classificação, indexação, status e prazos de guarda. É aqui que a informação passa a ser gerenciável ao longo de todo o ciclo de vida.',
+                transporte: 'Quando uma Ordem de Serviço exige movimentação física, o módulo de Transporte registra a equipe, o veículo e os itens envolvidos. Isso dá visibilidade e rastreabilidade desde a saída até a entrega.',
+                relatorios: 'Os relatórios transformam a operação registrada no DOCZ em dados para acompanhamento e decisão. Use filtros para gerar arquivos adequados à necessidade e acompanhe a conclusão pela Central de Downloads.',
+                appMobile: 'O DOCZ Mobile leva as consultas e movimentações para o local onde o trabalho acontece. Com a leitura de códigos e a pesquisa de objetos, a equipe executa tarefas de campo mantendo o histórico atualizado.',
+                etiqpress: 'O EtiqPress simplifica a criação e a impressão de etiquetas integradas ao DOCZ. Com identificadores e endereços corretos, a localização física dos itens se torna mais rápida e confiável.',
+                novidades: 'As notas de versão registram as evoluções do DOCZ. Consulte esta área para saber quais melhorias, ajustes e correções chegaram ao sistema antes de orientar a sua equipe.',
+                faq: 'Aqui estão respostas diretas para dúvidas frequentes. Use esta seção como referência rápida durante a operação ou para orientar novos usuários antes de acionarem o suporte.',
+                creditos: 'Esta página foi estruturada a partir do Manual de Operação do DOCZ, preparado pelo Grupo SOS Docs como referência para o uso cotidiano da plataforma.'
+            };
+
+            main.replaceChildren();
+            const identificacao = dadosVisaoGeral.identificacao || {};
+            const hero = document.createElement('header');
+            hero.className = 'relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#001e40] via-[#003366] to-[#075985] p-6 sm:p-9 mb-7 text-white shadow-xl';
+            hero.innerHTML = `
+                <div class="absolute -right-16 -top-20 w-64 h-64 rounded-full bg-white/10"></div>
+                <div class="absolute right-20 -bottom-28 w-72 h-72 rounded-full border-[28px] border-white/10"></div>
+                <div class="relative max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-white/15 border border-white/20"><span class="material-symbols-outlined text-base">auto_awesome</span> Dashboard de conformidade</span>
+                    <h1 class="mt-5 text-4xl sm:text-5xl font-bold tracking-tight">${identificacao.titulo || 'DOCZ'}</h1>
+                    <p class="mt-2 text-lg sm:text-xl text-blue-100">${identificacao.subtitulo || 'Sistema inteligente de gestão documental'}</p>
+                    <p class="mt-5 text-sm sm:text-base leading-relaxed text-blue-50">${identificacao.descricao || ''}</p>
+                </div>`;
+            main.appendChild(hero);
+
+            const indicadores = document.createElement('div');
+            indicadores.className = 'grid grid-cols-2 lg:grid-cols-4 gap-3 mb-7';
+            [
+                ['menu_book', '18', 'áreas do manual'],
+                ['verified_user', 'LGPD', 'proteção de dados'],
+                ['cloud_done', 'SaaS', 'acesso 100% web'],
+                ['update', identificacao.versao || '2026', 'versão do manual']
+            ].forEach(([icone, valor, legenda]) => {
+                const indicador = document.createElement('div');
+                indicador.className = 'bg-white border border-outline-variant/70 rounded-2xl p-4 shadow-sm flex items-center gap-3';
+                indicador.innerHTML = `<span class="material-symbols-outlined text-primary bg-blue-50 p-2 rounded-xl">${icone}</span><div><strong class="block text-primary text-lg leading-tight">${valor}</strong><span class="text-xs text-on-surface-variant">${legenda}</span></div>`;
+                indicadores.appendChild(indicador);
+            });
+            main.appendChild(indicadores);
+
+            const introducao = document.createElement('div');
+            introducao.className = 'flex items-end justify-between gap-4 mb-4';
+            introducao.innerHTML = '<div><p class="text-xs font-bold tracking-[0.16em] uppercase text-tertiary">Conheça a plataforma</p><h2 class="text-2xl font-bold text-primary mt-1">Guia de operação</h2></div><p class="hidden sm:block text-sm text-on-surface-variant">Abra uma seção para consultar os detalhes.</p>';
+            main.appendChild(introducao);
+
+            const secoes = document.createElement('div');
+            secoes.className = 'visao-secoes-grid grid grid-cols-1 xl:grid-cols-2 gap-4';
+            Object.entries(dadosVisaoGeral).filter(([chave]) => chave !== 'identificacao').forEach(([chave, secao], indice) => {
+                const detalhe = document.createElement('details');
+                detalhe.className = 'visao-secao-card group bg-white border border-outline-variant/70 rounded-2xl overflow-hidden';
+                detalhe.open = false;
+                const resumo = document.createElement('summary');
+                resumo.className = 'visao-secao-resumo cursor-pointer list-none p-4 sm:p-5 flex items-center gap-3 select-none';
+                const texto = document.createElement('span');
+                texto.className = 'min-w-0 flex-1';
+                const tituloSecao = secao?.titulo || (chave === 'faq' ? 'Perguntas frequentes' : tituloDaChave(chave));
+                texto.innerHTML = `<span class="block text-primary font-bold leading-tight">${tituloSecao}</span><span class="block mt-1 text-xs text-on-surface-variant">${indice + 1} de ${Object.keys(dadosVisaoGeral).length - 1} · clique para abrir</span>`;
+                const seta = document.createElement('span');
+                seta.className = 'material-symbols-outlined text-on-surface-variant transition-transform group-open:rotate-180';
+                seta.textContent = 'expand_more';
+                resumo.append(texto, seta);
+                const corpo = document.createElement('div');
+                corpo.className = 'px-5 sm:px-6 pb-6 pt-1 border-t border-outline-variant/60';
+                if (introducoes[chave]) {
+                    const explicacao = document.createElement('p');
+                    explicacao.className = 'mt-5 mb-5 text-[15px] leading-7 text-on-surface bg-surface-container-low/60 rounded-xl p-4';
+                    explicacao.textContent = introducoes[chave];
+                    corpo.appendChild(explicacao);
+                }
+                corpo.appendChild(criarConteudo(secao));
+                detalhe.append(resumo, corpo);
+                secoes.appendChild(detalhe);
+            });
+            main.appendChild(secoes);
+        }
+
+        function renderMetricas() {
+            const main = document.getElementById('main-content');
+            if (typeof dadosRequisitos === 'undefined') {
+                main.innerHTML = `<div class="p-8 bg-white border border-outline-variant rounded-2xl"><p class="text-error font-semibold">Dados de requisitos não encontrados.</p></div>`;
+                return;
+            }
+
+            const fontes = [dadosRequisitos];
+            if (typeof dadosRequisitosNF !== 'undefined') fontes.push(dadosRequisitosNF);
+            const requisitos = fontes.flatMap(fonte => fonte.secoes.flatMap(secao =>
+                secao.subsecoes.flatMap(sub => sub.requisitos.map(requisito => ({
+                    ...requisito,
+                    capitulo: secao.titulo
+                })))
+            ));
+            const total = requisitos.length;
+            const atendidos = requisitos.filter(requisito => getStatusConformidade(requisito.referencia) === true).length;
+            const naoAtendidos = requisitos.filter(requisito => getStatusConformidade(requisito.referencia) === false).length;
+            const parciais = total - atendidos - naoAtendidos;
+            const percentual = valor => total ? ((valor / total) * 100).toFixed(1) : '0.0';
+            const obrigatorios = requisitos.filter(requisito => requisito.obrigatoriedade === 'Obrigatório').length;
+            const desejaveis = requisitos.filter(requisito => requisito.obrigatoriedade === 'Altamente Desejável').length;
+            const facultativos = requisitos.filter(requisito => requisito.obrigatoriedade === 'Facultativo').length;
+            const capitulos = [...new Set(requisitos.map(requisito => requisito.capitulo))].map(nome => {
+                const itens = requisitos.filter(requisito => requisito.capitulo === nome);
+                return {
+                    nome,
+                    total: itens.length,
+                    atende: itens.filter(requisito => getStatusConformidade(requisito.referencia) === true).length,
+                    naoAtende: itens.filter(requisito => getStatusConformidade(requisito.referencia) === false).length
+                };
+            });
+            const barraStatus = (valor, cor) => `<div class="h-2 rounded-full bg-slate-100 overflow-hidden"><div class="h-full rounded-full ${cor}" style="width:${percentual(valor)}%"></div></div>`;
+            const barraCapitulo = capitulo => {
+                const parcial = capitulo.total - capitulo.atende - capitulo.naoAtende;
+                return `<div class="metricas-capitulo py-3 border-b border-outline-variant/60 last:border-b-0">
+                    <div class="flex items-center justify-between gap-3 mb-2"><span class="text-sm font-semibold text-primary truncate">${capitulo.nome}</span><span class="text-xs text-on-surface-variant whitespace-nowrap">${capitulo.total} requisitos</span></div>
+                    <div class="flex h-2.5 rounded-full overflow-hidden bg-slate-100"><span class="bg-emerald-500" style="width:${capitulo.atende / capitulo.total * 100}%"></span><span class="bg-red-500" style="width:${capitulo.naoAtende / capitulo.total * 100}%"></span><span class="bg-amber-400" style="width:${parcial / capitulo.total * 100}%"></span></div>
+                    <div class="flex gap-4 mt-2 text-[11px] text-on-surface-variant"><span><b class="text-emerald-700">${capitulo.atende}</b> atende</span><span><b class="text-red-700">${capitulo.naoAtende}</b> não atende</span><span><b class="text-amber-700">${parcial}</b> parcial</span></div>
+                </div>`;
+            };
+
+            main.innerHTML = `
+                <div class="w-full lg:w-[95%]">
+                    <div class="mb-8">
+                        <p class="text-xs font-bold tracking-[0.16em] uppercase text-tertiary">Acompanhamento</p>
+                        <h1 class="text-3xl font-bold text-primary mt-2">Dashboard de conformidade</h1>
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">Visualize o atendimento dos requisitos e identifique os pontos que precisam de atenção.</p>
+                    </div>
+                    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 mb-5">
+                        <div class="metricas-indicador"><span class="material-symbols-outlined text-primary bg-blue-50">checklist</span><div><strong>${total}</strong><span>Total de requisitos</span></div></div>
+                        <div class="metricas-indicador"><span class="material-symbols-outlined text-emerald-700 bg-emerald-50">check_circle</span><div><strong class="text-emerald-700">${atendidos}</strong><span>Atende · ${percentual(atendidos)}%</span></div></div>
+                        <div class="metricas-indicador"><span class="material-symbols-outlined text-red-700 bg-red-50">cancel</span><div><strong class="text-red-700">${naoAtendidos}</strong><span>Não atende · ${percentual(naoAtendidos)}%</span></div></div>
+                        <div class="metricas-indicador"><span class="material-symbols-outlined text-amber-700 bg-amber-50">pending</span><div><strong class="text-amber-700">${parciais}</strong><span>Parcial · ${percentual(parciais)}%</span></div></div>
+                    </div>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        <section class="metricas-painel">
+                            <div class="flex items-center justify-between gap-3 mb-5"><div><h2>Distribuição dos status</h2><p>Resultado geral da avaliação dos requisitos.</p></div><span class="metricas-grafico-circular" style="background:conic-gradient(#10b981 0 ${percentual(atendidos)}%, #ef4444 ${percentual(atendidos)}% ${percentual(atendidos + naoAtendidos)}%, #fbbf24 ${percentual(atendidos + naoAtendidos)}% 100%)"><span>${percentual(atendidos)}%</span></span></div>
+                            <div class="space-y-4"><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-emerald-700">Atende</span><span>${atendidos} · ${percentual(atendidos)}%</span></div>${barraStatus(atendidos, 'bg-emerald-500')}</div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-red-700">Não atende</span><span>${naoAtendidos} · ${percentual(naoAtendidos)}%</span></div>${barraStatus(naoAtendidos, 'bg-red-500')}</div><div><div class="flex justify-between text-sm mb-1"><span class="font-medium text-amber-700">Parcial / não avaliado</span><span>${parciais} · ${percentual(parciais)}%</span></div>${barraStatus(parciais, 'bg-amber-400')}</div></div>
+                        </section>
+                        <section class="metricas-painel"><div class="mb-3"><h2>Obrigatoriedade</h2><p>Distribuição conforme o nível exigido.</p></div><div class="space-y-4"><div><div class="flex justify-between text-sm mb-1"><span>Obrigatórios</span><span>${obrigatorios} · ${percentual(obrigatorios)}%</span></div>${barraStatus(obrigatorios, 'bg-primary')}</div><div><div class="flex justify-between text-sm mb-1"><span>Altamente desejáveis</span><span>${desejaveis} · ${percentual(desejaveis)}%</span></div>${barraStatus(desejaveis, 'bg-amber-400')}</div><div><div class="flex justify-between text-sm mb-1"><span>Facultativos</span><span>${facultativos} · ${percentual(facultativos)}%</span></div>${barraStatus(facultativos, 'bg-sky-400')}</div></div></section>
+                        <section class="metricas-painel xl:col-span-2"><div class="mb-2"><h2>Conformidade por capítulo</h2><p>Comparativo entre requisitos atendidos, não atendidos e parciais.</p></div>${capitulos.map(barraCapitulo).join('')}</section>
+                    </div>
+                </div>`;
+        }
+
+        function renderMetadados() {
+            const main = document.getElementById('main-content');
+            if (typeof dadosMetadados === 'undefined') {
+                main.innerHTML = `<div class="p-8 bg-white border border-outline-variant rounded-2xl"><p class="text-error font-semibold">Arquivo metadados.js não encontrado.</p></div>`;
+                return;
+            }
+            main.innerHTML = `
+                <div class="w-full lg:w-[95%]">
+                    <div class="mb-8">
+                        <p class="text-xs font-bold tracking-[0.16em] uppercase text-tertiary">Estrutura da informação</p>
+                        <h1 class="text-3xl font-bold text-primary mt-2">Metadados</h1>
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">Consulte os elementos usados para identificar, contextualizar e preservar os documentos no SIGAD.</p>
+                    </div>
+                    <div class="metadados-resumo mb-5"><span class="material-symbols-outlined">dataset</span><div><strong>${dadosMetadados.totalElementos}</strong><span>elementos organizados em ${dadosMetadados.totalEntidades} entidades</span></div></div>
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                        ${dadosMetadados.entidades.map(entidade => `
+                            <details class="visao-secao-card metadados-entidade group">
+                                <summary class="visao-secao-resumo cursor-pointer list-none flex items-center gap-4 px-5 py-5 select-none">
+                                    <span class="flex-1 min-w-0"><span class="block text-primary font-bold leading-tight">${entidade.id}. ${entidade.nome}</span><span class="block mt-1 text-xs text-on-surface-variant">${entidade.elementos} elementos</span></span>
+                                    <span class="material-symbols-outlined text-on-surface-variant transition-transform group-open:rotate-180">expand_more</span>
+                                </summary>
+                                <div class="px-5 pb-5 bg-[#fbfcff]">
+                                    <p class="text-sm leading-relaxed text-on-surface-variant mb-4">${entidade.descricao}</p>
+                                    <div class="divide-y divide-outline-variant/60 border-y border-outline-variant/60">
+                                        ${entidade.itens.map(item => `<details class="metadado-item group"><summary class="cursor-pointer list-none flex items-center gap-3 py-3"><span class="font-mono-sm text-xs font-bold text-tertiary">${item.id}</span><span class="flex-1 text-sm font-semibold text-primary">${item.nome}</span><span class="material-symbols-outlined text-sm text-on-surface-variant transition-transform group-open:rotate-180">expand_more</span></summary><div class="pb-4 pl-9 text-xs leading-relaxed text-on-surface-variant"><p><strong class="text-primary">Rótulo:</strong> ${item.rotulo}</p><p class="mt-1"><strong class="text-primary">Definição:</strong> ${item.definicao}</p><p class="mt-1"><strong class="text-primary">Obrigatoriedade:</strong> ${item.obrigatoriedade}</p></div></details>`).join('')}
+                                    </div>
+                                </div>
+                            </details>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderGlossario() {
+            const main = document.getElementById('main-content');
+            if (typeof dadosGlossario === 'undefined') {
+                main.innerHTML = `<div class="p-8 bg-white border border-outline-variant rounded-2xl"><p class="text-error font-semibold">Arquivo glossario.js não encontrado.</p></div>`;
+                return;
+            }
+            main.innerHTML = `<div class="p-8"><h1 class="text-2xl font-bold text-primary">Glossário</h1><p class="text-on-surface-variant">Conteúdo carregado do glossario.js</p></div>`;
+        }
+
+        function renderReferencias() {
+            const main = document.getElementById('main-content');
+            if (typeof dadosReferencias === 'undefined') {
+                main.innerHTML = `<div class="p-8 bg-white border border-outline-variant rounded-2xl"><p class="text-error font-semibold">Arquivo referencias.js não encontrado.</p></div>`;
+                return;
+            }
+            main.innerHTML = `<div class="p-8"><h1 class="text-2xl font-bold text-primary">Referências</h1><p class="text-on-surface-variant">Conteúdo carregado do referencias.js</p></div>`;
+        }
+
+        function renderMER() {
+            const main = document.getElementById('main-content');
+            main.innerHTML = `<div class="p-8"><h1 class="text-2xl font-bold text-primary">Modelo MER</h1><p class="text-on-surface-variant">Diagrama carregado via Mermaid.js</p></div>`;
+        }
+
+        function renderInstrumentos() {
+            const main = document.getElementById('main-content');
+            if (typeof dadosInstrumentos === 'undefined') {
+                main.innerHTML = `<div class="p-8 bg-white border border-outline-variant rounded-2xl"><p class="text-error font-semibold">Arquivo instrumentos.js não encontrado.</p></div>`;
+                return;
+            }
+            main.innerHTML = `<div class="p-8"><h1 class="text-2xl font-bold text-primary">Instrumentos</h1><p class="text-on-surface-variant">Conteúdo carregado do instrumentos.js</p></div>`;
+        }
+
+        function renderPerguntasFrequentes() {
+            const main = document.getElementById('main-content');
+            const perguntas = dadosVisaoGeral?.faq || [];
+            main.innerHTML = `
+                <div class="w-full lg:w-[90%]">
+                    <div class="mb-8">
+                        <p class="text-xs font-bold tracking-[0.16em] uppercase text-tertiary">Ajuda rápida</p>
+                        <h1 class="text-3xl font-bold text-primary mt-2">Perguntas frequentes</h1>
+                        <p class="mt-3 text-on-surface-variant leading-relaxed">Respostas objetivas para as dúvidas mais comuns sobre o DOCZ, organizadas para consulta rápida.</p>
+                    </div>
+                    <div class="faq-grid grid grid-cols-1 gap-3">
+                        ${perguntas.map((item, indice) => `
+                            <details class="visao-secao-card faq-menu-item group">
+                                <summary class="visao-secao-resumo cursor-pointer list-none flex items-center gap-4 px-5 py-5 select-none">
+                                    <span class="text-xs font-mono-sm font-bold text-tertiary">${String(indice + 1).padStart(2, '0')}</span>
+                                    <span class="flex-1 font-semibold text-primary">${item.pergunta}</span>
+                                    <span class="material-symbols-outlined text-on-surface-variant transition-transform group-open:rotate-180">expand_more</span>
+                                </summary>
+                                <div class="faq-menu-resposta px-5 pb-5 pl-14 text-sm leading-relaxed text-on-surface-variant">${item.resposta}</div>
+                            </details>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleFaqItem(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if (!el) return;
+            if (el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                if (icon) icon.textContent = 'expand_less';
+            } else {
+                el.classList.add('hidden');
+                if (icon) icon.textContent = 'expand_more';
+            }
+        }
+
+        // =====================================================================
+        // NAVEGAÇÃO PRINCIPAL
+        // =====================================================================
+        function alternarModo(modo) {
+            const btnVisaoGeral = document.getElementById('btnVisaoGeral');
+            const btnFuncionais = document.getElementById('btnFuncionais');
+            const btnNaoFuncionais = document.getElementById('btnNaoFuncionais');
+            const btnMetricas = document.getElementById('btnMetricas');
+            const btnMetadados = document.getElementById('btnMetadados');
+            const btnGlossario = document.getElementById('btnGlossario');
+            const btnFAQ = document.getElementById('btnFAQ');
+            const btnReferencias = document.getElementById('btnReferencias');
+            const btnMER = document.getElementById('btnMER');
+            const btnInstrumentos = document.getElementById('btnInstrumentos');
+
+            [btnVisaoGeral, btnFuncionais, btnNaoFuncionais, btnMetricas, btnMetadados, btnGlossario, btnFAQ, btnReferencias, btnMER, btnInstrumentos].forEach(btn => {
+                if (btn) btn.className = 'flex items-center gap-3 nav-item-inativo rounded-xl px-4 py-3 transition-all duration-200';
+            });
+
+            const wrapper = document.getElementById('navSearchWrapper');
+            if (wrapper && wrapper.classList.contains('aberto')) {
+                wrapper.classList.remove('aberto');
+                document.getElementById('searchToggleBtn').classList.remove('ativo');
+                document.getElementById('navContador').classList.remove('visible');
+                document.getElementById('navPesquisaInput').value = '';
+            }
+
+            modoAtual = modo;
+
+            if (modo === 'visao-geral') {
+                btnVisaoGeral.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderVisaoGeral();
+            } else if (modo === 'funcionais') {
+                dadosAtuais = dadosRequisitos;
+                btnFuncionais.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderContent();
+            } else if (modo === 'nao-funcionais') {
+                dadosAtuais = dadosRequisitosNF;
+                btnNaoFuncionais.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderContent();
+            } else if (modo === 'metricas') {
+                btnMetricas.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderMetricas();
+            } else if (modo === 'metadados') {
+                btnMetadados.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderMetadados();
+            } else if (modo === 'glossario') {
+                btnGlossario.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderGlossario();
+            } else if (modo === 'faq') {
+                btnFAQ.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderPerguntasFrequentes();
+            } else if (modo === 'referencias') {
+                btnReferencias.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderReferencias();
+            } else if (modo === 'mer') {
+                btnMER.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderMER();
+            } else if (modo === 'instrumentos') {
+                btnInstrumentos.className = 'flex items-center gap-3 nav-item-ativo rounded-xl px-4 py-3 transition-all duration-200';
+                renderInstrumentos();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // =====================================================================
+        // MENU MOBILE
+        // =====================================================================
+        (function () {
+            const sideNav = document.getElementById('sideNav');
+            const overlay = document.getElementById('mobileNavOverlay');
+            const btnAbrir = document.getElementById('mobileMenuBtn');
+            const btnFechar = document.getElementById('mobileMenuCloseBtn');
+
+            function abrirMenuMobile() {
+                sideNav.classList.add('mobile-aberto');
+                overlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                if (btnAbrir) btnAbrir.setAttribute('aria-expanded', 'true');
+            }
+
+            function fecharMenuMobile() {
+                sideNav.classList.remove('mobile-aberto');
+                overlay.classList.add('hidden');
+                document.body.style.overflow = '';
+                if (btnAbrir) btnAbrir.setAttribute('aria-expanded', 'false');
+            }
+
+            if (btnAbrir) btnAbrir.addEventListener('click', abrirMenuMobile);
+            if (btnFechar) btnFechar.addEventListener('click', fecharMenuMobile);
+            if (overlay) overlay.addEventListener('click', fecharMenuMobile);
+
+            sideNav.querySelectorAll('nav a').forEach(function (link) {
+                link.addEventListener('click', fecharMenuMobile);
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth >= 768) fecharMenuMobile();
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') fecharMenuMobile();
+            });
+        })();
+
+        // =====================================================================
+        // INICIALIZAÇÃO
+        // =====================================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('btnVisaoGeral').addEventListener('click', function (e) {
+                e.preventDefault();
+                alternarModo('visao-geral');
+            });
+            document.getElementById('btnFuncionais').addEventListener('click', function (e) {
+                e.preventDefault();
+                alternarModo('funcionais');
+            });
+            document.getElementById('btnNaoFuncionais').addEventListener('click', function (e) {
+                e.preventDefault();
+                alternarModo('nao-funcionais');
+            });
+            document.getElementById('btnMetricas').addEventListener('click', function (e) {
+                e.preventDefault();
+                alternarModo('metricas');
+            });
+            document.getElementById('btnFAQ').addEventListener('click', function (e) {
+                e.preventDefault();
+                alternarModo('faq');
+            });
+
+            alternarModo('visao-geral');
+        });
+    </script>
+</body>
+
+    <script>
+        setTimeout(() => {
+            const openingScreen = document.getElementById('opening-screen');
+            if (openingScreen) openingScreen.remove();
+            document.body.classList.remove('opening-active');
+        }, 2450);
+
+        if (window.matchMedia('(max-width: 767px)').matches) {
+            const openingScreen = document.getElementById('opening-screen');
+            if (openingScreen) openingScreen.remove();
+            document.body.classList.remove('opening-active');
+        }
+    </script>
+</body>
+
+</html>

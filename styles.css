@@ -1,0 +1,1679 @@
+/* ================================================================
+   styles.css - e-ARQ Brasil
+   Estilos completos e consolidados
+   ================================================================ */
+
+/* ================================================================
+   CONFIGURAÇÕES GERAIS
+   ================================================================ */
+
+/* Configuração das variáveis de fonte do Material Symbols */
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.material-symbols-outlined.filled {
+    font-variation-settings: 'FILL' 1;
+}
+
+body {
+    background: #f8f9fa;
+}
+
+body.opening-active {
+    overflow: hidden;
+}
+
+body.opening-active > *:not(#opening-screen) {
+    visibility: hidden;
+}
+
+#opening-screen {
+    visibility: visible;
+}
+
+#opening-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    overflow: hidden;
+    background: #f8f9fa;
+    pointer-events: none;
+}
+
+.opening-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    overflow: visible;
+}
+
+.opening-rectangle,
+.opening-rectangle-split {
+    position: relative;
+    flex: 0 0 auto;
+    height: 100vh;
+    will-change: transform;
+}
+
+.opening-rect-1 { flex-basis: 18%; background: #05143b; animation: opening-up 0.75s 1.2s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+.opening-rect-2 { flex-basis: 16%; background: #0a2472; animation: opening-down 0.75s 1.28s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+.opening-rect-3 { display: flex; align-items: center; justify-content: center; flex-basis: 30%; background: #0d2d8c; animation: opening-up 0.75s 1.36s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+.opening-rect-4 { flex-basis: 16%; background: #133ab5; animation: opening-down 0.75s 1.44s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+.opening-rectangle-split { display: flex; flex-direction: column; flex-basis: 20%; }
+.opening-half { flex: 1; will-change: transform; }
+.opening-half-top { background: #1a4ade; animation: opening-right 0.75s 1.52s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+.opening-half-bottom { background: #06184a; animation: opening-right 0.75s 1.6s cubic-bezier(0.76, 0, 0.24, 1) forwards; }
+
+.opening-logo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.85);
+    animation: opening-logo-in 0.8s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.opening-logo img {
+    width: 320px;
+    max-width: 80vw;
+    height: auto;
+    filter: brightness(0) invert(1) drop-shadow(0 8px 40px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes opening-logo-in { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+@keyframes opening-up { to { transform: translateY(-110vh); } }
+@keyframes opening-down { to { transform: translateY(110vh); } }
+@keyframes opening-right { to { transform: translateX(110vw); } }
+
+@media (max-width: 767px) {
+    #opening-screen {
+        display: none;
+    }
+
+    body.opening-active {
+        overflow: auto;
+    }
+
+    body.opening-active > *:not(#opening-screen) {
+        visibility: visible;
+    }
+
+    .opening-logo img { width: 220px; }
+}
+
+/* Evita rolagem horizontal indesejada no mobile */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ================================================================
+   SCROLLBAR SUAVE (Global)
+   ================================================================ */
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f2f4;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c3c6d1;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #737780;
+}
+
+/* ================================================================
+   NAVBAR
+   ================================================================ */
+
+.navbar-search-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+}
+
+.navbar-search-container .search-input-wrapper {
+    max-width: 0;
+    overflow: hidden;
+    transition: max-width 0.35s ease, opacity 0.3s ease, margin 0.3s ease;
+    opacity: 0;
+    margin: 0;
+}
+
+.navbar-search-container .search-input-wrapper.aberto {
+    max-width: 350px;
+    opacity: 1;
+    margin: 0 0.25rem;
+}
+
+.navbar-search-container .search-input-wrapper input {
+    width: 280px;
+    padding: 0.4rem 0.75rem 0.4rem 2.2rem;
+    border: 1.5px solid #c3c6d1;
+    border-radius: 0.75rem;
+    font-size: 14px;
+    background: white;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.navbar-search-container .search-input-wrapper input:focus {
+    border-color: #001e40;
+    box-shadow: 0 0 0 3px rgba(0, 30, 64, 0.12);
+}
+
+.navbar-search-container .search-input-wrapper .input-icon {
+    position: absolute;
+    left: 0.65rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #737780;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.navbar-search-container .search-input-wrapper .clear-nav-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #737780;
+    cursor: pointer;
+    display: none;
+    padding: 0.15rem;
+    border-radius: 50%;
+    font-size: 18px;
+    transition: background 0.2s;
+}
+
+.navbar-search-container .search-input-wrapper .clear-nav-btn:hover {
+    background: #e1e3e4;
+}
+
+.navbar-search-container .search-input-wrapper .clear-nav-btn.visible {
+    display: flex;
+}
+
+.search-icon-btn {
+    transition: all 0.2s;
+    padding: 0.25rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.search-icon-btn:hover {
+    background: rgba(0, 30, 64, 0.06);
+}
+
+.search-icon-btn.ativo {
+    color: #001e40 !important;
+    background: rgba(0, 30, 64, 0.1);
+}
+
+.navbar-contador {
+    font-size: 12px;
+    color: #737780;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.navbar-contador.visible {
+    opacity: 1;
+}
+
+/* ================================================================
+   NAVBAR - AJUSTES MOBILE
+   ================================================================ */
+
+@media (max-width: 640px) {
+    .navbar-search-container .search-input-wrapper.aberto {
+        max-width: 46vw;
+        margin: 0;
+    }
+
+    .navbar-search-container .search-input-wrapper input {
+        width: 100%;
+        min-width: 0;
+        padding: 0.4rem 0.6rem 0.4rem 2rem;
+        font-size: 13px;
+    }
+
+    .btn-exportar {
+        padding: 0.5rem;
+        border-radius: 0.65rem;
+    }
+
+    .btn-exportar .material-symbols-outlined {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar-contador {
+        display: none !important;
+    }
+}
+
+/* ================================================================
+   BOTÃO DE EXPORTAÇÃO
+   ================================================================ */
+
+.btn-exportar {
+    transition: all 0.2s ease;
+    padding: 0.4rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: #003366;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-exportar:hover {
+    background: #001e40;
+    transform: scale(1.02);
+}
+
+.btn-exportar .material-symbols-outlined {
+    font-size: 20px;
+}
+
+/* ================================================================
+   SIDENAV
+   ================================================================ */
+
+.side-nav-sticky {
+    min-height: 100vh;
+    height: auto;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+/* No desktop, garante que a sidebar vá até o final */
+@media (min-width: 768px) {
+    .side-nav-sticky {
+        min-height: 100vh;
+    }
+}
+
+/* No mobile, mantém o comportamento de drawer */
+@media (max-width: 767px) {
+    .side-nav-sticky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+    }
+
+    .side-nav-sticky.mobile-aberto {
+        transform: translateX(0);
+    }
+}
+
+#mobileNavOverlay {
+    transition: opacity 0.25s ease;
+}
+
+#mobileMenuBtn,
+#mobileMenuCloseBtn {
+    font-size: 26px;
+    line-height: 1;
+}
+
+.nav-item-ativo {
+    background-color: #003366 !important;
+    color: #799dd6 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.nav-item-ativo .material-symbols-outlined {
+    color: #799dd6 !important;
+}
+
+.nav-item-inativo {
+    color: #43474f !important;
+}
+
+.nav-item-inativo:hover {
+    background: #e7e8e9 !important;
+}
+
+.nav-item-inativo .material-symbols-outlined {
+    color: #43474f !important;
+}
+
+/* ================================================================
+   CAPÍTULOS - CARDS COM TOGGLE
+   ================================================================ */
+
+.capitulo-card {
+    transition: all 0.2s ease;
+    border: 1px solid #e1e3e4;
+}
+
+.capitulo-card:hover {
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.capitulo-header {
+    transition: all 0.2s ease;
+}
+
+.capitulo-header:hover {
+    background: #edeeef;
+}
+
+.capitulo-header .btn-toggle {
+    transition: transform 0.3s ease;
+}
+
+.capitulo-header .btn-toggle.rotacionado {
+    transform: rotate(180deg);
+}
+
+.capitulo-conteudo {
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    max-height: 0;
+}
+
+.capitulo-conteudo.aberto {
+    max-height: 5000px;
+}
+
+/* ================================================================
+   SUBSECÕES - COM TOGGLE
+   ================================================================ */
+
+.subsecao-card {
+    transition: all 0.15s ease;
+    border: 1px solid #e1e3e4;
+}
+
+.subsecao-card:hover {
+    border-color: #c3c6d1;
+}
+
+.subsecao-header {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.subsecao-header:hover {
+    background: #edeeef;
+}
+
+.subsecao-header .btn-toggle-sub {
+    transition: transform 0.3s ease;
+}
+
+.subsecao-header .btn-toggle-sub.rotacionado {
+    transform: rotate(180deg);
+}
+
+.subsecao-conteudo {
+    transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    max-height: 0;
+}
+
+.subsecao-conteudo.aberto {
+    max-height: 5000px;
+}
+
+/* ================================================================
+   REQUISITOS - LISTA E CARDS
+   ================================================================ */
+
+.requisito-item {
+    transition: all 0.15s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+@media (min-width: 640px) {
+    .requisito-item {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+.requisito-item.oculto {
+    display: none !important;
+}
+
+.requisito-item:hover {
+    background: #f5f7fa;
+}
+
+.requisito-item .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.requisito-item.expandido {
+    cursor: default;
+    background: #f5f7fa;
+}
+
+.requisito-item.expandido .line-clamp-2 {
+    display: none;
+}
+
+.detalhes-requisito {
+    display: none;
+    flex-basis: 100%;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #dbe3ee;
+    border-left: 4px solid #003366;
+    border-radius: 0.75rem;
+    background: #fff;
+    cursor: text;
+}
+
+.requisito-item.expandido .detalhes-requisito {
+    display: grid;
+    gap: 1rem;
+}
+
+.detalhe-requisito-bloco h5 {
+    margin: 0 0 0.25rem;
+    color: #003366;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.detalhe-requisito-bloco p {
+    margin: 0;
+    color: #30343b;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* Painel e cartões da avaliação de conformidade */
+.status-resumo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+}
+
+.status-resumo>.material-symbols-outlined {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+}
+
+.status-resumo strong,
+.status-resumo span:not(.material-symbols-outlined) {
+    display: block;
+}
+
+.status-resumo strong {
+    font-size: 1.25rem;
+    line-height: 1.1;
+}
+
+.status-resumo span:not(.material-symbols-outlined) {
+    margin-top: 0.125rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-resumo.atende {
+    color: #08745d;
+}
+
+.status-resumo.atende>.material-symbols-outlined {
+    background: #e7f7f0;
+}
+
+.status-resumo.parcial {
+    color: #a24b08;
+}
+
+.status-resumo.parcial>.material-symbols-outlined {
+    background: #fff2db;
+}
+
+.status-resumo.nao-atende {
+    color: #b42318;
+}
+
+.status-resumo.nao-atende>.material-symbols-outlined {
+    background: #ffebe9;
+}
+
+.requisitos-grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.875rem;
+}
+
+@media (min-width: 768px) {
+    .requisitos-grade {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 767px) {
+    .requisitos-grade {
+        gap: 0.5rem;
+        padding: 0.625rem;
+    }
+
+    .requisito-item.requisito-card-visual {
+        padding: 0.7rem;
+        gap: 0.55rem;
+        border-radius: 0.8rem;
+    }
+
+    .requisito-card-visual h5 {
+        font-size: 0.78rem;
+    }
+
+    .requisito-card-visual p {
+        font-size: 0.7rem;
+        line-height: 1.45;
+    }
+
+    .requisito-card-visual .status-selo {
+        padding: 0.25rem 0.35rem;
+        font-size: 0.58rem;
+    }
+
+    .requisito-card-visual .status-selo .material-symbols-outlined {
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 767px) {
+    .visao-secoes-grid,
+    .faq-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .visao-secoes-grid .visao-secao-resumo,
+    .faq-grid .visao-secao-resumo {
+        padding: 0.9rem;
+        gap: 0.55rem;
+    }
+
+    .visao-secoes-grid .visao-secao-resumo .text-xs,
+    .faq-grid .visao-secao-resumo .text-xs {
+        font-size: 0.65rem;
+    }
+}
+
+.requisito-item.requisito-card-visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1rem;
+    gap: 0.75rem;
+    border: 1px solid #dfe3eb;
+    border-radius: 1rem;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.requisito-item.requisito-card-visual:hover {
+    background: #fff;
+    border-color: #9bb9da;
+    box-shadow: 0 8px 20px rgba(15, 50, 90, 0.10);
+    transform: translateY(-2px);
+}
+
+.requisito-item.requisito-card-visual.expandido {
+    cursor: default;
+    border-color: #78a5d4;
+}
+
+.requisito-card-visual .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.requisito-item.requisito-card-visual.expandido .line-clamp-3 {
+    display: none;
+}
+
+.status-selo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3rem 0.55rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    line-height: 1;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.status-selo .material-symbols-outlined {
+    font-size: 0.9rem;
+}
+
+.status-selo.atende {
+    color: #08745d;
+    background: #e7f7f0;
+}
+
+.status-selo.parcial {
+    color: #a24b08;
+    background: #fff2db;
+}
+
+.status-selo.nao_atende {
+    color: #b42318;
+    background: #ffebe9;
+}
+
+.requisito-card-visual .detalhes-requisito {
+    margin-top: 0.25rem;
+}
+
+.requisito-card {
+    transition: all 0.15s ease;
+}
+
+.requisito-card:hover {
+    background: #f5f7fa;
+}
+
+.requisito-item-lista {
+    transition: all 0.15s ease;
+}
+
+.requisito-item-lista:hover {
+    background: #f5f7fa;
+}
+
+.requisito-item-lista .requisito-check {
+    flex-shrink: 0;
+}
+
+.visao-secao-card {
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.visao-secao-card:hover {
+    background: #f8fafc;
+    box-shadow: 0 8px 24px rgba(15, 50, 90, 0.08);
+}
+
+.visao-secao-card[open] {
+    background: #fbfcff;
+    box-shadow: 0 10px 28px rgba(15, 50, 90, 0.10);
+}
+
+.visao-secao-resumo {
+    background: linear-gradient(90deg, #ffffff 0%, #f8fafc 100%);
+    transition: background-color 0.2s ease, padding 0.2s ease;
+}
+
+.visao-secao-resumo:hover {
+    background: #f1f5f9;
+}
+
+.visao-secao-card[open] .visao-secao-resumo {
+    background: #eef5ff;
+}
+
+.visao-secao-resumo .material-symbols-outlined:last-child {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.visao-secao-card[open] .visao-secao-resumo .material-symbols-outlined:last-child {
+    color: #1f477b;
+}
+
+.faq-menu-item {
+    align-self: start;
+}
+
+.faq-menu-resposta {
+    background: #fbfcff;
+}
+
+.metadados-resumo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: fit-content;
+    padding: 1rem 1.25rem;
+    background: #fff;
+    border: 1px solid #c3c6d1;
+    border-radius: 1rem;
+}
+
+.metadados-resumo > .material-symbols-outlined {
+    padding: 0.65rem;
+    color: #001e40;
+    background: #eef5ff;
+    border-radius: 0.75rem;
+}
+
+.metadados-resumo strong,
+.metadados-resumo span:last-child {
+    display: block;
+}
+
+.metadados-resumo strong {
+    color: #001e40;
+    font-size: 1.35rem;
+    line-height: 1.1;
+}
+
+.metadados-resumo span:last-child {
+    margin-top: 0.2rem;
+    color: #43474f;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.metadado-item summary {
+    transition: color 0.2s ease;
+}
+
+.metadado-item summary:hover {
+    color: #1f477b;
+}
+
+.metricas-indicador {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid #c3c6d1;
+    border-radius: 1rem;
+}
+
+.metricas-indicador>.material-symbols-outlined {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+}
+
+.metricas-indicador strong,
+.metricas-indicador span:last-child {
+    display: block;
+}
+
+.metricas-indicador strong {
+    font-size: 1.35rem;
+    line-height: 1.1;
+}
+
+.metricas-indicador span:last-child {
+    margin-top: 0.25rem;
+    color: #43474f;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.metricas-painel {
+    padding: 1.25rem;
+    background: #fff;
+    border: 1px solid #c3c6d1;
+    border-radius: 1rem;
+}
+
+.metricas-painel h2 {
+    color: #001e40;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.metricas-painel p {
+    margin-top: 0.25rem;
+    color: #43474f;
+    font-size: 0.8rem;
+}
+
+.metricas-grafico-circular {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.metricas-grafico-circular::before {
+    position: absolute;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: #fff;
+    content: '';
+}
+
+.metricas-grafico-circular span {
+    position: relative;
+    color: #001e40;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+/* ================================================================
+   RESULTADOS DA PESQUISA
+   ================================================================ */
+
+.resultados-anchor {
+    scroll-margin-top: 80px;
+}
+
+/* ================================================================
+   BOTÕES
+   ================================================================ */
+
+.btn-seta-detalhes {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-seta-detalhes:hover {
+    background-color: #d5e3ff;
+    color: #001e40;
+    transform: translateX(4px);
+}
+
+.btn-ver-detalhes {
+    transition: all 0.2s ease;
+    border: 1px solid #c3c6d1;
+    background: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #001e40;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+}
+
+.btn-ver-detalhes:hover {
+    background: #d5e3ff;
+    border-color: #001e40;
+    transform: translateX(2px);
+}
+
+.btn-ver-detalhes .material-symbols-outlined {
+    font-size: 14px;
+}
+
+/* ================================================================
+   MODAL DE DETALHES DOS REQUISITOS
+   ================================================================ */
+
+#modalDetalhes.hidden {
+    display: none;
+}
+
+#modalDetalhes:not(.hidden) {
+    display: flex;
+}
+
+.modal-requisito-ajustavel {
+    width: min(900px, calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+}
+
+@media (max-width: 639px) {
+    .modal-requisito-ajustavel {
+        width: calc(100vw - 1rem);
+        max-height: calc(100vh - 1.5rem);
+    }
+}
+
+.mobile-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.75rem;
+    padding: 0.5rem 1rem;
+    color: #001e40;
+    background: rgba(248, 249, 250, 0.94);
+    border-bottom: 1px solid #c3c6d1;
+    backdrop-filter: blur(10px);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .mobile-navbar {
+        display: none;
+    }
+}
+
+.modal-anim {
+    animation: modalFadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(12px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+    width: 7px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+    background: #f1f2f4;
+    border-radius: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+    background: #c3c6d1;
+    border-radius: 8px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #737780;
+}
+
+/* ================================================================
+   MODAL DA VISÃO GERAL
+   ================================================================ */
+
+#modalVisaoGeral.hidden {
+    display: none;
+}
+
+#modalVisaoGeral:not(.hidden) {
+    display: flex;
+}
+
+.visao-modal-anim {
+    animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.visao-detalhe-card {
+    transition: all 0.2s ease;
+    border-left: 4px solid transparent;
+}
+
+.visao-detalhe-card:hover {
+    background: #f8f9fa;
+    border-left-color: #003366;
+}
+
+.visao-detalhe-card .card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.visao-detalhe-card .card-icon.explicacao {
+    background: #e8f0fe;
+    color: #1a5bb5;
+}
+
+.visao-detalhe-card .card-icon.implementacao {
+    background: #e6f7f0;
+    color: #0d7a5a;
+}
+
+.visao-detalhe-card .card-icon.exemplo {
+    background: #fef3e2;
+    color: #b75d0a;
+}
+
+.visao-detalhe-card .card-icon.dicas {
+    background: #fde8e8;
+    color: #b91c1c;
+}
+
+/* ================================================================
+   MODAL DE EXPORTAÇÃO
+   ================================================================ */
+
+#modalExportacao.hidden {
+    display: none;
+}
+
+#modalExportacao:not(.hidden) {
+    display: flex;
+}
+
+.export-modal-anim {
+    animation: modalFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.coluna-checkbox {
+    transition: all 0.15s ease;
+}
+
+.coluna-checkbox:hover {
+    background: #f5f7fa;
+}
+
+.coluna-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #003366;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.coluna-checkbox label {
+    cursor: pointer;
+    user-select: none;
+}
+
+.coluna-checkbox .coluna-tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: #e7e8e9;
+    color: #43474f;
+}
+
+.coluna-checkbox .coluna-tag.obrigatoria {
+    background: #fde8e8;
+    color: #b91c1c;
+}
+
+/* ================================================================
+   LISTA DE REQUISITOS NO MODAL
+   ================================================================ */
+
+#listaRequisitosContainer::-webkit-scrollbar {
+    width: 6px;
+}
+
+#listaRequisitosContainer::-webkit-scrollbar-track {
+    background: #f1f2f4;
+}
+
+#listaRequisitosContainer::-webkit-scrollbar-thumb {
+    background: #c3c6d1;
+    border-radius: 8px;
+}
+
+#listaRequisitosContainer::-webkit-scrollbar-thumb:hover {
+    background: #737780;
+}
+
+/* ================================================================
+   METADADOS
+   ================================================================ */
+
+.metadado-card {
+    transition: all 0.2s ease;
+}
+
+.metadado-card:hover {
+    background: #f5f7fa;
+    border-color: #001e40;
+}
+
+/* ================================================================
+   GLOSSÁRIO
+   ================================================================ */
+
+.glossario-termo {
+    transition: all 0.15s ease;
+}
+
+.glossario-termo:hover {
+    background: #f5f7fa;
+}
+
+/* ================================================================
+   RESPONSABILIDADES
+   ================================================================ */
+
+.responsabilidade-card {
+    border-left: 4px solid #003366;
+}
+
+/* ================================================================
+   CARDS DA VISÃO GERAL - Collapsible
+   ================================================================ */
+
+.visao-card-conteudo {
+    transition: all 0.3s ease;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.visao-card-conteudo.aberto {
+    max-height: 5000px;
+    opacity: 1;
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+}
+
+.visao-card-header {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.visao-card-header:hover {
+    background: rgba(0, 30, 64, 0.04);
+}
+
+.visao-card-header .btn-toggle {
+    transition: transform 0.3s ease;
+}
+
+.visao-card-header .btn-toggle.rotacionado {
+    transform: rotate(180deg);
+}
+
+.visao-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Espaçamento mais enxuto e adequado para telas pequenas */
+@media (max-width: 640px) {
+    .visao-card-header {
+        padding-left: 1.1rem !important;
+        padding-right: 1.1rem !important;
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+        gap: 0.65rem !important;
+    }
+
+    .visao-card-header h2,
+    .visao-card-header h3 {
+        font-size: 1.05rem !important;
+    }
+
+    .visao-card-header p {
+        font-size: 0.78rem !important;
+    }
+
+    .visao-card-conteudo {
+        padding-left: 1.1rem !important;
+        padding-right: 1.1rem !important;
+    }
+
+    .visao-card-conteudo.aberto {
+        padding-top: 1rem !important;
+        padding-bottom: 1.25rem !important;
+    }
+}
+
+/* ================================================================
+   BOTÕES DE AÇÃO NO MODAL DE EXPORTAÇÃO
+   ================================================================ */
+
+.btn-acao {
+    transition: all 0.2s ease;
+    padding: 0.6rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-acao:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-acao.primario {
+    background: #003366;
+    color: white;
+}
+
+.btn-acao.primario:hover {
+    background: #001e40;
+}
+
+.btn-acao.secundario {
+    background: #e7e8e9;
+    color: #191c1d;
+}
+
+.btn-acao.secundario:hover {
+    background: #d9dadb;
+}
+
+.btn-acao.sucesso {
+    background: #0d7a5a;
+    color: white;
+}
+
+.btn-acao.sucesso:hover {
+    background: #0a5f45;
+}
+
+.btn-acao.perigo {
+    background: #b91c1c;
+    color: white;
+}
+
+.btn-acao.perigo:hover {
+    background: #991515;
+}
+
+.btn-acao:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ================================================================
+   DIAGRAMA DE ORGANIZAÇÃO DOS DOCUMENTOS - Versão 4 Ramos
+   ================================================================ */
+
+.diagrama-organizacao {
+    background: #ffffff;
+    padding: 15px 10px;
+    border-radius: 12px;
+}
+
+.diagrama-organizacao .nivel-item {
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    user-select: none;
+    width: 100%;
+    max-width: 160px;
+}
+
+.diagrama-organizacao .nivel-item:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 20px rgba(0, 30, 64, 0.15);
+    z-index: 10;
+}
+
+.diagrama-organizacao .conector {
+    transition: all 0.3s ease;
+}
+
+.diagrama-organizacao .ramo {
+    min-height: 520px;
+}
+
+@keyframes fadeInRamo {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.diagrama-organizacao .ramo-1 {
+    animation: fadeInRamo 0.4s ease forwards;
+}
+
+.diagrama-organizacao .ramo-2 {
+    animation: fadeInRamo 0.5s ease forwards 0.1s;
+}
+
+.diagrama-organizacao .ramo-3 {
+    animation: fadeInRamo 0.6s ease forwards 0.2s;
+}
+
+.diagrama-organizacao .ramo-4 {
+    animation: fadeInRamo 0.7s ease forwards 0.3s;
+}
+
+/* Responsividade do Diagrama */
+@media (max-width: 1024px) {
+    .diagrama-organizacao .diagrama-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 30px 40px !important;
+    }
+
+    .diagrama-organizacao .ramo {
+        min-height: 400px !important;
+    }
+
+    .diagrama-organizacao .nivel-item {
+        font-size: 0.65rem !important;
+        padding: 6px 10px !important;
+        min-width: 80px !important;
+        max-width: 130px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .diagrama-organizacao {
+        min-width: 560px !important;
+    }
+
+    .diagrama-organizacao .diagrama-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 20px !important;
+    }
+
+    .diagrama-organizacao .ramo {
+        min-height: 350px !important;
+    }
+
+    .diagrama-organizacao .nivel-item {
+        font-size: 0.55rem !important;
+        padding: 4px 8px !important;
+        min-width: 60px !important;
+        max-width: 100px !important;
+    }
+
+    .diagrama-organizacao .indicadores-linhas {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 6px !important;
+        font-size: 0.5rem !important;
+    }
+
+    .diagrama-organizacao .ramo-3 .subclasse div {
+        font-size: 0.5rem !important;
+        padding: 1px 6px !important;
+    }
+
+    .diagrama-organizacao .conector {
+        height: 15px !important;
+    }
+}
+
+/* ================================================================
+   MER DIAGRAM (Mermaid)
+   ================================================================ */
+
+.mermaid {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    min-height: 600px;
+}
+
+.mermaid .er.entityBox {
+    fill: #f0f4f9 !important;
+    stroke: #003366 !important;
+    stroke-width: 1.5px !important;
+}
+
+.mermaid .er.attributeBox {
+    fill: #ffffff !important;
+    stroke: #c3c6d1 !important;
+}
+
+.mermaid .er.entityLabel {
+    fill: #003366 !important;
+    font-weight: 700 !important;
+}
+
+.mermaid .er.relationshipLabel {
+    fill: #001e40 !important;
+    font-weight: 600 !important;
+}
+
+.mermaid .er.relationshipLine {
+    stroke: #737780 !important;
+    stroke-width: 1.5px !important;
+}
+
+/* ================================================================
+   RESPONSIVIDADE GERAL - MELHORIAS
+   ================================================================ */
+
+/* Ajustes para cards de capítulo em mobile */
+@media (max-width: 640px) {
+    .capitulo-header {
+        padding: 0.75rem 1rem !important;
+        flex-wrap: wrap;
+    }
+
+    .capitulo-header .flex.items-center.gap-4 {
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+    }
+
+    .capitulo-header h3 {
+        font-size: 0.95rem !important;
+    }
+
+    .subsecao-header {
+        padding: 0.6rem 0.75rem !important;
+        flex-wrap: wrap;
+    }
+
+    .subsecao-header h4 {
+        font-size: 0.8rem !important;
+    }
+
+    .requisito-item {
+        padding: 0.6rem 0.75rem !important;
+        gap: 0.35rem !important;
+    }
+
+    .requisito-item .font-mono-sm {
+        font-size: 0.65rem !important;
+    }
+
+    .requisito-item .font-semibold.text-sm {
+        font-size: 0.75rem !important;
+    }
+
+    .requisito-item .text-xs {
+        font-size: 0.65rem !important;
+    }
+}
+
+/* Melhorias para tablets */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .capitulo-header {
+        padding: 0.8rem 1.2rem !important;
+    }
+
+    .subsecao-header {
+        padding: 0.6rem 1rem !important;
+    }
+
+    .requisito-item {
+        padding: 0.6rem 1rem !important;
+    }
+}
+
+/* Animações suaves para expansão */
+.capitulo-conteudo,
+.subsecao-conteudo,
+.visao-card-conteudo {
+    will-change: max-height, opacity;
+}
+
+/* ================================================================
+   BADGES E STATUS - MELHORIAS
+   ================================================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    border: 1px solid;
+    white-space: nowrap;
+}
+
+.status-badge.atende {
+    color: #0d7a5a;
+    background: #e6f7f0;
+    border-color: #0d7a5a;
+}
+
+.status-badge.nao-atende {
+    color: #b91c1c;
+    background: #fde8e8;
+    border-color: #b91c1c;
+}
+
+.status-badge.parcial {
+    color: #b75d0a;
+    background: #fef3e2;
+    border-color: #b75d0a;
+}
+
+/* ================================================================
+   FERRAMENTA DE CONFORMIDADE - DESTAQUES
+   ================================================================ */
+
+.conformidade-filtro {
+    background: white;
+    border: 1px solid #e1e3e4;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.conformidade-filtro select {
+    padding: 0.35rem 2rem 0.35rem 0.75rem;
+    border: 1px solid #c3c6d1;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    background: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2343474f' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    cursor: pointer;
+}
+
+.conformidade-filtro select:focus {
+    border-color: #001e40;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 30, 64, 0.1);
+}
+
+/* ================================================================
+   SCROLL SUAVE PARA ÂNCORAS
+   ================================================================ */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* ================================================================
+   PRINT STYLES
+   ================================================================ */
+
+@media print {
+
+    .side-nav-sticky,
+    .btn-exportar,
+    .navbar-search-container,
+    #mobileMenuBtn,
+    #modalDetalhes,
+    #modalVisaoGeral,
+    #modalExportacao {
+        display: none !important;
+    }
+
+    main {
+        padding: 1rem !important;
+        max-width: 100% !important;
+    }
+
+    .capitulo-conteudo,
+    .subsecao-conteudo {
+        max-height: none !important;
+        overflow: visible !important;
+        opacity: 1 !important;
+    }
+
+    .capitulo-header,
+    .subsecao-header {
+        cursor: default !important;
+        background: #f5f5f5 !important;
+    }
+
+    .btn-toggle,
+    .btn-toggle-sub {
+        display: none !important;
+    }
+
+    .requisito-item {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
